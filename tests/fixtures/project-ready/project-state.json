@@ -33,7 +33,7 @@
       "lockedByReviewId": "review-prompt-segment-001",
       "segmentId": "segment-001",
       "narrationSourceId": "narration-segment-001",
-      "narrationSha256": "fc1aeea5425dbc2cf99fd7035ccd45f494f3622de992e6513d9edfc88126a6e5"
+      "narrationSha256": "bfad65771c68d200eae34b1ec996d6216a0592a133f27c711211439007c86be2"
     },
     {
       "id": "narration-segment-001",
@@ -41,7 +41,7 @@
       "revision": 1,
       "status": "locked",
       "path": "prompts/segment-001-narration.json",
-      "sha256": "fc1aeea5425dbc2cf99fd7035ccd45f494f3622de992e6513d9edfc88126a6e5",
+      "sha256": "bfad65771c68d200eae34b1ec996d6216a0592a133f27c711211439007c86be2",
       "lockedByReviewId": "review-narration-segment-001",
       "segmentId": "segment-001"
     },

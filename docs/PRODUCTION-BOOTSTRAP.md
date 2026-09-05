@@ -17,14 +17,17 @@ enough.
 ## First run
 
 ```bash
-git clone https://github.com/wfjkl123-create/ai-video-production-harness.git
+git clone <public-release-url>
 cd ai-video-production-harness
 node scripts/bootstrap.mjs --write-env
 npm test
+node scripts/doctor-environment.mjs --source-only
 node scripts/doctor-environment.mjs
 ```
 
-The first doctor run is expected to fail until you license the author-owned
+The source-only doctor must pass in a clean clone; it checks only the public
+source, the bundled Skill hashes and Node prerequisites. The full doctor run is
+expected to fail until you license the author-owned
 Harness additions and install/authenticate the provider dependencies. Its
 failure is deliberate: a clone is not allowed to claim it can submit a provider
 job without the exact Skill, authenticated provider, and account capacity it
@@ -56,6 +59,14 @@ runner also requires PyTorch, Transformers and model weights that the operator
 is licensed to use commercially. No model binary or DSINE runtime is included;
 the audited local DSINE vendor is excluded because its terms do not establish a
 commercial redistribution right.
+
+Install only the package versions you have independently validated for your
+hardware, then verify the route locally. The public reference versions and the
+required `--model-path` file/fingerprint contract are in
+[`manifests/optional-depth.requirements.json`](../manifests/optional-depth.requirements.json).
+The runner is offline-only and rejects a model path without its config,
+processor config and local weights; it records every model file's SHA-256 before
+and after conversion, so a changed weight directory fails closed.
 
 ## What is deliberately not claimed
 

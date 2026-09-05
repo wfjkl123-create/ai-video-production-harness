@@ -2,18 +2,18 @@
   "id": "rule-verified",
   "status": "hard",
   "trigger": {
-    "product": ["shapewear"],
+    "product": ["generic_container"],
     "assetType": ["storyboard"],
     "shotType": ["close_up"],
     "motionType": ["pull"],
     "peopleCountRange": { "min": 1, "max": 2 },
     "spaceComplexity": ["simple"]
   },
-  "symptom": "waistband deformation",
+  "symptom": "lid alignment drift",
   "evidence": ["run-verified"],
   "reason": "reference conflict",
-  "correction": "isolate product structure",
-  "forbidden": ["storyboard controls product structure"],
+  "correction": "isolate prop geometry",
+  "forbidden": ["storyboard controls prop geometry"],
   "sourceProject": "project-ready",
   "sourceSegment": "segment-001",
   "applications": [

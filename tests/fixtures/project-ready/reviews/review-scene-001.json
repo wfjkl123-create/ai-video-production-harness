@@ -1,0 +1,8 @@
+{
+  "id": "review-scene-001",
+  "artifactId": "scene-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture scene approved",
+  "artifactSha256": "4ff6dbc31b3f752912f8053549050cbc3944570d7522fdbc7256b9ebc6db9ec0"
+}

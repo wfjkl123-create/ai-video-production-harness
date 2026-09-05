@@ -1,0 +1,16 @@
+{
+  "id": "narration-segment-001",
+  "segmentId": "segment-001",
+  "sourceSegmentId": "segment-001",
+  "revision": 1,
+  "status": "locked",
+  "shots": [
+    {
+      "shotId": "shot-002",
+      "physicalActions": ["她抬手展示无品牌收纳盒，指尖沿盒盖滑过", "转身侧对镜头，屈膝半蹲展示盒体轮廓"],
+      "cameraMove": "从中景缓慢推近到桌面道具特写",
+      "lightSources": ["左前方柔光箱主光", "右后方轮廓光"],
+      "emotionThroughAction": "下颌微收、嘴角轻轻上扬，呼出一口气"
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "id": "segment-001-asset-manifest",
+  "segmentId": "segment-001",
+  "status": "locked",
+  "lockedByReviewId": "review-segment-001-assets",
+  "items": [
+    {
+      "id": "segment-001-storyboard",
+      "type": "storyboard",
+      "scope": "segment",
+      "segmentId": "segment-001",
+      "status": "locked",
+      "revision": 1,
+      "lockedByReviewId": "review-segment-001-storyboard",
+      "sha256": "8723714af9a2560d2bd869b4aa3e539751c2d666c9d7cebce35f743a02821026",
+      "outputPath": "outputs/segment-001-storyboard.png",
+      "responsibility": "framing, shot scale, blocking, action path, and visual rhythm",
+      "mustNotControl": ["identity", "wardrobe", "product appearance", "color grade", "final texture"]
+    },
+    {
+      "id": "segment-001-camera-blocking",
+      "type": "camera_blocking",
+      "scope": "segment",
+      "segmentId": "segment-001",
+      "status": "locked",
+      "revision": 1,
+      "lockedByReviewId": "review-segment-001-camera-blocking",
+      "sha256": "6b9d1304ae9b80cb4a1946a8848f525a108bf2d5ea08a99cc21e1f951ad9bba8",
+      "outputPath": "outputs/segment-001-camera-blocking.png",
+      "responsibility": "character paths and camera path",
+      "mustNotControl": ["identity", "wardrobe", "product appearance", "color grade", "final texture"]
+    },
+    {
+      "id": "character-001",
+      "type": "character_board",
+      "characterId": "character-a",
+      "visualContractVersion": 1,
+      "visualAuditId": "visual-audit-character-001",
+      "scope": "project",
+      "status": "locked",
+      "revision": 1,
+      "lockedByReviewId": "review-character-001",
+      "sha256": "aa76c3c15f1641daa7c52b364da91c033603341409221cc32114f937684c7849",
+      "path": "assets/project/character-001.png",
+      "responsibility": "identity, face, hair, body proportions, and approved styling",
+      "mustNotControl": ["scene", "story action", "camera", "product appearance", "color grade"]
+    },
+    {
+      "id": "scene-001",
+      "type": "scene_multiview",
+      "scope": "project",
+      "status": "locked",
+      "revision": 1,
+      "lockedByReviewId": "review-scene-001",
+      "sha256": "4ff6dbc31b3f752912f8053549050cbc3944570d7522fdbc7256b9ebc6db9ec0",
+      "path": "assets/project/scene-001.png",
+      "responsibility": "space structure and light direction",
+      "mustNotControl": ["identity", "wardrobe", "product appearance", "camera", "story action"]
+    },
+    {
+      "id": "product-001",
+      "type": "product_reference",
+      "scope": "project",
+      "status": "locked",
+      "revision": 1,
+      "lockedByReviewId": "review-product-001",
+      "sha256": "4e35c3547fb6383751fcced7ca8dab184fb2340623102bd8b83a17d7083529fb",
+      "path": "assets/project/product-001.png",
+      "responsibility": "product structure, material, color, and key details",
+      "mustNotControl": ["identity", "wardrobe", "scene", "camera", "story action"]
+    }
+  ]
+}

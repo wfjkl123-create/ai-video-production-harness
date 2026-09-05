@@ -13,6 +13,7 @@
     "test:e2e": "node --test tests/e2e/*.test.js",
     "test:governance": "node --test tests/domain/quality-review.test.js tests/services/quality-review-service.test.js tests/services/doctor-service.test.js tests/services/next-action-service.test.js tests/services/segment-contract-service.test.js tests/commands/governance-commands.test.js",
     "configure-template": "node scripts/bootstrap.mjs",
+    "doctor:source": "node scripts/doctor-environment.mjs --source-only",
     "doctor:environment": "node scripts/doctor-environment.mjs",
     "audit:project-readiness": "node src/commands/audit-project-readiness.js",
     "reconcile:project-phase": "node src/commands/reconcile-project-phase.js",
