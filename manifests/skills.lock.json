@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "installationRoot": ".agents/skills",
+  "skills": [
+    {
+      "id": "gpt-image-2-style-library",
+      "status": "bundled",
+      "path": ".agents/skills/gpt-image-2-style-library",
+      "license": "MIT",
+      "origin": "https://github.com/freestylefly/awesome-gpt-image-2/tree/main/agents/skills/gpt-image-2-style-library",
+      "version": "1.0.4",
+      "treeSha256": "2b986a4c8e5b2c30232cc51936309f41bcf45cd487fda9fb266a9a177ad9c9a0",
+      "requiredFiles": ["SKILL.md", "LICENSE", "package.json"],
+      "purpose": "required image-prompt structure and style routing"
+    },
+    {
+      "id": "imagegen",
+      "status": "bundled",
+      "path": ".agents/skills/imagegen",
+      "license": "Apache-2.0",
+      "origin": "OpenAI Codex bundled skill distribution",
+      "version": "Codex system-skill snapshot",
+      "treeSha256": "5fa7304d5db97769873529789902ca22f8e18acb3128ed69d4a111fb3ad32a3f",
+      "requiredFiles": ["SKILL.md", "LICENSE.txt"],
+      "purpose": "Codex image generation and output inspection"
+    },
+    {
+      "id": "koc-remake-orchestrator",
+      "status": "bundled_author_owned_license_required",
+      "path": ".agents/skills/koc-remake-orchestrator",
+      "license": "repository license pending",
+      "version": "public-release-v1",
+      "treeSha256": "083458e92a6cd81ccffe030e2ec43044f9b00e05ececc2da2f371c038111013a",
+      "requiredFiles": ["SKILL.md", "references/workflow-contract.md"],
+      "purpose": "source-faithful KOC A-roll remake orchestration"
+    },
+    {
+      "id": "libtv-review-and-rewrite",
+      "status": "bundled_author_owned_license_required",
+      "path": ".agents/skills/libtv-review-and-rewrite",
+      "license": "repository license pending",
+      "version": "public-release-v1",
+      "treeSha256": "8763ceffd15095d22f5f30a93156c1f77190f22094362f8f75365d4bf2b35bfe",
+      "requiredFiles": ["SKILL.md", "references/defect-to-fix-map.md"],
+      "purpose": "post-generation review and lowest-cost remediation routing"
+    },
+    {
+      "id": "seedance2-prompt",
+      "status": "bundled",
+      "path": ".agents/skills/seedance2-prompt",
+      "license": "MIT",
+      "origin": "https://github.com/Emily2040/seedance-2.0",
+      "version": "6.7.0",
+      "treeSha256": "5325aa62b0fdcd03408cb4c1ffb93792ef41bfda372409c0f6feb8bd049bcb50",
+      "requiredFiles": ["SKILL.md", "LICENSE", "requirements-validation.lock"],
+      "reason": "This public release bundles the MIT v6.7.0 canonical baseline. Private fusion material is not represented as bundled.",
+      "purpose": "the sole canonical author for Seedance/LibTV prompt prose"
+    },
+    {
+      "id": "libtv-cli",
+      "status": "provider_cli_external",
+      "expectedVersion": "1.1.1",
+      "officialInstallSource": "not recorded in this public release; obtain only from the provider's official distribution",
+      "reason": "The executable is a provider dependency, not an authoring Skill. Its version and account authentication are checked separately; do not copy account state.",
+      "purpose": "official LibTV canvas and node operations"
+    },
+    {
+      "id": "seedance-camera",
+      "status": "bundled",
+      "path": ".agents/skills/seedance-camera",
+      "license": "MIT",
+      "origin": "https://github.com/Emily2040/seedance-2.0",
+      "version": "6.7.0",
+      "treeSha256": "f9f4ae990c573e80e9fd46789eae2ff1c2427e17481f8bcbd60bcb697317f8bd",
+      "requiredFiles": ["SKILL.md", "LICENSE"],
+      "purpose": "camera, lens, movement and spatial-control routing"
+    },
+    {
+      "id": "seedance-characters",
+      "status": "bundled",
+      "path": ".agents/skills/seedance-characters",
+      "license": "MIT",
+      "origin": "https://github.com/Emily2040/seedance-2.0",
+      "version": "6.7.0",
+      "treeSha256": "532a0f72b79928f3b07ca399311e357b094cc8b059062222e67584a3691aa947",
+      "requiredFiles": ["SKILL.md", "LICENSE"],
+      "purpose": "character identity and continuity routing"
+    },
+    {
+      "id": "seedance-antislop",
+      "status": "bundled",
+      "path": ".agents/skills/seedance-antislop",
+      "license": "MIT",
+      "origin": "https://github.com/Emily2040/seedance-2.0",
+      "version": "6.7.0",
+      "treeSha256": "74b441551fdc78fcdf64d9317fa5371f6880f866b7b2144770aa27225d9beb49",
+      "requiredFiles": ["SKILL.md", "LICENSE"],
+      "purpose": "prompt quality and anti-generic-output routing"
+    },
+    {
+      "id": "seedance-sequence",
+      "status": "bundled",
+      "path": ".agents/skills/seedance-sequence",
+      "license": "MIT",
+      "origin": "https://github.com/Emily2040/seedance-2.0",
+      "version": "6.7.0",
+      "treeSha256": "b05e6dda070fbcdc5f2c77750e73e11f173ebfa46190c150288402b51d9f4ffb",
+      "requiredFiles": ["SKILL.md", "LICENSE"],
+      "purpose": "sequence, continuity and multi-shot routing"
+    }
+  ]
+}

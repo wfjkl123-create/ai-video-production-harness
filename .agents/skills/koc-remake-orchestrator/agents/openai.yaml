@@ -1,0 +1,4 @@
+interface:
+  display_name: "KOC 复刻编排器"
+  short_description: "全量 A-roll、整头匿名、并行换脸与可审计回插"
+  default_prompt: "使用 $koc-remake-orchestrator 按源时码组织这条 KOC 视频的 A-roll 换脸复刻；保留 B-roll 与整轨原声，并在准备屏障后并行处理独立片段。"

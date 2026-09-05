@@ -4,38 +4,50 @@
 
 ## 公开脱敏版范围
 
-本仓库只包含通用实现、模式、Schema、模板和合成测试夹具。它**不包含**任何真实项目、人物或产品素材、视频/音频、生成结果、平台运行记录、工作台数据库、本机路径、私有提示词、密钥或历史 Git 对象。
+本仓库包含 Harness 核心、项目级 KOC/审片 Skill、可再分发的图片 Skill、项目初始化时自动复制的 KOC 全头匿名化工具，以及版本化环境/Skill 清单。它**不包含**任何真实项目、人物或产品素材、视频/音频、生成结果、平台运行记录、工作台数据库、本机路径、私有提示词、密钥或历史 Git 对象。
 
-该仓库公开可读，但尚未授予复用许可；除非另行添加许可证，保留全部权利。它与 LibTV、Seedance、RunningHub、OpenAI 和 ByteDance 均无隶属关系。
+这不是“把我当前 Mac 的登录状态打包出去”：账号、付费额度、提供方协议、浏览器会话、Keychain、项目 UUID 和模型权重都必须由每位操作者自行持有与配置。仓库会明确检查这些边界，缺失时阻止把环境称为生产就绪。
+
+该仓库公开可读，但尚未授予根仓库的复用许可；除非另行添加许可证，保留全部权利。第三方 Skill 的许可见 [第三方声明](THIRD_PARTY_NOTICES.md)。它与 LibTV、Seedance、RunningHub、OpenAI 和 ByteDance 均无隶属关系。
 
 ## 本地运行
 
-前提：Node.js `>=22`，以及按需安装的 `ffmpeg`/`ffprobe` 和官方媒体 CLI。
+最小步骤：
 
 ```bash
+npm run configure-template -- --write-env
 npm test
 npm run check
+npm run doctor:environment
 npm run studio
 ```
 
-`npm test` 使用仓库内的合成 Prompt Skill 夹具。实际项目应在受控环境设置：
+`npm test` 使用仓库内的合成 Prompt Skill 夹具。`doctor:environment` 会实际检查 Node、FFmpeg 功能、LibTV 登录、OpenCodex、Skill 文件和可选 RunningHub 配置，但不会输出任何密钥或账号资料。第一次运行预期会因尚未安装的生产组件而失败；请按 [生产启动手册](docs/PRODUCTION-BOOTSTRAP.md) 完成配置。
+
+实际项目使用随仓库提供、已锁定 SHA 的 Seedance 2.0 v6.7 canonical
+baseline。首次配置后通过 `npm run harness --` 启动 CLI，确保本地
+`.env.local` 被加载：
 
 ```bash
-export HARNESS_CANONICAL_PROMPT_SKILL_ROOT=/absolute/path/to/approved-prompt-skill
-export RUNNINGHUB_API_KEY=your-key-if-needed
+npm run harness -- intake-video --project <project-dir> --request '<project request>' --inputs-json '<inputs-json>'
 ```
+
+如果你要把它换成另一个 canonical Skill，必须先在
+`manifests/skills.lock.json` 固定其 SHA 并更新本地
+`HARNESS_CANONICAL_PROMPT_SKILL_ROOT`；不要把未审计的私有融合稿假装成
+公开发行物。
 
 随后通过确定性入口创建项目：
 
 ```bash
-node src/cli.js intake-video --project <project-dir> \
+npm run harness -- intake-video --project <project-dir> \
   --request '<project request>' \
   --inputs-json '[{"id":"source-001","mimeType":"video/mp4","path":"/absolute/path/to/source.mp4"}]'
 ```
 
 完整命令和 Gate 契约见 [操作手册](docs/operator-runbook.md)。
 
-深度视频是可选的离线路线：`tools/monocular_depth_video_runner.py` 只接受本机模型目录、强制离线运行且不下载权重。使用它还需要 Python、OpenCV、NumPy、PyTorch、Transformers 和你已获许可的本地模型权重；这些权重不随仓库分发。
+深度视频是可选的离线路线：`tools/monocular_depth_video_runner.py` 只接受本机模型目录、强制离线运行且不下载权重。使用它还需要 Python、OpenCV、NumPy、PyTorch、Transformers 和你已获许可的本地模型权重；这些权重不随仓库分发。完整的当前 Skill 闭包、可再分发状态与未解决旧 Skill ID 见 [skills.lock.json](manifests/skills.lock.json)。
 
 ## 安全与验收边界
 

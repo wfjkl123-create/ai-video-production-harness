@@ -5,7 +5,7 @@ import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { initializeProject, getProjectStatus } from '../../src/services/project-service.js';
 
-const directories = ['brief', 'planning/creative-briefs', 'planning/story-plans', 'segments', 'assets/project', 'prompts', 'outputs', 'reviews', 'runs', 'versions'];
+const directories = ['brief', 'planning/creative-briefs', 'planning/story-plans', 'segments', 'assets/project', 'prompts', 'outputs', 'reviews', 'runs', 'versions', 'scripts'];
 
 test('initializes the exact project layout and valid initial state without secrets', async () => {
   const parent = await mkdtemp(join(tmpdir(), 'harness-project-'));
@@ -17,6 +17,8 @@ test('initializes the exact project layout and valid initial state without secre
   assert.equal(state.ingressPolicyVersion, 'ingress-route-v1');
   assert.equal(Object.hasOwn(state, 'routeDecision'), false);
   for (const directory of directories) assert.equal((await stat(join(root, directory))).isDirectory(), true);
+  const bundledScrubber = await readFile(join(root, 'scripts', 'derive-multiface-full-head-scrub-v1.py'), 'utf8');
+  assert.match(bundledScrubber, /strongly anonymized, multi-face source reference/);
   const persisted = await readFile(join(root, 'project-state.json'), 'utf8');
   assert.doesNotMatch(persisted, /do-not-write-me|apiKey/);
   assert.deepEqual(await getProjectStatus(root), {

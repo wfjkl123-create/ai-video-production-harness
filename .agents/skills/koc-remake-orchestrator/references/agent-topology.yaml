@@ -1,0 +1,64 @@
+schemaVersion: 1
+kind: koc_remake_agent_topology
+orchestrator:
+  id: koc_remake_orchestrator
+  owns:
+    - dependency_graph
+    - preparation_barrier
+    - lane_checkpoint_recovery
+    - final_coverage_reconciliation
+  maySubmitPaidGeneration: false
+preparationAgents:
+  - id: source_fact_auditor
+    input: source_video_sha
+    output: complete_aroll_broll_ledger
+    veto: arroll_or_broll_classification_unknown
+  - id: arroll_segmenter
+    input: complete_aroll_broll_ledger
+    output: source_aligned_aroll_segments
+    constraints:
+      maxDurationSec: 15
+      preserveContinuousTake: true
+      brollAllowed: false
+  - id: head_anonymizer
+    input: source_aligned_aroll_segments
+    output: identity_suppressed_aroll_controls
+    allowedMutation: full_head_above_neck_identity_suppression_only
+  - id: first_frame_builder
+    condition: firstFramePolicy != none
+    input: selected_aroll_segments_and_identity_reference
+    output: replacement_identity_first_frames
+parallelPerSegmentAgents:
+  - id: prompt_compiler
+    promptSkill: seedance2-prompt (resolve through manifests/skills.lock.json)
+    writesPromptSemantics: true
+  - id: asset_binding_auditor
+    checks:
+      - exact_asset_ids
+      - sha256
+      - asset_role_isolation
+      - product_semantic_binding
+  - id: preflight_reviewer
+    checks:
+      - source_fidelity_and_timing
+      - identity_replacement_and_liveness
+      - delivery_completeness_and_authorization
+completionAgents:
+  - id: source_comparator
+    output: usable_subranges_and_root_causes
+  - id: reinsertion_auditor
+    output: full_timeline_coverage_and_audio_integrity
+durableState:
+  authority: project_artifacts_and_sha_bound_checkpoints
+  conversationMemoryIsAuthority: false
+  resumePolicy: last_passed_lane_step
+  perLaneFields:
+    - sourceRange
+    - sourceSha256
+    - controlSha256
+    - firstFrameSha256
+    - promptFingerprintSha256
+    - providerTaskId
+    - usableSubranges
+    - finalDisposition
+    - rootCauseKeys

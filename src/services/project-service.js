@@ -1,13 +1,27 @@
-import { mkdir, readdir } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { copyFile, mkdir, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { assertProjectState } from '../domain/project-state.js';
 import { readJson, writeJsonAtomic } from '../storage/json-store.js';
 import { directorRouteFingerprint } from './director-interview-service.js';
 
 const directories = [
   'brief', 'planning/creative-briefs', 'planning/story-plans', 'segments', 'assets/project', 'prompts', 'outputs', 'reviews', 'runs', 'versions',
-  'ledger/events'
+  'ledger/events', 'scripts'
 ];
+const bundledKocHeadScrubScript = fileURLToPath(new URL('../../templates/project/scripts/derive-multiface-full-head-scrub-v1.py', import.meta.url));
+
+async function ensureBundledProjectTools(root) {
+  const target = join(root, 'scripts', 'derive-multiface-full-head-scrub-v1.py');
+  try {
+    await copyFile(bundledKocHeadScrubScript, target, constants.COPYFILE_EXCL);
+  } catch (error) {
+    // COPYFILE_EXCL means the project already has the immutable version it was
+    // initialized with. Never replace project-local executors silently.
+    if (error?.code !== 'EEXIST') throw error;
+  }
+}
 
 function requireProjectId(projectId) {
   if (typeof projectId !== 'string' || projectId.trim().length === 0) {
@@ -32,10 +46,12 @@ export async function initializeProject(root, input) {
       throw new Error(`projectId mismatch: existing project is ${existing.projectId}`);
     }
     for (const directory of directories) await mkdir(join(root, directory), { recursive: true });
+    await ensureBundledProjectTools(root);
     return existing;
   }
 
   for (const directory of directories) await mkdir(join(root, directory), { recursive: true });
+  await ensureBundledProjectTools(root);
   const workflowVersion = input.workflowVersion ?? 2;
   const ingressPolicyVersion = input.ingressPolicyVersion
     ?? (input.routeDecision ? input.routeDecision.policyVersion : input.workflowVersion === undefined ? 'ingress-route-v1' : undefined);

@@ -22,6 +22,17 @@
 !docs/**
 !tools/
 !tools/monocular_depth_video_runner.py
+!scripts/
+!scripts/**
+!bootstrap/
+!bootstrap/**
+!manifests/
+!manifests/**
+!.agents/
+!.agents/skills/
+!.agents/skills/**
+!AGENTS.md
+!THIRD_PARTY_NOTICES.md
 
 # Never publish local configuration, project state, evidence, media, or editor/runtime state.
 .env.local
@@ -40,7 +51,6 @@ tools/*
 !tools/monocular_depth_video_runner.py
 tmp/
 .tmp/
-.agents/
 .claude/
 .codex-task/
 .harness-studio/
@@ -48,7 +58,6 @@ tmp/
 .lavish/
 .worktrees/
 .superpowers/
-AGENTS.md
 CLAUDE.md
 node_modules/
 ._*
