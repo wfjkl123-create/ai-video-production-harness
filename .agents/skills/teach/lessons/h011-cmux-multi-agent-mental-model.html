@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cmux 多智能体：看见并不等于协同</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    body { max-width: 940px; }
+    .hero-answer { font-size: 1.18rem; line-height: 1.65; }
+    .map { margin: 2rem 0; overflow-x: auto; }
+    .map svg { width: 100%; min-width: 720px; height: auto; display: block; }
+    .map .box { fill: #fff; stroke: #d8d2c8; stroke-width: 2; rx: 12; }
+    .map .human { fill: #f5e6e0; stroke: #c05b34; }
+    .map .lead { fill: #f0f4ff; stroke: #6673bb; }
+    .map .worker { fill: #edf6ed; stroke: #5f8c5f; }
+    .map .infra { fill: #f4f4f0; stroke: #777; stroke-dasharray: 6 5; }
+    .map text { font-family: system-ui, sans-serif; fill: #222; }
+    .map .title { font-size: 17px; font-weight: 700; }
+    .map .sub { font-size: 13px; fill: #555; }
+    .map .arrow { stroke: #555; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+    .map .shared { stroke: #8a6b55; stroke-width: 2; stroke-dasharray: 5 5; fill: none; }
+    .legend { display: flex; gap: 1rem; flex-wrap: wrap; font: 0.8rem system-ui, sans-serif; color: #555; }
+    .legend span::before { content: ""; display: inline-block; width: 20px; border-top: 2px solid #555; margin-right: .4rem; vertical-align: middle; }
+    .legend .state::before { border-top-style: dashed; border-color: #8a6b55; }
+    .comparison { width: 100%; border-collapse: collapse; margin: 1.4rem 0 2rem; font: 0.9rem/1.5 system-ui, sans-serif; }
+    .comparison th, .comparison td { text-align: left; vertical-align: top; padding: .8rem .7rem; border-bottom: 1px solid var(--border); }
+    .comparison th { color: var(--muted); font-size: .78rem; letter-spacing: .04em; }
+    .comparison tbody tr:hover { background: #faf6ee; }
+    .decision-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+    .decision { border: 1px solid var(--border); border-radius: 8px; padding: 1rem; min-width: 0; background: white; }
+    .decision strong { display: block; font-family: system-ui, sans-serif; color: var(--accent); }
+    .lane { border-left: 4px solid #6673bb; background: #f0f4ff; padding: 1rem 1.2rem; margin: .8rem 0; }
+    .lane:nth-child(2) { border-color: #5f8c5f; background: #edf6ed; }
+    .lane:nth-child(3) { border-color: #c05b34; background: #f5e6e0; }
+    .micro { color: var(--muted); font: .82rem/1.5 system-ui, sans-serif; }
+    @media (max-width: 680px) {
+      body { padding: 2rem 1rem 4rem; }
+      .decision-grid { grid-template-columns: 1fr; }
+      .map svg { min-width: 0; }
+      pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+      pre code { white-space: inherit; overflow-wrap: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="course-label">Harness Engineering · Lesson H011</div>
+    <h1>cmux 多智能体：看见并不等于协同</h1>
+    <div class="lesson-meta">目标：分清工作区、分栏、智能体与协调者，并能自己组织一次三角色协作</div>
+  </header>
+
+  <div class="callout hero-answer">
+    <div class="callout-label">一句话答案</div>
+    cmux 更像一间有隔断、对讲机和状态灯的作战室。它负责让多个终端和智能体<strong>有位置、能通信、可观察</strong>；至于谁做什么、结果是否正确、谁来合并，必须由主智能体、外部编排器或你来负责。
+  </div>
+
+  <h2>先把五个概念拆开</h2>
+  <table class="comparison">
+    <thead><tr><th>概念</th><th>实际是什么</th><th>它不会自动做到什么</th><th>适合怎么用</th></tr></thead>
+    <tbody>
+      <tr><td><strong>工作区</strong><br>sidebar entry</td><td>一组相关分栏的容器</td><td>不会自动让里面的进程共享记忆</td><td>一个项目或一个大目标放一个工作区</td></tr>
+      <tr><td><strong>分栏</strong><br>pane</td><td>同一工作区中的可见区域</td><td>新分栏不等于新队友</td><td>主智能体、执行者、测试日志并排看</td></tr>
+      <tr><td><strong>表面</strong><br>surface/tab</td><td>某个分栏里的终端或浏览器标签</td><td>隐藏标签仍只是一个独立进程</td><td>在同一位置切换 shell、浏览器或会话</td></tr>
+      <tr><td><strong>智能体</strong><br>agent process</td><td>Claude、Codex、Kimi 等实际 CLI 会话</td><td>同目录不代表共享聊天上下文</td><td>为每个会话给出明确角色、输入和交付物</td></tr>
+      <tr><td><strong>协调者</strong><br>lead/orchestrator</td><td>拆任务、派工、收结果、处理依赖的人或程序</td><td>cmux 布局本身不会代替它</td><td>Teams 主智能体、OMC，或你本人</td></tr>
+    </tbody>
+  </table>
+
+  <h2>真正的协同链路</h2>
+  <div class="map" role="img" aria-label="人类、主智能体、工作智能体、cmux 和共享仓库之间的关系图">
+    <svg viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg">
+      <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#555"/></marker></defs>
+      <rect class="box human" x="305" y="25" width="290" height="78"/>
+      <text class="title" x="450" y="56" text-anchor="middle">你：目标、边界、授权、验收</text>
+      <text class="sub" x="450" y="81" text-anchor="middle">决定成功标准；处理高风险与冲突</text>
+
+      <rect class="box lead" x="305" y="150" width="290" height="88"/>
+      <text class="title" x="450" y="182" text-anchor="middle">主智能体 / 编排器</text>
+      <text class="sub" x="450" y="207" text-anchor="middle">拆解 → 派工 → 跟踪 → 汇总 → 复核</text>
+
+      <rect class="box worker" x="30" y="300" width="240" height="82"/>
+      <text class="title" x="150" y="331" text-anchor="middle">研究者</text>
+      <text class="sub" x="150" y="357" text-anchor="middle">事实、方案、风险</text>
+      <rect class="box worker" x="330" y="300" width="240" height="82"/>
+      <text class="title" x="450" y="331" text-anchor="middle">执行者</text>
+      <text class="sub" x="450" y="357" text-anchor="middle">代码、配置、可运行产物</text>
+      <rect class="box worker" x="630" y="300" width="240" height="82"/>
+      <text class="title" x="750" y="331" text-anchor="middle">验证者</text>
+      <text class="sub" x="750" y="357" text-anchor="middle">测试、证据、对抗性审查</text>
+
+      <rect class="box infra" x="95" y="430" width="710" height="64"/>
+      <text class="title" x="450" y="457" text-anchor="middle">cmux：工作区 / 分栏 / 路由 / 通知 / 可见性</text>
+      <text class="sub" x="450" y="480" text-anchor="middle">共享状态通常在文件、Git、任务清单与测试结果中</text>
+
+      <path class="arrow" d="M450 103 L450 145"/>
+      <path class="arrow" d="M390 238 C340 265 240 260 175 294"/>
+      <path class="arrow" d="M450 238 L450 294"/>
+      <path class="arrow" d="M510 238 C560 265 660 260 725 294"/>
+      <path class="shared" d="M150 382 L150 430 M450 382 L450 430 M750 382 L750 430"/>
+    </svg>
+  </div>
+  <div class="legend"><span>指令与结果流</span><span class="state">共享工具与状态</span></div>
+
+  <div class="callout">
+    <div class="callout-label">关键判断</div>
+    如果三个分栏分别手动启动了三个 Claude，它们只是三个独立会话，<strong>你就是协调者</strong>。如果由 <code>cmux claude-teams</code> 或 <code>cmux codex-teams</code> 启动并由主智能体创建队友，主智能体才是协调者；cmux 把队友映射成原生分栏并转发消息。
+  </div>
+
+  <h2>分栏和“多导航栏”到底怎么选</h2>
+  <div class="decision-grid">
+    <div class="decision"><strong>同一项目、任务彼此相关</strong>放在一个工作区，分成多个 pane。这样能同时看主智能体、执行者和验证者。</div>
+    <div class="decision"><strong>不同项目、不同目标</strong>放在不同工作区。切换时整个上下文和布局一起切换，减少误操作。</div>
+    <div class="decision"><strong>多智能体会改相同文件</strong>不要只开多个 pane 共用一个 checkout；给它们独立 Git worktree，再由协调者合并。</div>
+    <div class="decision"><strong>任务很短或强依赖</strong>只用一个智能体。并行管理成本可能大于节省的时间。</div>
+  </div>
+
+  <h2>你需要操作的只有三段</h2>
+  <div class="lane"><strong>1. 开工前</strong><br>写清一个总目标、成功标准和禁止事项；把任务切成互不踩文件的交付物；指定谁是唯一汇总者。</div>
+  <div class="lane"><strong>2. 执行中</strong><br>看通知和等待输入状态；批准高风险动作；发现两个智能体抢同一文件就暂停其中一个；不要替每个智能体不断改目标。</div>
+  <div class="lane"><strong>3. 收尾时</strong><br>要求测试与证据；让验证者做对抗性审查；只由汇总者整合结果；关闭失效会话，避免旧上下文继续发言。</div>
+
+  <h2>最小可用编队</h2>
+  <pre><code>一个工作区
+├── 左侧：Lead（任务拆解、派工、最后汇总）
+├── 右上：Builder（只负责实现）
+└── 右下：Verifier（只负责测试和反驳）
+
+人类只给 Lead 总目标；Builder 与 Verifier 收到边界明确的子任务。
+三者通过文件、Git diff、测试输出和明确消息共享事实。</code></pre>
+
+  <div class="quiz">
+    <div class="quiz-title">快速检查</div>
+    <div class="quiz-question">你在同一目录手动打开三个 Claude 分栏。它们会自动成为一个团队吗？</div>
+    <div class="quiz-options">
+      <button class="quiz-option" data-correct="false">会，共享目录就是共享上下文</button>
+      <button class="quiz-option" data-correct="true">不会，还需要明确的协调机制</button>
+      <button class="quiz-option" data-correct="false">会，cmux 会自动分派所有任务</button>
+    </div>
+    <div class="quiz-feedback" data-correct="正确。布局提供可见性，协调机制才提供团队行为。" data-wrong="再区分一次：pane 是容器，agent 是进程，orchestrator 才负责任务协同。"></div>
+  </div>
+
+  <h2>你下一次可以这样做</h2>
+  <p>选一个能拆成“实现 + 验证”的真实任务，只创建上面的三格编队。先要求 Lead 写出任务表，再允许它派工；最后只接受 Verifier 给出证据后由 Lead 汇总的结果。完成一次，你就会真正感受到“多窗口”和“多智能体系统”的区别。</p>
+
+  <div class="primary-source">
+    <div class="primary-source-label">Primary sources</div>
+    <a href="https://cmux.com/docs/concepts">cmux Core Concepts</a> ·
+    <a href="https://cmux.com/docs/agent-integrations/claude-code-teams">Claude Code Agent Teams</a> ·
+    <a href="https://cmux.com/docs/skills">cmux Skills</a> ·
+    <a href="https://cmux.com/docs/task-manager">Task Manager</a>
+  </div>
+
+  <div class="ask-me"><strong>需要继续拆解？</strong>你可以把当前 cmux 的工作区截图发来，我可以按“哪个是 workspace / pane / surface / agent / coordinator”逐项标注。</div>
+  <nav class="lesson-nav"><a href="h010-firstmate-acceptance.html">← 上一课</a><span>H011</span></nav>
+  <script src="../assets/quiz.js"></script>
+</body>
+</html>

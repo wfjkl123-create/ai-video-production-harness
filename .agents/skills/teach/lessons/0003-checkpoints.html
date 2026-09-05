@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 3 课：Checkpoints（检查点）— Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+      margin: 1.5rem 0;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.6rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.2rem;
+      font-family: sans-serif;
+      font-size: 0.9rem;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.55rem;
+      top: 0.35rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--border);
+    }
+    .timeline-item.checkpoint::before {
+      background: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .timeline-item.bad { color: var(--error); }
+    .timeline-item .tag {
+      display: inline-block;
+      font-size: 0.7rem;
+      padding: 0.1em 0.5em;
+      border-radius: 3px;
+      background: var(--accent-light);
+      color: var(--accent);
+      margin-left: 0.5rem;
+      vertical-align: middle;
+    }
+    .fork-diagram {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      background: #fafaf6;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 2;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 30%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 3</div>
+  <h1>Checkpoints：后悔药</h1>
+  <div class="lesson-meta">第 3 课，共 10 模块 · 预计 10 分钟</div>
+</header>
+
+<section>
+  <h2>当 Claude 走错了方向</h2>
+
+  <p>
+    你让 Claude 帮你重构一个函数。它改了十几个文件，但越改越偏——你发现它根本误解了你的意思。
+    怎么办？逐条撤销？重新开始？
+  </p>
+
+  <p>
+    <strong>Checkpoints（检查点）</strong>就是解决这个问题的。它是对话的"存档点"——
+    你可以随时回到某个历史节点，就像游戏里的存档，从那里重新出发。
+  </p>
+</section>
+
+<section>
+  <h2>对话是一棵树，不是一条线</h2>
+
+  <p>
+    通常我们以为对话是线性的：你问，Claude 答，继续往前。但实际上，Claude Code 允许对话<strong>分叉</strong>——从任何一个历史节点出发，走出一条全新的分支。
+  </p>
+
+  <div class="fork-diagram">
+<pre>你: 帮我重构 main.py
+  │
+Claude: 好的，我来分析...     ← 检查点 A
+  │
+Claude: 修改了文件 1/5...
+  │
+Claude: 修改了文件 2/5...
+  │
+你: 等等，你理解错了！
+  │
+  ╠══ 回到检查点 A，重新说清楚需求 → 新的分支 ✓
+  │
+  ╚══ 继续当前错误路径（继续改错） ✗</pre>
+  </div>
+
+  <p>回到检查点 A 后，你可以重新描述需求，Claude 会从那个节点重新响应——像是"时间倒流"。</p>
+</section>
+
+<section>
+  <h2>如何使用 Checkpoints</h2>
+
+  <h3>方式一：在对话中点击历史消息（桌面 / Web 版）</h3>
+  <p>
+    把鼠标悬停在任意一条<strong>你发出的消息</strong>上，会出现一个
+    <strong>「Edit」或「Restore」</strong>按钮。点击后可以：
+  </p>
+  <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li>编辑那条消息，重新发送（会从那个节点创建新分支）</li>
+    <li>丢弃这条消息之后的所有内容，重新开始</li>
+  </ul>
+
+  <h3>方式二：在终端版中使用 Esc 键</h3>
+  <p>
+    在 Claude Code 终端里，当 Claude 正在运行时，按 <code>Esc</code> 可以中断当前任务。
+    Claude 会停下来并询问你下一步。这是最快的"叫停"方式。
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">实用技巧</div>
+    <strong>在发出重要请求之前，先说清楚。</strong>与其事后回退，不如在让 Claude 开始做事之前，
+    把目标、约束、不能改的地方都交代清楚。检查点是后悔药，但好的提示词才是正确做法。
+  </div>
+
+  <h3>方式三：手动插入检查点标记</h3>
+  <p>
+    你可以在对话里输入类似"好的，现在我们进入下一阶段"这样的分隔语，
+    方便你事后找到回退位置。虽然不是技术上的检查点，但在实际使用中非常有用。
+  </p>
+</section>
+
+<section>
+  <h2>什么时候该用 Checkpoints</h2>
+
+  <div class="timeline">
+    <div class="timeline-item checkpoint">
+      你说："帮我给这段代码写测试，只测 login 函数"
+      <span class="tag">好时机存档</span>
+    </div>
+    <div class="timeline-item">Claude 开始写测试……</div>
+    <div class="timeline-item bad">Claude 顺手也改了 login 函数本身（你没让它改！）</div>
+    <div class="timeline-item">→ 回到"好时机存档"那条消息，重新说："只写测试，不要修改 login 函数本身"</div>
+  </div>
+
+  <p>使用场景总结：</p>
+  <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li>Claude 误解了你的意图，已经改了很多东西</li>
+    <li>你想对同一个问题尝试不同的解法，做对比</li>
+    <li>你不小心说了模糊的话，想重新表述</li>
+    <li>Claude 的回答不满意，想让它"重新来"</li>
+  </ul>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">使用 Checkpoints 回到历史节点后，那个节点之后的对话内容会怎样？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">保留，你可以选择性地参考</button></li>
+      <li><button class="quiz-option" data-correct="true">被丢弃，从该节点重新开始新分支</button></li>
+      <li><button class="quiz-option" data-correct="false">自动保存到 memory/ 目录</button></li>
+      <li><button class="quiz-option" data-correct="false">存档为一个单独的对话文件</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！回到检查点就意味着丢弃它之后的内容，从那个节点创建新的分支。"
+      data-wrong="想象游戏里读取存档：读了之后，存档时间点之后的进度就不在了。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">在 Claude Code 终端里，如何立即中断 Claude 正在执行的任务？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">输入 /stop 命令</button></li>
+      <li><button class="quiz-option" data-correct="false">关闭并重新打开终端</button></li>
+      <li><button class="quiz-option" data-correct="true">按 Esc 键</button></li>
+      <li><button class="quiz-option" data-correct="false">按 Ctrl+C</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！Esc 是最快的叫停方式，Claude 会停下来等待你的下一步指示。"
+      data-wrong="在 Claude Code 终端里，Esc 是中断当前任务的快捷键。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">以下哪种情况最适合使用 Checkpoints？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">想让 Claude 记住你的姓名偏好</button></li>
+      <li><button class="quiz-option" data-correct="false">想创建一个新的斜杠命令</button></li>
+      <li><button class="quiz-option" data-correct="true">Claude 误解了需求，改了很多你不想改的文件</button></li>
+      <li><button class="quiz-option" data-correct="false">想在多个项目之间切换工作</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！Checkpoints 就是为了解决「Claude 走错方向」这个问题而生的。"
+      data-wrong="Checkpoints 是「后悔药」——当对话走错方向时用来回退。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    下一课：<strong>CLI 基础</strong>——Claude Code 终端里常用的命令行参数和快捷键，
+    让你用起来更顺手。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 3 — Checkpoints</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含更多分支对话的实战技巧。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"我能看到哪些历史检查点"、"怎么对比两种方案的结果"——直接在对话框问就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0002-memory.html">← 上一课：Memory</a>
+  <a href="0004-cli-basics.html">下一课：CLI 基础 →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

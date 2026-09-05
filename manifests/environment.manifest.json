@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "release": "public-reproducible-bootstrap-v1",
+  "supportedPlatforms": ["macOS arm64"],
+  "runtime": {
+    "node": { "minimumMajor": 22, "validatedVersion": "26.7.0", "requires": ["node:sqlite"] },
+    "python": { "minimumMajorMinor": "3.11", "purpose": "optional KOC anonymization and offline depth" },
+    "ffmpeg": {
+      "requiredCommands": ["ffmpeg", "ffprobe"],
+      "requiredEncoders": ["libx264", "aac"],
+      "requiredFilters": ["xstack", "signalstats"],
+      "requiredMuxers": ["framemd5"]
+    }
+  },
+  "providers": {
+    "libtv": { "requiredForDefaultProduction": true, "requires": ["official CLI", "interactive account login", "usable workspace/project", "available quota"] },
+    "opencodex": { "requiredForDirectorAndIndependentAudit": true, "requires": ["ocx", "separately authenticated model route", "per-task budget"] },
+    "runninghub": { "required": false, "requires": ["RUNNINGHUB_API_KEY", "account entitlement"] },
+    "depth": { "required": false, "requires": ["opencv-python", "numpy", "torch", "transformers", "commercially permitted local model weights"] }
+  },
+  "credentials": {
+    "policy": "Never copy credentials, browser profiles, Keychain entries, account sessions, quota, provider routing, project UUIDs, media, or historical runs into a public release."
+  }
+}

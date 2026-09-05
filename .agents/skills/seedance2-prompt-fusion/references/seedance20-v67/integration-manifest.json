@@ -1,0 +1,1324 @@
+{
+  "schema_version": 1,
+  "source_name": "seedance-20",
+  "source_version": "6.7.0",
+  "source_root": "https://github.com/Emily2040/seedance-2.0",
+  "canonical_owner": "seedance2-prompt",
+  "import_policy": {
+    "coverage": "all regular source files",
+    "entrypoint_policy": "nested skill entrypoints are inert MODULE.md references",
+    "semantic_policy": "canonical fusion routing is defined outside this snapshot"
+  },
+  "source_file_count": 187,
+  "files": [
+    {
+      "source_path": ".gitattributes",
+      "integrated_path": ".gitattributes",
+      "source_sha256": "c66bb4ac17eb21787db45305ff8f6c5b1f94592072c51fb76117aee660bcee8d",
+      "integrated_sha256": "c66bb4ac17eb21787db45305ff8f6c5b1f94592072c51fb76117aee660bcee8d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": ".gitignore",
+      "integrated_path": ".gitignore",
+      "source_sha256": "7324700206d6d050a5995f3dd8da94ece28b4aed30c1a2b60651d6cb7f447848",
+      "integrated_sha256": "7324700206d6d050a5995f3dd8da94ece28b4aed30c1a2b60651d6cb7f447848",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": ".seedance-20.install-provenance.json",
+      "integrated_path": ".seedance-20.install-provenance.json",
+      "source_sha256": "7e43929e20f7dd04cfe487cf7895958055fc8ff6babbaedc0166075ebc304570",
+      "integrated_sha256": "7e43929e20f7dd04cfe487cf7895958055fc8ff6babbaedc0166075ebc304570",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": ".seedance-install-complete.json",
+      "integrated_path": ".seedance-install-complete.json",
+      "source_sha256": "47da50fd219a0fdcde91cc3573b1d6e35aded17571411fef4f1a14c96f844141",
+      "integrated_sha256": "aabe6d93f7b8a3c3670a260d87dffb0223c42c107ca6eb795fc13f18f63d53ee",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "CHANGELOG.md",
+      "integrated_path": "CHANGELOG.md",
+      "source_sha256": "e4efd6c604b69bb80ec14bfa7194f04bb8297eae51d51c05be73fd26f67542b4",
+      "integrated_sha256": "a9d245852628bbc3c3e0a57d51660620dc5a201e123a59e5b2ed1c1e98b75ea2",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "LICENSE",
+      "integrated_path": "LICENSE",
+      "source_sha256": "c84a6216f6e006b4e4a65e9d056837a61ee9c4ca79f43f386df2992bc690a7f6",
+      "integrated_sha256": "c84a6216f6e006b4e4a65e9d056837a61ee9c4ca79f43f386df2992bc690a7f6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "README.md",
+      "integrated_path": "README.md",
+      "source_sha256": "4a506369cd105d7e1ed326212926d2719c926d95bf3ee454c4d18d10eb19cacd",
+      "integrated_sha256": "32fbef5258784f8851d04ee074c1a6790c74f3c3efe572bd6a554d8f8530b0bf",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "SECURITY.md",
+      "integrated_path": "SECURITY.md",
+      "source_sha256": "beae046971795fb8d9cde26d4426c4bcd73517defb0a0cb6961b194d3c83a81e",
+      "integrated_sha256": "beae046971795fb8d9cde26d4426c4bcd73517defb0a0cb6961b194d3c83a81e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "SKILL.md",
+      "integrated_path": "MODULE.md",
+      "source_sha256": "627e6f58b21514fc65438d36893b4c593b5177bed47f57b6b02a4c9a2bee37df",
+      "integrated_sha256": "94ebded51066a1f23d4fcbcc2d3aa41a140242dedfbc339d10b0a0ebd9ceba2b",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "V6_SEQUENCE_PROMPT_COMPILER_MANIFEST.md",
+      "integrated_path": "V6_SEQUENCE_PROMPT_COMPILER_MANIFEST.md",
+      "source_sha256": "1c17fe18aedc768d1d445aaecc2ce7eddfbcd80644038b371b44291809ad0c96",
+      "integrated_sha256": "9acde7f3d3e8835c31eac5fecda9f4af68186a5efce7f2b8b7f3e63fbf67286a",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "agents/openai.yaml",
+      "integrated_path": "agents/openai.yaml",
+      "source_sha256": "b1927b56d4dce9d8c7e173489611ec2d03b792f573e592351ca05be67e261411",
+      "integrated_sha256": "b1927b56d4dce9d8c7e173489611ec2d03b792f573e592351ca05be67e261411",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "assets/fonts/OFL.txt",
+      "integrated_path": "assets/fonts/OFL.txt",
+      "source_sha256": "931dfe2e0cd3c9443295f5c1d754b8a8403bf060df50c1d5900267ade83d0046",
+      "integrated_sha256": "931dfe2e0cd3c9443295f5c1d754b8a8403bf060df50c1d5900267ade83d0046",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "assets/hero-dark.svg",
+      "integrated_path": "assets/hero-dark.svg",
+      "source_sha256": "32fce181085545e2da45ee397e575c48c8c0ebd18704a7cba1c38876ea1d3b98",
+      "integrated_sha256": "32fce181085545e2da45ee397e575c48c8c0ebd18704a7cba1c38876ea1d3b98",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "assets/hero-light.svg",
+      "integrated_path": "assets/hero-light.svg",
+      "source_sha256": "262653585c6658bdfdd0afb593b2f7d4c4056a8a14ab544cdb14e8e7876796f8",
+      "integrated_sha256": "262653585c6658bdfdd0afb593b2f7d4c4056a8a14ab544cdb14e8e7876796f8",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "assets/masthead-outlines.json",
+      "integrated_path": "assets/masthead-outlines.json",
+      "source_sha256": "0d844034314380bb681f9e0438b3fd94f47cd5c6802b27eb4fc627d016e09dd2",
+      "integrated_sha256": "0d844034314380bb681f9e0438b3fd94f47cd5c6802b27eb4fc627d016e09dd2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "assets/skill-map.svg",
+      "integrated_path": "assets/skill-map.svg",
+      "source_sha256": "2888e5a949bbfb3202f52a30e4c38682651299f5e2c9dbb9cc36bcea8c8f9e80",
+      "integrated_sha256": "2888e5a949bbfb3202f52a30e4c38682651299f5e2c9dbb9cc36bcea8c8f9e80",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "data/community-patterns.seedance-2026-05-30.json",
+      "integrated_path": "data/community-patterns.seedance-2026-05-30.json",
+      "source_sha256": "f65e6c9b3a71c901cd6c01ec77e7fa9edb09c84fa479e8822dd3b1fee6728695",
+      "integrated_sha256": "f65e6c9b3a71c901cd6c01ec77e7fa9edb09c84fa479e8822dd3b1fee6728695",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "data/generation-runs.example.jsonl",
+      "integrated_path": "data/generation-runs.example.jsonl",
+      "source_sha256": "7efe83ec24ef912747c4a7dbd048ca94d6029daa1f7e42df62af26ba5174c377",
+      "integrated_sha256": "7efe83ec24ef912747c4a7dbd048ca94d6029daa1f7e42df62af26ba5174c377",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "data/sources.seedance-2026-05-30.json",
+      "integrated_path": "data/sources.seedance-2026-05-30.json",
+      "source_sha256": "89210eab4dc9bf9127aa2fae2a5fd32860aec4ab1093f34b3db7f6345850a128",
+      "integrated_sha256": "e0a336f2239bd1178cca2c9270524e2d7fe52a84c5b4ea7efaf2e2e5c40ca7f6",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "docs/QUICKSTART.es.md",
+      "integrated_path": "docs/QUICKSTART.es.md",
+      "source_sha256": "16e6a4a85f129bd3c6da4ec753802bbab4efd6e261d21590a049da00da22aeac",
+      "integrated_sha256": "16e6a4a85f129bd3c6da4ec753802bbab4efd6e261d21590a049da00da22aeac",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/QUICKSTART.ja.md",
+      "integrated_path": "docs/QUICKSTART.ja.md",
+      "source_sha256": "b3230e29d536f0283290fa7ed3f9001c1ef9f0b14dcc840f4f9e911a9776378a",
+      "integrated_sha256": "b3230e29d536f0283290fa7ed3f9001c1ef9f0b14dcc840f4f9e911a9776378a",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/QUICKSTART.ko.md",
+      "integrated_path": "docs/QUICKSTART.ko.md",
+      "source_sha256": "8deebbbb396d531db577f15049de97c5a90ad14e6ce41961033693b3fbf5d44e",
+      "integrated_sha256": "8deebbbb396d531db577f15049de97c5a90ad14e6ce41961033693b3fbf5d44e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/QUICKSTART.md",
+      "integrated_path": "docs/QUICKSTART.md",
+      "source_sha256": "8ef7728d7729cdc08de0159ca25ab3f09a3e8befe83c127834d096e4fca3e159",
+      "integrated_sha256": "8ef7728d7729cdc08de0159ca25ab3f09a3e8befe83c127834d096e4fca3e159",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/QUICKSTART.ru.md",
+      "integrated_path": "docs/QUICKSTART.ru.md",
+      "source_sha256": "54d600f5dd35710d7ec21408efdb11cc8c8161de06d524efc2bb11d2226dc83d",
+      "integrated_sha256": "54d600f5dd35710d7ec21408efdb11cc8c8161de06d524efc2bb11d2226dc83d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/QUICKSTART.zh.md",
+      "integrated_path": "docs/QUICKSTART.zh.md",
+      "source_sha256": "a37272b46a235d279666f2c9cb2bbeb09ce0ce03dd85685583d9991a13bc2465",
+      "integrated_sha256": "a37272b46a235d279666f2c9cb2bbeb09ce0ce03dd85685583d9991a13bc2465",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/README.ja.md",
+      "integrated_path": "docs/README.ja.md",
+      "source_sha256": "44865c77eca7b5549051f29f8bd37f0a6697a884d9ad1a67549e792af1f998f6",
+      "integrated_sha256": "e6ac5627fa2c96799c4587af124e1e123d846316c16b8f21328357564c13f48d",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "docs/README.ko.md",
+      "integrated_path": "docs/README.ko.md",
+      "source_sha256": "f180589e0a22467a7983011ff22e2fca459194d8c7c8ba37a3882143b417c323",
+      "integrated_sha256": "e1cd5e60c48b1480387d3554b6eb3cb6003f5484adabf74bd45366b3a03cda90",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "docs/README.zh.md",
+      "integrated_path": "docs/README.zh.md",
+      "source_sha256": "a76446b0c00a4333d609b755f2efa90ab43a7d334880726027b26f418d466fae",
+      "integrated_sha256": "77185c5fb5a32b6b554ad52a36d94e2855f1ed48d4f88dda281e84d2df470ba9",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.2.0.md",
+      "integrated_path": "docs/RELEASE_v6.2.0.md",
+      "source_sha256": "d88252b397292ff9f5fd43e159ae6c986e87633a318a51401280795f000c60fc",
+      "integrated_sha256": "d88252b397292ff9f5fd43e159ae6c986e87633a318a51401280795f000c60fc",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.3.0.md",
+      "integrated_path": "docs/RELEASE_v6.3.0.md",
+      "source_sha256": "9e1106eb2c3f679bac81b8f798aadc0bbecc9078c039ae51bb3d28fdd1d8461d",
+      "integrated_sha256": "9e1106eb2c3f679bac81b8f798aadc0bbecc9078c039ae51bb3d28fdd1d8461d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.4.0.md",
+      "integrated_path": "docs/RELEASE_v6.4.0.md",
+      "source_sha256": "7d06114c2f4e8a618908c7da3daf05af166b3bee91c388ee5a52e468bfa4717f",
+      "integrated_sha256": "7d06114c2f4e8a618908c7da3daf05af166b3bee91c388ee5a52e468bfa4717f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.5.0.md",
+      "integrated_path": "docs/RELEASE_v6.5.0.md",
+      "source_sha256": "cc7874cf9e7d6b5919cbf96e9c2bf24190ed7de96c208a38d128b558e2534346",
+      "integrated_sha256": "cc7874cf9e7d6b5919cbf96e9c2bf24190ed7de96c208a38d128b558e2534346",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.6.0.md",
+      "integrated_path": "docs/RELEASE_v6.6.0.md",
+      "source_sha256": "0365c99012f2446183b727f11152762ae69c925f124589c7453b27ba0f3497e0",
+      "integrated_sha256": "0365c99012f2446183b727f11152762ae69c925f124589c7453b27ba0f3497e0",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/RELEASE_v6.7.0.md",
+      "integrated_path": "docs/RELEASE_v6.7.0.md",
+      "source_sha256": "79ec8064e1f610082eb71099d7c94ad2c7e7b10b0a8d2f502c99b535cd04b03d",
+      "integrated_sha256": "79ec8064e1f610082eb71099d7c94ad2c7e7b10b0a8d2f502c99b535cd04b03d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/V7_INTEGRATION_REVIEW.md",
+      "integrated_path": "docs/V7_INTEGRATION_REVIEW.md",
+      "source_sha256": "c6f6c48d9d7a1622c02f854568b827905e3f038ce473609c7fd38dde338acba9",
+      "integrated_sha256": "c6f6c48d9d7a1622c02f854568b827905e3f038ce473609c7fd38dde338acba9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/frontend-redesign.md",
+      "integrated_path": "docs/frontend-redesign.md",
+      "source_sha256": "9d7688573c47e5a51209b1aa89cf72fd92f9d20967cb9ff099774dd1e8d40df2",
+      "integrated_sha256": "9d7688573c47e5a51209b1aa89cf72fd92f9d20967cb9ff099774dd1e8d40df2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "docs/v6-release-readiness.md",
+      "integrated_path": "docs/v6-release-readiness.md",
+      "source_sha256": "0865c31294cf5cd8b9e508a1470f98b88b82248ff3a0d577723e7e66222a9721",
+      "integrated_sha256": "3988a4641fd50321ea2975397b22c292697a79015caf39a030e0281e6a6da657",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "evals/eval-run-ledger.md",
+      "integrated_path": "evals/eval-run-ledger.md",
+      "source_sha256": "97fe1bd1257bb337c84f55c6a190c06fce993ba58f9bfa6fc85bd5dc7c473158",
+      "integrated_sha256": "9225c54c360a1b755249239f5a2e921c6f6e7b7915a19666c38eaa172f8824ca",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "evals/evals.json",
+      "integrated_path": "evals/evals.json",
+      "source_sha256": "729057eb7b64c2d77638f0b94e62a1885eb00d7b8533e26165bad71dadb129ea",
+      "integrated_sha256": "729057eb7b64c2d77638f0b94e62a1885eb00d7b8533e26165bad71dadb129ea",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "evals/generation-benchmark.json",
+      "integrated_path": "evals/generation-benchmark.json",
+      "source_sha256": "33971ae53920a342b2d94a277a71ba19fcee82637233feb76d4defdca1772340",
+      "integrated_sha256": "33971ae53920a342b2d94a277a71ba19fcee82637233feb76d4defdca1772340",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "evals/multilingual-native-review-evidence.json",
+      "integrated_path": "evals/multilingual-native-review-evidence.json",
+      "source_sha256": "da02a6262de847bc894a850238f219e5629bcdcb0f4a21efcde2f2fb0255fe94",
+      "integrated_sha256": "da02a6262de847bc894a850238f219e5629bcdcb0f4a21efcde2f2fb0255fe94",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "evals/multilingual-native-review.json",
+      "integrated_path": "evals/multilingual-native-review.json",
+      "source_sha256": "806afdcd4762874145dec8cabaf76592b148bd4057bd52448788045c43f601dc",
+      "integrated_sha256": "ad99c9caede314db213b413cd3c40f8069cfc6924ed490b93a3216a06bf043e9",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "evals/prompt-architecture-stress.json",
+      "integrated_path": "evals/prompt-architecture-stress.json",
+      "source_sha256": "9e08518186aad4b27371ea9384a26bc7d4a485d8742fc99cb593ad38e1fa9d0d",
+      "integrated_sha256": "9e08518186aad4b27371ea9384a26bc7d4a485d8742fc99cb593ad38e1fa9d0d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/compact-i2v.md",
+      "integrated_path": "examples/golden-prompts/compact-i2v.md",
+      "source_sha256": "49c04f8d2b21f28a76a365ec893ef0e5b3ba4abe0dd3113b8e8750777e32068e",
+      "integrated_sha256": "49c04f8d2b21f28a76a365ec893ef0e5b3ba4abe0dd3113b8e8750777e32068e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/continuation-observed-deviation.md",
+      "integrated_path": "examples/golden-prompts/continuation-observed-deviation.md",
+      "source_sha256": "e8a37e335679e6ea08d53d0f65716384318d7991b431292c0dd5767c86b999d4",
+      "integrated_sha256": "e8a37e335679e6ea08d53d0f65716384318d7991b431292c0dd5767c86b999d4",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/dense-2d-storyboard.md",
+      "integrated_path": "examples/golden-prompts/dense-2d-storyboard.md",
+      "source_sha256": "79e589d38f4a47cb829d60702bd92f352a24198c0fd89c9080fef34e0816acf1",
+      "integrated_sha256": "79e589d38f4a47cb829d60702bd92f352a24198c0fd89c9080fef34e0816acf1",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/first-last-frame-transition.md",
+      "integrated_path": "examples/golden-prompts/first-last-frame-transition.md",
+      "source_sha256": "8ec9e990870e2de114e9b817bfb58a9103c9543122073602dac051b2be656c92",
+      "integrated_sha256": "8ec9e990870e2de114e9b817bfb58a9103c9543122073602dac051b2be656c92",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/phased-single-take.md",
+      "integrated_path": "examples/golden-prompts/phased-single-take.md",
+      "source_sha256": "d1fe848f8dc83933693b5f57fa8a6ede7eef6651cfec0770fb34e210591246d3",
+      "integrated_sha256": "d1fe848f8dc83933693b5f57fa8a6ede7eef6651cfec0770fb34e210591246d3",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/r2v-role-isolation.md",
+      "integrated_path": "examples/golden-prompts/r2v-role-isolation.md",
+      "source_sha256": "a36c0bc3129ee86b4ac0373fc14d716c599e75675ba495b31008a86d72c65cfa",
+      "integrated_sha256": "a36c0bc3129ee86b4ac0373fc14d716c599e75675ba495b31008a86d72c65cfa",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/sequence-continuation.md",
+      "integrated_path": "examples/golden-prompts/sequence-continuation.md",
+      "source_sha256": "aa45fb69b7c5f1c3ce0fb30a73156f1fecfda080d3df38c456b7030ff79d9b4e",
+      "integrated_sha256": "aa45fb69b7c5f1c3ce0fb30a73156f1fecfda080d3df38c456b7030ff79d9b4e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/golden-prompts/video-edit-one-layer.md",
+      "integrated_path": "examples/golden-prompts/video-edit-one-layer.md",
+      "source_sha256": "6370dddb7de16341f6ddc5f853faed0b8ea96ed9e9053f9dae8a7f571f477b53",
+      "integrated_sha256": "6370dddb7de16341f6ddc5f853faed0b8ea96ed9e9053f9dae8a7f571f477b53",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/clip-01-contract.json",
+      "integrated_path": "examples/sequence-airport-arrival/clip-01-contract.json",
+      "source_sha256": "9452c8c1cbe74a195014dbebf3ca5aba253f33adc8f4476959aacb9e085a72c6",
+      "integrated_sha256": "9452c8c1cbe74a195014dbebf3ca5aba253f33adc8f4476959aacb9e085a72c6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/clip-01-prompt.md",
+      "integrated_path": "examples/sequence-airport-arrival/clip-01-prompt.md",
+      "source_sha256": "8747f760d2fac3ca3516998037120bca31d63bebe2570ba092133b2236d5d55b",
+      "integrated_sha256": "8747f760d2fac3ca3516998037120bca31d63bebe2570ba092133b2236d5d55b",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/clip-01-take-review.json",
+      "integrated_path": "examples/sequence-airport-arrival/clip-01-take-review.json",
+      "source_sha256": "98f8c39a1350865c49dcc6cc3c06771aa98a50a15b1028da650ffada4206892d",
+      "integrated_sha256": "98f8c39a1350865c49dcc6cc3c06771aa98a50a15b1028da650ffada4206892d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/clip-02-continuation-contract.json",
+      "integrated_path": "examples/sequence-airport-arrival/clip-02-continuation-contract.json",
+      "source_sha256": "0a1c6d1f46a94d8ae10b8343433d53dddfd31a9f9dbfbc9902cc832b7352212d",
+      "integrated_sha256": "0a1c6d1f46a94d8ae10b8343433d53dddfd31a9f9dbfbc9902cc832b7352212d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/clip-02-prompt.md",
+      "integrated_path": "examples/sequence-airport-arrival/clip-02-prompt.md",
+      "source_sha256": "c2c404ad4d86811297d0c1c0d9e03ed30385e73f05bba83ede2658b1cd38f945",
+      "integrated_sha256": "c2c404ad4d86811297d0c1c0d9e03ed30385e73f05bba83ede2658b1cd38f945",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/project-state.json",
+      "integrated_path": "examples/sequence-airport-arrival/project-state.json",
+      "source_sha256": "ec9ef87a0679509bb7b28b52b82731fe60daa94c76f7fca97a65557515222ca2",
+      "integrated_sha256": "ec9ef87a0679509bb7b28b52b82731fe60daa94c76f7fca97a65557515222ca2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-airport-arrival/sequence-plan.md",
+      "integrated_path": "examples/sequence-airport-arrival/sequence-plan.md",
+      "source_sha256": "4a2fb9c94f6beeeca370394264d3aec0e807030e55c037df0fea3bd41e03c11f",
+      "integrated_sha256": "4a2fb9c94f6beeeca370394264d3aec0e807030e55c037df0fea3bd41e03c11f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-mixed-lane/project-state.json",
+      "integrated_path": "examples/sequence-mixed-lane/project-state.json",
+      "source_sha256": "30f5fd43e28a5637ac297883d4de818af465478691bf8f9decef62db0cb78482",
+      "integrated_sha256": "30f5fd43e28a5637ac297883d4de818af465478691bf8f9decef62db0cb78482",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-observed-deviation/project-state-after.json",
+      "integrated_path": "examples/sequence-observed-deviation/project-state-after.json",
+      "source_sha256": "f1aa951c50a6524b481b8b49c9e75b4cff50a5598edb46ff868a21c2181b84ee",
+      "integrated_sha256": "f1aa951c50a6524b481b8b49c9e75b4cff50a5598edb46ff868a21c2181b84ee",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-observed-deviation/project-state-before.json",
+      "integrated_path": "examples/sequence-observed-deviation/project-state-before.json",
+      "source_sha256": "ba4ea2b45261344fe9f5b252485b82ecb20345f5864d26f3228f5787d138e5d9",
+      "integrated_sha256": "ba4ea2b45261344fe9f5b252485b82ecb20345f5864d26f3228f5787d138e5d9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/sequence-observed-deviation/take-review.json",
+      "integrated_path": "examples/sequence-observed-deviation/take-review.json",
+      "source_sha256": "df61ebf2ff93d205803500038c92d79413868d121b0f558cd5564f7ba9e7f1f7",
+      "integrated_sha256": "df61ebf2ff93d205803500038c92d79413868d121b0f558cd5564f7ba9e7f1f7",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/standalone-clip/project-state.json",
+      "integrated_path": "examples/standalone-clip/project-state.json",
+      "source_sha256": "0e14c926f6ce8645208588eb8539b225c713f2ab65bb39d09461d824e463391d",
+      "integrated_sha256": "0e14c926f6ce8645208588eb8539b225c713f2ab65bb39d09461d824e463391d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "examples/standalone-clip/prompt.md",
+      "integrated_path": "examples/standalone-clip/prompt.md",
+      "source_sha256": "beb2b55de1739f391f20f94c4e65dadc992e16b114fc59a8809f1dc6358d7700",
+      "integrated_sha256": "beb2b55de1739f391f20f94c4e65dadc992e16b114fc59a8809f1dc6358d7700",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/2d-anime-grammar.md",
+      "integrated_path": "references/2d-anime-grammar.md",
+      "source_sha256": "6a760b840f6d6c5ac56e88f8df8c13c42080aee06e355134b1c84fe1c40a7376",
+      "integrated_sha256": "2d5db14ebe08e7eba6e2c810342b20ddac00a88a102e0800f6b4320cb19c38fe",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/agent-compatibility.md",
+      "integrated_path": "references/agent-compatibility.md",
+      "source_sha256": "eea713ec0e587c810f3c11e19c87b6e4898cf8ed0468a3b29bd72ff4ac5b32f5",
+      "integrated_sha256": "7f11be3dbd6b19954dea0db3d83d2b2c5b9d674db2ba8abc8ba11bc63e49b5ff",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/allocation-model.md",
+      "integrated_path": "references/allocation-model.md",
+      "source_sha256": "20b9d548ea1e6301f6e2568ee9f0d40907857e64b96ed9995c6943dd8ac049a2",
+      "integrated_sha256": "20b9d548ea1e6301f6e2568ee9f0d40907857e64b96ed9995c6943dd8ac049a2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/anti-slop-lexicon.md",
+      "integrated_path": "references/anti-slop-lexicon.md",
+      "source_sha256": "d92d0e460e911d77258454814f3d1ac6744bc5b3ec486d01b1ecb5f66d5a39f1",
+      "integrated_sha256": "d92d0e460e911d77258454814f3d1ac6744bc5b3ec486d01b1ecb5f66d5a39f1",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/api-status.md",
+      "integrated_path": "references/api-status.md",
+      "source_sha256": "a7836f0f9432878308d207a935bc07be5072cbe0e7678adf125e27ab6157d82e",
+      "integrated_sha256": "39fd711b491e17b814ef2e56027699b01b2ebb98d0a27d9dafffcb323afde9be",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/api-workflow.md",
+      "integrated_path": "references/api-workflow.md",
+      "source_sha256": "be6c9b709f7e2667ae24eac54de04a2c1a5d2d4fbf474b191affc22ea1a732aa",
+      "integrated_sha256": "be6c9b709f7e2667ae24eac54de04a2c1a5d2d4fbf474b191affc22ea1a732aa",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/aspect-ratio-delivery.md",
+      "integrated_path": "references/aspect-ratio-delivery.md",
+      "source_sha256": "546cd0a2bbff1370073237595dc73427188e0d3cda88d5b958a9a5ccda0ccd8a",
+      "integrated_sha256": "546cd0a2bbff1370073237595dc73427188e0d3cda88d5b958a9a5ccda0ccd8a",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/audio-guide.md",
+      "integrated_path": "references/audio-guide.md",
+      "source_sha256": "6cca59c45403f8f0caf4d87d1b57c2ca733f2d33ee6bf4f086b28f395fa80a81",
+      "integrated_sha256": "f298ff39021d36ccaf9614e1d45d983d3e4877113a972d20fd1aa7e926f2ec5d",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/audio-post-delivery.md",
+      "integrated_path": "references/audio-post-delivery.md",
+      "source_sha256": "b0b4fd9767be70b3348a13885f65eab6a6d43401006995d73688008cc890859e",
+      "integrated_sha256": "b0b4fd9767be70b3348a13885f65eab6a6d43401006995d73688008cc890859e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/capability-map.md",
+      "integrated_path": "references/capability-map.md",
+      "source_sha256": "ed30812d3c3ddce722a3880924ebed18f1c0f987b7c5b88dbea8fcd148563ff5",
+      "integrated_sha256": "ed30812d3c3ddce722a3880924ebed18f1c0f987b7c5b88dbea8fcd148563ff5",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/cinematography-shot-language.md",
+      "integrated_path": "references/cinematography-shot-language.md",
+      "source_sha256": "3aa8e1655383d22d73ed8fbf3eb66256f54d568d4f25bf813afd95e20a91a38e",
+      "integrated_sha256": "3aa8e1655383d22d73ed8fbf3eb66256f54d568d4f25bf813afd95e20a91a38e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/color-pipeline-aces.md",
+      "integrated_path": "references/color-pipeline-aces.md",
+      "source_sha256": "b2cf31d028c3f8dccecf7bc91ee7b56b590be310742dccd74093673b6ee0ee9f",
+      "integrated_sha256": "b2cf31d028c3f8dccecf7bc91ee7b56b590be310742dccd74093673b6ee0ee9f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/community-source-methodology.md",
+      "integrated_path": "references/community-source-methodology.md",
+      "source_sha256": "8bb558262afe478edcfa584d6aadf7e2b1c23e59b9e63b963add69ce241fee81",
+      "integrated_sha256": "8bb558262afe478edcfa584d6aadf7e2b1c23e59b9e63b963add69ce241fee81",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/continuation-handoff.md",
+      "integrated_path": "references/continuation-handoff.md",
+      "source_sha256": "ea7178642162eda4d8695830a613e13c2f6d4f11706a61512e86a6ce18d2c37d",
+      "integrated_sha256": "ea7178642162eda4d8695830a613e13c2f6d4f11706a61512e86a6ce18d2c37d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/continuity-qc.md",
+      "integrated_path": "references/continuity-qc.md",
+      "source_sha256": "1199e0233292743e3d36298d371b977dba1cbd8c2859dae93cdd955198516150",
+      "integrated_sha256": "1199e0233292743e3d36298d371b977dba1cbd8c2859dae93cdd955198516150",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/delivery-qc.md",
+      "integrated_path": "references/delivery-qc.md",
+      "source_sha256": "9ae777ed06ab7717549383bd11ef57d5dbedf54e6e696eb6eb18d848eec7c282",
+      "integrated_sha256": "9ae777ed06ab7717549383bd11ef57d5dbedf54e6e696eb6eb18d848eec7c282",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/dense-storyboard-mode.md",
+      "integrated_path": "references/dense-storyboard-mode.md",
+      "source_sha256": "56f5fb1ee320336d3eb09dc0792dcd4d643a048c4efd72dae19ecf92b8556d43",
+      "integrated_sha256": "56f5fb1ee320336d3eb09dc0792dcd4d643a048c4efd72dae19ecf92b8556d43",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/directing-engine-genre-library.md",
+      "integrated_path": "references/directing-engine-genre-library.md",
+      "source_sha256": "4b6fea6102d764e068973dd6a256c0fef74dcd1d1df7ecf807e6d30570b242e9",
+      "integrated_sha256": "b180528f36773b1dcc81aa75f32d80bb3fed9b5be13b337a9c29a69164b5c844",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/directing-engine.md",
+      "integrated_path": "references/directing-engine.md",
+      "source_sha256": "89c126bd888e6530bfa5085664cdd9355a6e9cd6b293505eafd8c93a4c8d0f9f",
+      "integrated_sha256": "2ee7d8be5cd087cd0d9c750e6b4e99dd3e5cdd7237ef7b36e07f89a528535477",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/directors-read.md",
+      "integrated_path": "references/directors-read.md",
+      "source_sha256": "065fd48f0767c31e7ab3068db6b74e53850005b05d0d95e4c7e9e755a7afa7c5",
+      "integrated_sha256": "065fd48f0767c31e7ab3068db6b74e53850005b05d0d95e4c7e9e755a7afa7c5",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/eval-rubric.md",
+      "integrated_path": "references/eval-rubric.md",
+      "source_sha256": "10247feac85df8e5f59a13e2588ac4c28d17380f83a11adc6124e4142a4277c9",
+      "integrated_sha256": "10247feac85df8e5f59a13e2588ac4c28d17380f83a11adc6124e4142a4277c9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/event-density.md",
+      "integrated_path": "references/event-density.md",
+      "source_sha256": "181d3bcf36f6f79a5c28d7b5e22d9ebe6d6c72c05c2814b3474ffbc8de49ee87",
+      "integrated_sha256": "181d3bcf36f6f79a5c28d7b5e22d9ebe6d6c72c05c2814b3474ffbc8de49ee87",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/examples-by-mode.md",
+      "integrated_path": "references/examples-by-mode.md",
+      "source_sha256": "029dabc3971248e596c7e1be382d4c1419dbbc0af00a6bd25dd89f6de30be0f6",
+      "integrated_sha256": "029dabc3971248e596c7e1be382d4c1419dbbc0af00a6bd25dd89f6de30be0f6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/failure-atlas.md",
+      "integrated_path": "references/failure-atlas.md",
+      "source_sha256": "9a1cf6d7fdb6be98ae744317632f461702952e36e2aeee909389306b3b86c139",
+      "integrated_sha256": "9a1cf6d7fdb6be98ae744317632f461702952e36e2aeee909389306b3b86c139",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/field-observed-tips.md",
+      "integrated_path": "references/field-observed-tips.md",
+      "source_sha256": "7c26c2171d3200d80b977af3ea3a111cf7aab4159396588d6abc8937096b13ee",
+      "integrated_sha256": "7c26c2171d3200d80b977af3ea3a111cf7aab4159396588d6abc8937096b13ee",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/filter-vocab.md",
+      "integrated_path": "references/filter-vocab.md",
+      "source_sha256": "21dd32fad88ec88d0afb7df197121bcf01ce6206a2e32a61cca0d20f41984f1e",
+      "integrated_sha256": "21dd32fad88ec88d0afb7df197121bcf01ce6206a2e32a61cca0d20f41984f1e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/first-last-frame-guide.md",
+      "integrated_path": "references/first-last-frame-guide.md",
+      "source_sha256": "693ad681dda2c7561f621bd9880bcdf35c1fc4526d2f8350f61f88e639b5a215",
+      "integrated_sha256": "693ad681dda2c7561f621bd9880bcdf35c1fc4526d2f8350f61f88e639b5a215",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/frontend-design-system.md",
+      "integrated_path": "references/frontend-design-system.md",
+      "source_sha256": "4e0e9e3647ebf94c275cf4d5778d1f6fdf978f9ea8b214e68ece1482c533983d",
+      "integrated_sha256": "4e0e9e3647ebf94c275cf4d5778d1f6fdf978f9ea8b214e68ece1482c533983d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/genre-guides.md",
+      "integrated_path": "references/genre-guides.md",
+      "source_sha256": "5c30b790dfac5c3907c2759571c17af51dd48ce94e4e5a3c6b4071c204018dff",
+      "integrated_sha256": "5c30b790dfac5c3907c2759571c17af51dd48ce94e4e5a3c6b4071c204018dff",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/i2v-guide.md",
+      "integrated_path": "references/i2v-guide.md",
+      "source_sha256": "f006ba4ee7ac4f99fe30317e4711f863aa5f3ee88f1e9c4231285ce640f46dbe",
+      "integrated_sha256": "f006ba4ee7ac4f99fe30317e4711f863aa5f3ee88f1e9c4231285ce640f46dbe",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/intent-vs-precision.md",
+      "integrated_path": "references/intent-vs-precision.md",
+      "source_sha256": "0a418f94d33dddda16e3961319d810fb7eb4b39efb82387ab81404f2a5f272f2",
+      "integrated_sha256": "0a418f94d33dddda16e3961319d810fb7eb4b39efb82387ab81404f2a5f272f2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/interview-starters.md",
+      "integrated_path": "references/interview-starters.md",
+      "source_sha256": "c661d8990707850671f84080f7e72a1956123d58ba73a4a4502d5b6deea37303",
+      "integrated_sha256": "c661d8990707850671f84080f7e72a1956123d58ba73a4a4502d5b6deea37303",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/json-schema.md",
+      "integrated_path": "references/json-schema.md",
+      "source_sha256": "d937777e1315e808b188ff69e0a0749175f1ad43deffb7a6d85f7d826b50ac64",
+      "integrated_sha256": "d937777e1315e808b188ff69e0a0749175f1ad43deffb7a6d85f7d826b50ac64",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/model-mechanics.md",
+      "integrated_path": "references/model-mechanics.md",
+      "source_sha256": "d703f2ab7d756d0ed1c0bb82017dd71dfd1fd0ecf2cebcf76c8378f25a9d2ff4",
+      "integrated_sha256": "d703f2ab7d756d0ed1c0bb82017dd71dfd1fd0ecf2cebcf76c8378f25a9d2ff4",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/model-name-map.md",
+      "integrated_path": "references/model-name-map.md",
+      "source_sha256": "815cce6d46eecaec2217d7c76be5cf737db0520575f5d3a7f562d1d5749850ef",
+      "integrated_sha256": "815cce6d46eecaec2217d7c76be5cf737db0520575f5d3a7f562d1d5749850ef",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/multilingual-community-examples.md",
+      "integrated_path": "references/multilingual-community-examples.md",
+      "source_sha256": "4d5da3b83718f12ee67e9ae775f2ec2fc8515ddc03afe9c7f462f46ec941dfb4",
+      "integrated_sha256": "4d5da3b83718f12ee67e9ae775f2ec2fc8515ddc03afe9c7f462f46ec941dfb4",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/multilingual-native-review.md",
+      "integrated_path": "references/multilingual-native-review.md",
+      "source_sha256": "214fb2dcf10ef24195ee16873f43b86b6edccf9bbda0c868b65f3bfeafec2e16",
+      "integrated_sha256": "214fb2dcf10ef24195ee16873f43b86b6edccf9bbda0c868b65f3bfeafec2e16",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/multishot-grammar.md",
+      "integrated_path": "references/multishot-grammar.md",
+      "source_sha256": "9bab2f08d681f246bb60e31696714b7d9b4104cc97dfbb7eed34a78e18c19fdd",
+      "integrated_sha256": "9bab2f08d681f246bb60e31696714b7d9b4104cc97dfbb7eed34a78e18c19fdd",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/platform-constraints.md",
+      "integrated_path": "references/platform-constraints.md",
+      "source_sha256": "955b02a35b090cbec2358bc4e7ce19eac5233c9857f2edaff0c32dd33c7ff8b6",
+      "integrated_sha256": "955b02a35b090cbec2358bc4e7ce19eac5233c9857f2edaff0c32dd33c7ff8b6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/platform-surface-matrix.md",
+      "integrated_path": "references/platform-surface-matrix.md",
+      "source_sha256": "44043bf4e933524e963ab4e0d19f05ae356e74d3995af0a9f6af61542e628ff9",
+      "integrated_sha256": "44043bf4e933524e963ab4e0d19f05ae356e74d3995af0a9f6af61542e628ff9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/pro-filmmaking-standards.md",
+      "integrated_path": "references/pro-filmmaking-standards.md",
+      "source_sha256": "cf66cdff1438ddd59e0d361e41685196964018f47fd6d7da3fbb3e09fd2f9a90",
+      "integrated_sha256": "cf66cdff1438ddd59e0d361e41685196964018f47fd6d7da3fbb3e09fd2f9a90",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/progressive-disclosure.md",
+      "integrated_path": "references/progressive-disclosure.md",
+      "source_sha256": "a882215249063b94d68dc8fb9ebe29936e43d133974d7c284d9af7c6c8ff47de",
+      "integrated_sha256": "202018ff14d9d67f38bb3ff0e472e2a30d0b09fcc8360965cb845ea0f77808b7",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/prompt-compiler.md",
+      "integrated_path": "references/prompt-compiler.md",
+      "source_sha256": "3fb3bd667a3db0ded4d374d5f21810b67089ec4f97b250d1938497701d1d6218",
+      "integrated_sha256": "3fb3bd667a3db0ded4d374d5f21810b67089ec4f97b250d1938497701d1d6218",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/prompt-examples.md",
+      "integrated_path": "references/prompt-examples.md",
+      "source_sha256": "74a718e2123c3cd11ed596307aa4fb679fb859aef13d17b3db2e055a47ce6718",
+      "integrated_sha256": "74a718e2123c3cd11ed596307aa4fb679fb859aef13d17b3db2e055a47ce6718",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/quick-ref.md",
+      "integrated_path": "references/quick-ref.md",
+      "source_sha256": "2bedb30e9da778f8bf557e92024bc14ac2df6f44711cb32ccc86d4ecc125c3fb",
+      "integrated_sha256": "2bedb30e9da778f8bf557e92024bc14ac2df6f44711cb32ccc86d4ecc125c3fb",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/reference-transfer-contract.md",
+      "integrated_path": "references/reference-transfer-contract.md",
+      "source_sha256": "f8523b810f7be505c6cd978cdafe2313f8ab5a179ad9b707c401d2dfc1f4f252",
+      "integrated_sha256": "f8523b810f7be505c6cd978cdafe2313f8ab5a179ad9b707c401d2dfc1f4f252",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/reference-workflow.md",
+      "integrated_path": "references/reference-workflow.md",
+      "source_sha256": "a91e9f1b9ff46c92d92a35010fa30da59fe0a04ab065ee0b47b24c26e0bca675",
+      "integrated_sha256": "a91e9f1b9ff46c92d92a35010fa30da59fe0a04ab065ee0b47b24c26e0bca675",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/research-2026-05-30.md",
+      "integrated_path": "references/research-2026-05-30.md",
+      "source_sha256": "569283eb27de4fb86320fe524d861ad3c9d32578b08879a859520fe389f34df5",
+      "integrated_sha256": "51b81af9caea6cff1e3eb70930bdeea560e5b176671093474d42fcc8bfd8f7c0",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/retake-protocol.md",
+      "integrated_path": "references/retake-protocol.md",
+      "source_sha256": "3d57cdb9c6c0f0a788238859bebb54ef72d1723ddc9ebd2bb43b6fc08edb61b2",
+      "integrated_sha256": "3d57cdb9c6c0f0a788238859bebb54ef72d1723ddc9ebd2bb43b6fc08edb61b2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/sequence-project-state.md",
+      "integrated_path": "references/sequence-project-state.md",
+      "source_sha256": "5420106f7e5f7b31ce9cbc0228ea8284ea003846e1fb2b3438334444c6081ad9",
+      "integrated_sha256": "5420106f7e5f7b31ce9cbc0228ea8284ea003846e1fb2b3438334444c6081ad9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/sequence-worked-trace.md",
+      "integrated_path": "references/sequence-worked-trace.md",
+      "source_sha256": "1cda41401098281236ab74398455ca05b751ca5f9c7bb6b7faf4190a3dd1d3e0",
+      "integrated_sha256": "1cda41401098281236ab74398455ca05b751ca5f9c7bb6b7faf4190a3dd1d3e0",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/shot-list-continuity.md",
+      "integrated_path": "references/shot-list-continuity.md",
+      "source_sha256": "b5198924d1b1f236860be3568c9e55069f0da4f4a80b3ba3f03e6dc9a8899061",
+      "integrated_sha256": "b5198924d1b1f236860be3568c9e55069f0da4f4a80b3ba3f03e6dc9a8899061",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/source-registry.md",
+      "integrated_path": "references/source-registry.md",
+      "source_sha256": "ee07eaa544b40fd8f0369813b9aa80e5cff9d365b20369a682dd58134e179925",
+      "integrated_sha256": "a13fec9d34241561fa19965291b2a465f64c08facbcd5bc8cd5559ca060579b0",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "references/storytelling-framework.md",
+      "integrated_path": "references/storytelling-framework.md",
+      "source_sha256": "658099155a600b755da852db13aef7bcd295f1e09f804f041f7f102f8a3398b1",
+      "integrated_sha256": "658099155a600b755da852db13aef7bcd295f1e09f804f041f7f102f8a3398b1",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/subtitles-localization.md",
+      "integrated_path": "references/subtitles-localization.md",
+      "source_sha256": "25d63be0c09cc28841503a02c0077d4db20c8fbdd38306d32b1d4061c326e04b",
+      "integrated_sha256": "25d63be0c09cc28841503a02c0077d4db20c8fbdd38306d32b1d4061c326e04b",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/surface-prompt-profiles.md",
+      "integrated_path": "references/surface-prompt-profiles.md",
+      "source_sha256": "125133c4f1a00fa8a7e51aaae974e7023d1de609b76708a8d906fef66f97569f",
+      "integrated_sha256": "125133c4f1a00fa8a7e51aaae974e7023d1de609b76708a8d906fef66f97569f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/sync-budget-protocol.md",
+      "integrated_path": "references/sync-budget-protocol.md",
+      "source_sha256": "2caf112224de88dea5b9e965d599f1d83ab23c5456ca665f9d9d655c3cbf07c6",
+      "integrated_sha256": "2caf112224de88dea5b9e965d599f1d83ab23c5456ca665f9d9d655c3cbf07c6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/en.md",
+      "integrated_path": "references/vocab/en.md",
+      "source_sha256": "616248e96d898cdff2733bbd600fce648f2bd578ed5d528234ce52eade241370",
+      "integrated_sha256": "616248e96d898cdff2733bbd600fce648f2bd578ed5d528234ce52eade241370",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/es.md",
+      "integrated_path": "references/vocab/es.md",
+      "source_sha256": "d5bdc96283d012ba0ae6ffd015a86840dd06264a751bd7811bda660281ada693",
+      "integrated_sha256": "d5bdc96283d012ba0ae6ffd015a86840dd06264a751bd7811bda660281ada693",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/ja.md",
+      "integrated_path": "references/vocab/ja.md",
+      "source_sha256": "c78d4840fc6014950e0e8ec0777e647c9a9920bddb07044aed2fd963f4a3c76e",
+      "integrated_sha256": "c78d4840fc6014950e0e8ec0777e647c9a9920bddb07044aed2fd963f4a3c76e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/ko.md",
+      "integrated_path": "references/vocab/ko.md",
+      "source_sha256": "fb2125279bac818aed33adfc256c1281cbcaf0ae8d15fac5d668b2e1ada42eb9",
+      "integrated_sha256": "fb2125279bac818aed33adfc256c1281cbcaf0ae8d15fac5d668b2e1ada42eb9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/ru.md",
+      "integrated_path": "references/vocab/ru.md",
+      "source_sha256": "e22b5ad542a94853503026a303cc13cfd2b91c7452e6eb4c99aa859ff93c40f9",
+      "integrated_sha256": "e22b5ad542a94853503026a303cc13cfd2b91c7452e6eb4c99aa859ff93c40f9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "references/vocab/zh.md",
+      "integrated_path": "references/vocab/zh.md",
+      "source_sha256": "2526ad00f8d64f0bb3f5231b80ab67ccb291fe501dc406c0ca6a378fb2122f52",
+      "integrated_sha256": "2526ad00f8d64f0bb3f5231b80ab67ccb291fe501dc406c0ca6a378fb2122f52",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "requirements-validation.lock",
+      "integrated_path": "requirements-validation.lock",
+      "source_sha256": "5c417cdc3968bc785c5d33b601f49ce6841e012b10c4425d2cb2b6dd4b617a5c",
+      "integrated_sha256": "5c417cdc3968bc785c5d33b601f49ce6841e012b10c4425d2cb2b6dd4b617a5c",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "schemas/clip-contract.schema.json",
+      "integrated_path": "schemas/clip-contract.schema.json",
+      "source_sha256": "b9df0313678dc7bee2440b609df35cea5b8dbdfbe4f1f07b56d444da74b79175",
+      "integrated_sha256": "b9df0313678dc7bee2440b609df35cea5b8dbdfbe4f1f07b56d444da74b79175",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "schemas/generation-run.schema.json",
+      "integrated_path": "schemas/generation-run.schema.json",
+      "source_sha256": "b48cc7c2cd7f30406c80561a93d3a28449834ccbf2374546013edb2a0fedb92e",
+      "integrated_sha256": "b48cc7c2cd7f30406c80561a93d3a28449834ccbf2374546013edb2a0fedb92e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "schemas/project-state.schema.json",
+      "integrated_path": "schemas/project-state.schema.json",
+      "source_sha256": "42285f2b21e57cac0f52d4853816ff5fdebeae6856b72623dd959230067e554f",
+      "integrated_sha256": "42285f2b21e57cac0f52d4853816ff5fdebeae6856b72623dd959230067e554f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "schemas/prompt-spec.schema.json",
+      "integrated_path": "schemas/prompt-spec.schema.json",
+      "source_sha256": "b7fea59647e2c6b5739f8938896bfe64e6a6b344a55286b064795f678d74c102",
+      "integrated_sha256": "b7fea59647e2c6b5739f8938896bfe64e6a6b344a55286b064795f678d74c102",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "schemas/take-review.schema.json",
+      "integrated_path": "schemas/take-review.schema.json",
+      "source_sha256": "426ba4b52a23bdd94d95c084089be050b40ae0ed67ecf540dd99c4ed6f0b57c8",
+      "integrated_sha256": "426ba4b52a23bdd94d95c084089be050b40ae0ed67ecf540dd99c4ed6f0b57c8",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/behavior_contract_check.py",
+      "integrated_path": "scripts/behavior_contract_check.py",
+      "source_sha256": "de1345f430a90e23ed103d5676928291fe22f4a3c168b2bd56633a9ffd6bbf60",
+      "integrated_sha256": "256464b6c785c773af1d2ba3c1cf22e5b466d2bbb5fbf584100fbae65e8efb69",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "scripts/build_hero.py",
+      "integrated_path": "scripts/build_hero.py",
+      "source_sha256": "0f73e46af7375f2f2d09001673b77cb53baea31744a9bacae35dd07dd9d770fa",
+      "integrated_sha256": "0f73e46af7375f2f2d09001673b77cb53baea31744a9bacae35dd07dd9d770fa",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/build_masthead_outlines.py",
+      "integrated_path": "scripts/build_masthead_outlines.py",
+      "source_sha256": "cf6108b2bca9df265fc9f9e457f57f99cc568e19f757cb9cc9e2933448149f1f",
+      "integrated_sha256": "cf6108b2bca9df265fc9f9e457f57f99cc568e19f757cb9cc9e2933448149f1f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/content_audit.py",
+      "integrated_path": "scripts/content_audit.py",
+      "source_sha256": "bab9ec0578aaafbe77d4c1a9b87d46bfce9d4d53622b3b1940876db83b3e35c3",
+      "integrated_sha256": "bab9ec0578aaafbe77d4c1a9b87d46bfce9d4d53622b3b1940876db83b3e35c3",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/continuity_chain_check.py",
+      "integrated_path": "scripts/continuity_chain_check.py",
+      "source_sha256": "9c3931912659fb379b0222e0d1819bbd621bcb3d14f231e96fa9a01694daee83",
+      "integrated_sha256": "9c3931912659fb379b0222e0d1819bbd621bcb3d14f231e96fa9a01694daee83",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/design_audit.py",
+      "integrated_path": "scripts/design_audit.py",
+      "source_sha256": "6e2c81d38c9d3f9d703de163da3595fb405d84fd1f5487e0344f4cc07026421f",
+      "integrated_sha256": "6e2c81d38c9d3f9d703de163da3595fb405d84fd1f5487e0344f4cc07026421f",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/eval_schema_check.py",
+      "integrated_path": "scripts/eval_schema_check.py",
+      "source_sha256": "4947a2da1f683d6590346cc3430be6a1f734f23699629213b54f0cd6a996bc64",
+      "integrated_sha256": "4947a2da1f683d6590346cc3430be6a1f734f23699629213b54f0cd6a996bc64",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/extract_last_frame.py",
+      "integrated_path": "scripts/extract_last_frame.py",
+      "source_sha256": "7a91dfc8a12359ebb9d68f79d4c2d12ade64f1feb7d4929372e5c4a4ffa35241",
+      "integrated_sha256": "7a91dfc8a12359ebb9d68f79d4c2d12ade64f1feb7d4929372e5c4a4ffa35241",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/generation_run_check.py",
+      "integrated_path": "scripts/generation_run_check.py",
+      "source_sha256": "1f6b5e13a1a52b199f4236515ee20bd8a0ef9b09edf590a37c1298b57c6485b1",
+      "integrated_sha256": "1f6b5e13a1a52b199f4236515ee20bd8a0ef9b09edf590a37c1298b57c6485b1",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/install_codex_skill.py",
+      "integrated_path": "scripts/install_codex_skill.py",
+      "source_sha256": "06f75e680c6a637a03a365069b1ad1a2a9d250ce575af4dc096baaf8f5ed8eb2",
+      "integrated_sha256": "239ff38afef7c618dfc528fe509abc8bc4a98900da3b3ecf479fe57e6b454a06",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "scripts/lineage_contract.py",
+      "integrated_path": "scripts/lineage_contract.py",
+      "source_sha256": "635f9bb5b1c81351626e74399c95b23ed26aa75374a3f639734be2a76b8f544d",
+      "integrated_sha256": "635f9bb5b1c81351626e74399c95b23ed26aa75374a3f639734be2a76b8f544d",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/project_state_check.py",
+      "integrated_path": "scripts/project_state_check.py",
+      "source_sha256": "16f776ddead497de2e2390666cb1d096e5ab9e916240ee5d6aff30c6523f73eb",
+      "integrated_sha256": "16f776ddead497de2e2390666cb1d096e5ab9e916240ee5d6aff30c6523f73eb",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/prompt_architecture_stress.py",
+      "integrated_path": "scripts/prompt_architecture_stress.py",
+      "source_sha256": "00b861cd023febb8e6b204fa9967ad94f3770ef40a163019b8e6f71a2946d6a6",
+      "integrated_sha256": "00b861cd023febb8e6b204fa9967ad94f3770ef40a163019b8e6f71a2946d6a6",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/prompt_lint.py",
+      "integrated_path": "scripts/prompt_lint.py",
+      "source_sha256": "3f5d404ae5a4252d9733698adeef0304e56981286e314f8bca19522d4d5a0559",
+      "integrated_sha256": "3f5d404ae5a4252d9733698adeef0304e56981286e314f8bca19522d4d5a0559",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/schema_check.py",
+      "integrated_path": "scripts/schema_check.py",
+      "source_sha256": "ad19f35ae2e3bbc52ebd8ddd025455ec3a018fb092df5cb49dd4ce39ff33a97e",
+      "integrated_sha256": "ad19f35ae2e3bbc52ebd8ddd025455ec3a018fb092df5cb49dd4ce39ff33a97e",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/sequence_eval_check.py",
+      "integrated_path": "scripts/sequence_eval_check.py",
+      "source_sha256": "11b9b9554fab39c1f64beaf9f842da396bfa4ec90bd9bb4972f56debce748dd2",
+      "integrated_sha256": "11b9b9554fab39c1f64beaf9f842da396bfa4ec90bd9bb4972f56debce748dd2",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/source_registry_check.py",
+      "integrated_path": "scripts/source_registry_check.py",
+      "source_sha256": "ca370236b190a13faa6c565293cd6ea6070668f8d66ce8f7b986091547bca499",
+      "integrated_sha256": "ca370236b190a13faa6c565293cd6ea6070668f8d66ce8f7b986091547bca499",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/strict_json.py",
+      "integrated_path": "scripts/strict_json.py",
+      "source_sha256": "c21997dee29baff7f0362040d896e312cc917703e1ebb76bba89be34d908bbf1",
+      "integrated_sha256": "c21997dee29baff7f0362040d896e312cc917703e1ebb76bba89be34d908bbf1",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "scripts/validate_skills.py",
+      "integrated_path": "scripts/validate_skills.py",
+      "source_sha256": "716d892628cf7b2605b5e9fbb053e71492444afc6b12a7a62c3e46f06800aba2",
+      "integrated_sha256": "c89b71fcae9753052c99522e51c43b9e66c7474a6083646fda507527d0259711",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "scripts/vocab_schema_check.py",
+      "integrated_path": "scripts/vocab_schema_check.py",
+      "source_sha256": "93acb3ab1149eee3dd3e6332587bc5cb5749f7a13629cc36eaf565207b702a34",
+      "integrated_sha256": "93acb3ab1149eee3dd3e6332587bc5cb5749f7a13629cc36eaf565207b702a34",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "skills/seedance-antislop/SKILL.md",
+      "integrated_path": "skills/seedance-antislop/MODULE.md",
+      "source_sha256": "b8d2cfbe073bf7443c6c7584227876d3d46e7f8f9fc1f77f74f9fabda20c1839",
+      "integrated_sha256": "e7b222b0aca04ab41935ce97ccb9a93c9e48e3909c063d35e37693da1ac5fc2e",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-audio/SKILL.md",
+      "integrated_path": "skills/seedance-audio/MODULE.md",
+      "source_sha256": "e6f41152af30f1d9248cb83c53a531d2af6494a4af91ed2755b51097a6d13438",
+      "integrated_sha256": "e6f41152af30f1d9248cb83c53a531d2af6494a4af91ed2755b51097a6d13438",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-camera/SKILL.md",
+      "integrated_path": "skills/seedance-camera/MODULE.md",
+      "source_sha256": "1fbc80be6006ba2b9d9b96ba045688e9a8a710d112a93ccd01795ddb619d2628",
+      "integrated_sha256": "1fbc80be6006ba2b9d9b96ba045688e9a8a710d112a93ccd01795ddb619d2628",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-characters/SKILL.md",
+      "integrated_path": "skills/seedance-characters/MODULE.md",
+      "source_sha256": "1db60a2e0f427573f889135c46b84875935d0d4a978fb3a36de71f5cf6642d9d",
+      "integrated_sha256": "1db60a2e0f427573f889135c46b84875935d0d4a978fb3a36de71f5cf6642d9d",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-continuation/SKILL.md",
+      "integrated_path": "skills/seedance-continuation/MODULE.md",
+      "source_sha256": "8029af2d99b3ea6f629c1b1f5cfd7516d96d61b193494706061b745534c8dc82",
+      "integrated_sha256": "8029af2d99b3ea6f629c1b1f5cfd7516d96d61b193494706061b745534c8dc82",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-copyright/SKILL.md",
+      "integrated_path": "skills/seedance-copyright/MODULE.md",
+      "source_sha256": "00f62eab53c7c1a20df7431b2839d74615c57bc732eafa0aadfae4ee72982afe",
+      "integrated_sha256": "00f62eab53c7c1a20df7431b2839d74615c57bc732eafa0aadfae4ee72982afe",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-examples-ja/SKILL.md",
+      "integrated_path": "skills/seedance-examples-ja/MODULE.md",
+      "source_sha256": "f1ac8498697f40f9a4b78401868bc13a9b3154864f72cfa27c9e357db43618a0",
+      "integrated_sha256": "f1ac8498697f40f9a4b78401868bc13a9b3154864f72cfa27c9e357db43618a0",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-examples-ko/SKILL.md",
+      "integrated_path": "skills/seedance-examples-ko/MODULE.md",
+      "source_sha256": "19633d37bb759c8493d976744906ba2288351718f7fd1c064d3c52d87bdbf919",
+      "integrated_sha256": "19633d37bb759c8493d976744906ba2288351718f7fd1c064d3c52d87bdbf919",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-examples-zh/SKILL.md",
+      "integrated_path": "skills/seedance-examples-zh/MODULE.md",
+      "source_sha256": "51ddd2139b43ad3a272a2ac6347645c98dedf5f48b944f1a741d3e25380fcef2",
+      "integrated_sha256": "51ddd2139b43ad3a272a2ac6347645c98dedf5f48b944f1a741d3e25380fcef2",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-filter/SKILL.md",
+      "integrated_path": "skills/seedance-filter/MODULE.md",
+      "source_sha256": "343d3d47d12cb0d1732177402476bfe94f0bcc3f9b79c5043dd7c2b97e8bc3d0",
+      "integrated_sha256": "343d3d47d12cb0d1732177402476bfe94f0bcc3f9b79c5043dd7c2b97e8bc3d0",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-interview/SKILL.md",
+      "integrated_path": "skills/seedance-interview/MODULE.md",
+      "source_sha256": "cc6dd4994bc5df8c4c16c883b46fe03ba16b21cfc98b1d8b1a587c58be91e6b3",
+      "integrated_sha256": "ff8a4b149ea9cffc45f6c6762f395a04ca9a78bfd3c94c063b4827fe2742bbb6",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-interview-short/SKILL.md",
+      "integrated_path": "skills/seedance-interview-short/MODULE.md",
+      "source_sha256": "a14ae92b52afd2903059d2eee6559ef73001abfbf66bc80341b5329508175f76",
+      "integrated_sha256": "e9f78489b09177d72773e8a30a5a56c40f20185dd9785f6e6100a029e02a673d",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-lighting/SKILL.md",
+      "integrated_path": "skills/seedance-lighting/MODULE.md",
+      "source_sha256": "def5981f5d9aa752720e07cc6125425139c29945c82988b082287e273e29001b",
+      "integrated_sha256": "def5981f5d9aa752720e07cc6125425139c29945c82988b082287e273e29001b",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-motion/SKILL.md",
+      "integrated_path": "skills/seedance-motion/MODULE.md",
+      "source_sha256": "b0c9d4bc9b84f34be6180dc4ecdf28725244d0879b309bbd5bc0f24508bf1a05",
+      "integrated_sha256": "b0c9d4bc9b84f34be6180dc4ecdf28725244d0879b309bbd5bc0f24508bf1a05",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-pipeline/SKILL.md",
+      "integrated_path": "skills/seedance-pipeline/MODULE.md",
+      "source_sha256": "d54099c3c65c97fdc7f37346a4298078cd7dc7b0c07038ed2cd47cd2af85c283",
+      "integrated_sha256": "d54099c3c65c97fdc7f37346a4298078cd7dc7b0c07038ed2cd47cd2af85c283",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-prompt/SKILL.md",
+      "integrated_path": "skills/seedance-prompt/MODULE.md",
+      "source_sha256": "16d9a9cdb3c966e4233984bfa7b602b2ab9a3c3c8817b5689b8e7b696f429c8a",
+      "integrated_sha256": "00d9fb548ed2c823bdeab62a88b5592770841c992e23b5859309c55a98218c5b",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-prompt-short/SKILL.md",
+      "integrated_path": "skills/seedance-prompt-short/MODULE.md",
+      "source_sha256": "3225ea5b3dd377112ac60e7edb12dbe97e687b620f5a0ef8124b60cc517794a7",
+      "integrated_sha256": "3225ea5b3dd377112ac60e7edb12dbe97e687b620f5a0ef8124b60cc517794a7",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-recipes/SKILL.md",
+      "integrated_path": "skills/seedance-recipes/MODULE.md",
+      "source_sha256": "4fff2eac9795f72b366ba617a0c7616b053954e1202f83ccf08cafbf3ab18677",
+      "integrated_sha256": "4fff2eac9795f72b366ba617a0c7616b053954e1202f83ccf08cafbf3ab18677",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-sequence/SKILL.md",
+      "integrated_path": "skills/seedance-sequence/MODULE.md",
+      "source_sha256": "23a6525f57eb87e7cfc0b8bfa5c18e02e3e6ccc9070dff5f0407eb7f0f72ad4b",
+      "integrated_sha256": "23a6525f57eb87e7cfc0b8bfa5c18e02e3e6ccc9070dff5f0407eb7f0f72ad4b",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-style/SKILL.md",
+      "integrated_path": "skills/seedance-style/MODULE.md",
+      "source_sha256": "da9ca0c0755216f3b0cbfcf796b3c0b31a3d9df85c9ffd614657d658bedcd3e8",
+      "integrated_sha256": "da9ca0c0755216f3b0cbfcf796b3c0b31a3d9df85c9ffd614657d658bedcd3e8",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-troubleshoot/SKILL.md",
+      "integrated_path": "skills/seedance-troubleshoot/MODULE.md",
+      "source_sha256": "9dc0381181afa9460083864579f440b75c59c37e440b987c7481a83ca99b2cbc",
+      "integrated_sha256": "9dc0381181afa9460083864579f440b75c59c37e440b987c7481a83ca99b2cbc",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vfx/SKILL.md",
+      "integrated_path": "skills/seedance-vfx/MODULE.md",
+      "source_sha256": "dc4d91d1acd543a4f33ea2b938a0fd11db7be8950c8e9e7287667f09b4506979",
+      "integrated_sha256": "dc4d91d1acd543a4f33ea2b938a0fd11db7be8950c8e9e7287667f09b4506979",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-en/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-en/MODULE.md",
+      "source_sha256": "9cd5c100bea9152f5bcfb29b6c41cc8c1226ab5291a1073f79f652cc8a31930a",
+      "integrated_sha256": "f040684a8ad952a4470777dfd077ba5f24045fff05080a96284ec241e116058d",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-es/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-es/MODULE.md",
+      "source_sha256": "56f8d9a98606183eb716dc19c6c6caf7be107bc970db54a01f48c79b340c8468",
+      "integrated_sha256": "56f8d9a98606183eb716dc19c6c6caf7be107bc970db54a01f48c79b340c8468",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-ja/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-ja/MODULE.md",
+      "source_sha256": "eccce36c130efe126c25e16f312dd0794b88176a262d7944e5a828edb2fe9e25",
+      "integrated_sha256": "eccce36c130efe126c25e16f312dd0794b88176a262d7944e5a828edb2fe9e25",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-ko/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-ko/MODULE.md",
+      "source_sha256": "15fcecae9550395abd2bfed959e40e970a3e5e619df676137261db85758bd817",
+      "integrated_sha256": "15fcecae9550395abd2bfed959e40e970a3e5e619df676137261db85758bd817",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-ru/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-ru/MODULE.md",
+      "source_sha256": "c7b5eee164753475387adb4eda410a0bf6736726f24a4ef449fac4e76171e079",
+      "integrated_sha256": "c7b5eee164753475387adb4eda410a0bf6736726f24a4ef449fac4e76171e079",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "skills/seedance-vocab-zh/SKILL.md",
+      "integrated_path": "skills/seedance-vocab-zh/MODULE.md",
+      "source_sha256": "a24b47bdcafb54b990c7237e27693742c58fa7b50cc9841445fe7a3f5f00f3d2",
+      "integrated_sha256": "a24b47bdcafb54b990c7237e27693742c58fa7b50cc9841445fe7a3f5f00f3d2",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "validation/authoring-state-provenance-ledger.json",
+      "integrated_path": "validation/authoring-state-provenance-ledger.json",
+      "source_sha256": "6c2d9a671d50a9c6c55178e39ea9b1ae355d02a78c075a512d03ed157d839b40",
+      "integrated_sha256": "6c2d9a671d50a9c6c55178e39ea9b1ae355d02a78c075a512d03ed157d839b40",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "validation/fixtures/directors-read-cases.json",
+      "integrated_path": "validation/fixtures/directors-read-cases.json",
+      "source_sha256": "9dffa978cf6655c41dae1ff98dd0ec7f72c12ffda810b55b356b27d9aefeb5ae",
+      "integrated_sha256": "9dffa978cf6655c41dae1ff98dd0ec7f72c12ffda810b55b356b27d9aefeb5ae",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "validation/fixtures/generation-run.valid.json",
+      "integrated_path": "validation/fixtures/generation-run.valid.json",
+      "source_sha256": "996e38d1d93ebd01b0afe5935e2cd7f24ec1dde0a5e9080ca22cf9bf491e8bd9",
+      "integrated_sha256": "996e38d1d93ebd01b0afe5935e2cd7f24ec1dde0a5e9080ca22cf9bf491e8bd9",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "validation/fixtures/prompt-spec.valid.json",
+      "integrated_path": "validation/fixtures/prompt-spec.valid.json",
+      "source_sha256": "9ca43416869c6e591b38d2eda703b0301d74453801f0915083063de0497b7ffa",
+      "integrated_sha256": "9ca43416869c6e591b38d2eda703b0301d74453801f0915083063de0497b7ffa",
+      "transformation": "byte-equivalent copy"
+    },
+    {
+      "source_path": "validation/install-payload.txt",
+      "integrated_path": "validation/install-payload.txt",
+      "source_sha256": "8feec5e1f39794ae0cc7f595a430a0359fe1f1685f59e5bfcddf4b620fd291e4",
+      "integrated_sha256": "1c34bb1753fffe967be9361a1a4d862ab660f2c1323dab38e33a2a4ede7c60cf",
+      "transformation": "SKILL.md renamed/relinked to MODULE.md"
+    },
+    {
+      "source_path": "validation/schema-instances.json",
+      "integrated_path": "validation/schema-instances.json",
+      "source_sha256": "843c8fd2155a0b789290380c9a8517fae0abfb1783b92a9468f81f5e0423e3db",
+      "integrated_sha256": "843c8fd2155a0b789290380c9a8517fae0abfb1783b92a9468f81f5e0423e3db",
+      "transformation": "byte-equivalent copy"
+    }
+  ]
+}

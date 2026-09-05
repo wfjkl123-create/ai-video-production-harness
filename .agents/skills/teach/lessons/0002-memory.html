@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 2 课：Memory（记忆）— Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 20%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 2</div>
+  <h1>Memory：让 Claude 记住你</h1>
+  <div class="lesson-meta">第 2 课，共 10 模块 · 预计 12 分钟</div>
+</header>
+
+<section>
+  <h2>默认情况下，Claude 是失忆的</h2>
+
+  <p>
+    每次你新开一个对话，Claude 对你一无所知。你不得不重新解释：
+    "我在做一个 Python 项目，我喜欢用中文，不要加注释……"
+  </p>
+
+  <p>
+    Memory 系统解决的就是这个问题：<strong>让 Claude 在会话之间保留上下文</strong>。
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">核心概念</div>
+    Claude Code 的记忆本质上是<strong>文本文件</strong>——Claude 在每次对话开始时会自动读取这些文件，就好像你每次都把它们粘贴到了对话开头。
+  </div>
+</section>
+
+<section>
+  <h2>记忆的三个层级</h2>
+
+  <p>Claude Code 的记忆分三层，范围从小到大：</p>
+
+  <table style="width:100%; border-collapse:collapse; margin: 1.5rem 0; font-family: sans-serif; font-size: 0.9rem;">
+    <thead>
+      <tr style="background: #f4f4f0; text-align: left;">
+        <th style="padding: 0.6rem 1rem; border: 1px solid #ddd;">层级</th>
+        <th style="padding: 0.6rem 1rem; border: 1px solid #ddd;">文件位置</th>
+        <th style="padding: 0.6rem 1rem; border: 1px solid #ddd;">作用范围</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">🌍 全局</td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;"><code>~/.claude/CLAUDE.md</code></td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">所有项目都生效</td>
+      </tr>
+      <tr style="background: #fafaf6;">
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">📁 项目</td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;"><code>项目根目录/CLAUDE.md</code></td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">只在该项目生效</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">🧠 AI 记忆</td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;"><code>~/.claude/memory/</code></td>
+        <td style="padding: 0.6rem 1rem; border: 1px solid #ddd;">Claude 自动写入的长期记忆</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>最重要、最常用的是 <strong>CLAUDE.md</strong>——无论是全局的还是项目级的。</p>
+</section>
+
+<section>
+  <h2>CLAUDE.md：最重要的记忆文件</h2>
+
+  <p>
+    <code>CLAUDE.md</code> 是一个普通的 Markdown 文件，你写什么，Claude 就会"记住"什么。
+    每次你在某个项目目录里打开 Claude Code，它都会自动读取该目录下的 <code>CLAUDE.md</code>。
+  </p>
+
+  <p>一个典型的项目 CLAUDE.md 长这样：</p>
+
+  <pre><code># 我的项目
+
+## 项目简介
+这是一个 Python 数据处理脚本，用来清洗销售报表。
+
+## 偏好
+- 用中文回复
+- 代码注释也用中文
+- 变量名用英文，函数名用下划线命名法
+
+## 重要文件
+- main.py：入口文件
+- data/：原始数据目录
+- output/：处理结果输出目录
+
+## 注意事项
+- 不要修改 config.json，它是手动管理的</code></pre>
+
+  <p>有了这个文件，你每次打开项目，Claude 就已经知道这些背景知识了。</p>
+
+  <div class="callout">
+    <div class="callout-label">你已经在用它了</div>
+    你现在的 Claude Code 里已经有全局 CLAUDE.md 的效果——你的语言偏好（中文）、角色背景就是通过类似机制加载进来的。
+    输入 <code>/memory</code> 可以查看和编辑你的记忆文件。
+  </div>
+</section>
+
+<section>
+  <h2>AI 自动写入的记忆</h2>
+
+  <p>
+    除了你手动写的 CLAUDE.md，Claude 自己也会主动把重要信息存到
+    <code>~/.claude/memory/</code> 目录下（你现在学的这门课就是这样运作的）。
+  </p>
+
+  <p>当你说"帮我记住……"，或者 Claude 判断某件事很重要时，它会：</p>
+
+  <ol style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2.2;">
+    <li>在 <code>~/.claude/memory/</code> 创建或更新一个 <code>.md</code> 文件</li>
+    <li>在 <code>MEMORY.md</code> 索引文件里添加一行指针</li>
+    <li>下次对话开始时，自动把这些文件内容加载进上下文</li>
+  </ol>
+
+  <p>这意味着：你告诉 Claude 一次的事情，它可以永远记住。</p>
+</section>
+
+<section>
+  <h2>动手：用 /memory 查看记忆</h2>
+
+  <p>现在在 Claude Code 里输入 <code>/memory</code>，看看 Claude 目前记住了什么关于你的信息。</p>
+
+  <p>你会看到它已经记住了：你想学 claude-howto 项目，你是零基础，你偏好中文。这些都是上一课自动保存下来的。</p>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">如果你希望某个设置（比如"用中文回复"）在所有项目里都生效，应该写到哪个文件？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">项目根目录下的 CLAUDE.md</button></li>
+      <li><button class="quiz-option" data-correct="true">~/.claude/CLAUDE.md（全局配置）</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/memory/ 目录里</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/commands/ 目录里</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！全局的偏好设置写在 ~/.claude/CLAUDE.md 里，对所有项目生效。"
+      data-wrong="再想想：「所有项目都生效」对应的是哪个层级？">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">CLAUDE.md 文件是如何被 Claude 读取的？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">你需要每次手动把内容粘贴到对话里</button></li>
+      <li><button class="quiz-option" data-correct="false">只有你明确说"读取记忆"时才会读取</button></li>
+      <li><button class="quiz-option" data-correct="true">每次打开项目目录时，Claude 自动读取</button></li>
+      <li><button class="quiz-option" data-correct="false">只在使用 /memory 命令时才加载</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！这是 Memory 系统最关键的特点：全自动，无感知，每次都加载。"
+      data-wrong="Memory 的价值在于「自动」——你不需要做任何额外操作。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">Claude 自动保存的长期记忆文件存在哪里？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">~/.claude/commands/</button></li>
+      <li><button class="quiz-option" data-correct="false">项目根目录的 .claude/ 文件夹</button></li>
+      <li><button class="quiz-option" data-correct="true">~/.claude/memory/</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/sessions/</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！~/.claude/memory/ 是 Claude 自动写入长期记忆的地方。"
+      data-wrong="提示：课程里提到 Claude 自己会写入的目录名称。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    下一课是 <strong>Checkpoints（检查点）</strong>——当你在一个很长的对话里走错了方向，检查点让你能"回到过去"，从某个节点重新探索。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 2 — Memory</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含更多 CLAUDE.md 实战模板，可直接复制使用。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"我的项目 CLAUDE.md 应该写什么"、"怎么让 Claude 忘掉某件事"——直接问我就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0001-slash-commands.html">← 上一课：斜杠命令</a>
+  <a href="0003-checkpoints.html">下一课：Checkpoints →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

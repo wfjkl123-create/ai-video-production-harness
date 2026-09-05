@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H7 最终课：构建你的第一个完整 Harness</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .phase-banner {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #e8e0ff;
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .phase-banner strong { color: #ffd700; }
+
+    /* Harness Audit Dashboard */
+    .audit-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 0.8rem;
+      margin: 1.5rem 0;
+    }
+    .audit-card {
+      border-radius: 10px;
+      padding: 1rem 0.8rem;
+      text-align: center;
+      font-family: sans-serif;
+      font-size: 0.8rem;
+    }
+    .audit-card.done   { background: #e8ffe8; border: 1.5px solid #6c6; }
+    .audit-card.partial { background: #fff8e0; border: 1.5px solid #cc8; }
+    .audit-card.missing { background: #fff0f0; border: 1.5px solid #c88; }
+    .audit-icon { font-size: 1.6rem; display: block; margin-bottom: 0.4rem; }
+    .audit-name { font-weight: bold; font-size: 0.82rem; display: block; margin-bottom: 0.25rem; }
+    .audit-status { font-size: 0.75rem; color: var(--muted); }
+    .audit-card.done .audit-status { color: #060; }
+    .audit-card.partial .audit-status { color: #880; }
+    .audit-card.missing .audit-status { color: #a00; }
+
+    /* Pillar sections */
+    .pillar-section {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 2rem 0;
+      overflow: hidden;
+    }
+    .pillar-header {
+      padding: 0.9rem 1.3rem;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .pillar-header.green  { background: #e8ffe8; }
+    .pillar-header.yellow { background: #fff8e0; }
+    .pillar-header.red    { background: #fff0f0; }
+    .pillar-body { padding: 1.2rem 1.3rem; }
+    .badge {
+      margin-left: auto;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: normal;
+    }
+    .badge.done    { background: #c8ffc8; color: #040; }
+    .badge.partial { background: #fff0c0; color: #660; }
+    .badge.missing { background: #ffd0d0; color: #800; }
+
+    /* Current config display */
+    .real-config {
+      background: #f8f8f4;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      margin: 0.8rem 0;
+      font-size: 0.83rem;
+    }
+    .real-config .label {
+      font-family: sans-serif;
+      font-size: 0.75rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.4rem;
+    }
+
+    /* Skill list */
+    .skill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 0.6rem 0;
+    }
+    .skill-chip {
+      background: #e8f0ff;
+      border: 1px solid #aac;
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #224;
+    }
+
+    /* Action steps */
+    .action-step {
+      display: flex;
+      gap: 1rem;
+      margin: 1.2rem 0;
+      align-items: flex-start;
+    }
+    .step-num {
+      background: var(--accent);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .step-body { flex: 1; }
+    .step-body strong {
+      display: block;
+      font-family: sans-serif;
+      margin-bottom: 0.3rem;
+    }
+
+    /* Flow diagram */
+    .flow-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.84rem;
+    }
+    .flow-box {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      white-space: nowrap;
+    }
+    .flow-box.claude-md { background: #e8ffe8; border: 1px solid #9c9; }
+    .flow-box.settings  { background: #e8f0ff; border: 1px solid #99b; }
+    .flow-box.hooks     { background: #fff0e8; border: 1px solid #ca9; }
+    .flow-box.skills    { background: #f0e8ff; border: 1px solid #b9b; }
+    .flow-box.commands  { background: #fff8e0; border: 1px solid #cc9; }
+    .flow-box.result    { background: var(--accent); color: white; border: none; }
+    .flow-arrow { color: var(--muted); }
+
+    /* Graduation */
+    .graduation {
+      background: linear-gradient(135deg, #1a1a2e 0%, #2d1b4e 50%, #1a1a2e 100%);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      margin: 2.5rem 0;
+      color: #e8e0ff;
+    }
+    .grad-star { font-size: 3rem; display: block; margin-bottom: 1rem; }
+    .graduation h2 {
+      color: #ffd700;
+      font-size: 1.5rem;
+      border: none;
+      margin: 0 0 0.8rem;
+      padding: 0;
+    }
+    .graduation p { color: #c8c0e8; line-height: 1.7; max-width: 480px; margin: 0.6rem auto; }
+    .completion-items {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin: 1.5rem 0 0;
+      flex-wrap: wrap;
+    }
+    .comp-item {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 0.5rem 1rem;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: #e8e0ff;
+    }
+    .comp-count {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #ffd700;
+      display: block;
+      margin-bottom: 0.1rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 100%"></div>
+</div>
+
+<div class="phase-banner">
+  <div>🏁</div>
+  <div><strong>最终课</strong> — Harness Engineering 第 7 课 / 共 7 课</div>
+</div>
+
+<header>
+  <div class="course-label">Harness Engineering · 整合</div>
+  <h1>构建你的第一个完整 Harness</h1>
+  <div class="lesson-meta">第 7 课（最终课）· 预计 20 分钟 · 含动手搭建</div>
+</header>
+
+<section>
+  <h2>先做 Harness 诊断</h2>
+  <p>在开始之前，看看你的五大支柱目前处于什么状态：</p>
+
+  <div class="audit-grid">
+    <div class="audit-card done">
+      <span class="audit-icon">📄</span>
+      <span class="audit-name">CLAUDE.md</span>
+      <span class="audit-status">✅ 已有，可强化</span>
+    </div>
+    <div class="audit-card done">
+      <span class="audit-icon">⚙️</span>
+      <span class="audit-name">Settings</span>
+      <span class="audit-status">✅ 权限规则完整</span>
+    </div>
+    <div class="audit-card missing">
+      <span class="audit-icon">🪝</span>
+      <span class="audit-name">Hooks</span>
+      <span class="audit-status">❌ 尚未配置</span>
+    </div>
+    <div class="audit-card done">
+      <span class="audit-icon">🧩</span>
+      <span class="audit-name">Skills</span>
+      <span class="audit-status">✅ 已有 6 个</span>
+    </div>
+    <div class="audit-card missing">
+      <span class="audit-icon">⚡</span>
+      <span class="audit-name">Commands</span>
+      <span class="audit-status">❌ 目录为空</span>
+    </div>
+  </div>
+
+  <p>今天我们逐一过每个支柱——能用的继续用，缺的现在补上。</p>
+</section>
+
+<!-- Pillar 1: CLAUDE.md -->
+<section>
+  <div class="pillar-section">
+    <div class="pillar-header green">
+      📄 支柱一：CLAUDE.md
+      <span class="badge done">✅ 已有，今天强化</span>
+    </div>
+    <div class="pillar-body">
+      <p>你的全局 <code>~/.claude/CLAUDE.md</code> 目前内容：</p>
+
+      <div class="real-config">
+        <div class="label">当前内容（真实）</div>
+        <pre style="margin:0;font-size:0.8rem"># 我是一个抖音千川短视频编导，主要产出广告视频，文案脚本，需要竞品分析，数据收集，爬虫爬取
+
+## 偏好
+- 用中文回复
+- 回答中英文内容需紧跟中文批注
+- 代码注释也用中文
+- 变量名用英文，函数名用下划线命名法</pre>
+      </div>
+
+      <p><strong>已经很好了</strong>——角色清晰、偏好明确。可以加两个小节让它更强：</p>
+
+      <div class="action-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>加入"常用命令速查"</strong>
+          <p>让 Claude 在每次对话里都知道你有哪些快捷命令，不用你每次提醒：</p>
+          <pre><code>## 我的 Custom Commands
+- /commit — 根据 staged 变更生成提交信息
+- /script — 生成广告视频脚本（传入产品/卖点）
+- /analysis — 竞品分析框架</code></pre>
+        </div>
+      </div>
+
+      <div class="action-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>加入"工作上下文"</strong>
+          <p>减少你每次对话里要重复说明的背景：</p>
+          <pre><code>## 工作上下文
+- 平台：抖音千川（付费信息流广告）
+- 主要输出：短视频脚本、广告文案、竞品分析报告
+- 爬虫技术栈：Python + playwright/requests
+- 脚本风格：口语化、节奏快、前3秒强钩子</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pillar 2: Settings -->
+<section>
+  <div class="pillar-section">
+    <div class="pillar-header green">
+      ⚙️ 支柱二：Settings & Permissions
+      <span class="badge done">✅ 已配置完整</span>
+    </div>
+    <div class="pillar-body">
+      <p>你的 <code>~/.claude/settings.json</code> 已经有完整的权限规则：</p>
+      <div class="real-config">
+        <div class="label">当前配置（真实）</div>
+        <pre style="margin:0;font-size:0.8rem">"allow": [
+  "Read", "Edit", "Write",
+  "Bash(npm run:*)",
+  "Bash(git status)", "Bash(git diff:*)",
+  "Bash(git log:*)", "Bash(git add:*)", "Bash(git commit:*)"
+],
+"deny": [
+  "Bash(git push --force:*)",
+  "Bash(rm -rf:*)",
+  "Bash(git reset --hard:*)",
+  "Bash(DROP:*)",
+  "Bash(DELETE FROM:*)"
+]</pre>
+      </div>
+      <p>这套配置已经很扎实——危险操作全部拦截。<strong>这个支柱无需改动</strong>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- Pillar 3: Hooks -->
+<section>
+  <div class="pillar-section">
+    <div class="pillar-header red">
+      🪝 支柱三：Hooks
+      <span class="badge missing">❌ 现在来添加</span>
+    </div>
+    <div class="pillar-body">
+      <p>
+        你做爬虫，一定有 <code>.env</code>、API Key 等敏感文件。
+        现在添加一个 Hook，当 Claude 试图修改这些文件时自动阻断：
+      </p>
+
+      <div class="action-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>在 settings.json 里加入 hooks 配置</strong>
+          <p>把下面的内容合并进你的 <code>~/.claude/settings.json</code>：</p>
+          <pre><code>"hooks": {
+  "PreToolUse": [
+    {
+      "matcher": "Edit|Write",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "node -e \"const f=process.env.CLAUDE_FILE_PATH||''; if(/(\\.(env|key|pem)|config\\.prod|secrets|cookie)/.test(f)){console.error('🚫 受保护文件：'+f);process.exit(2)}\"",
+          "timeout": 5000,
+          "onFailure": "fail"
+        }
+      ]
+    }
+  ]
+}</code></pre>
+          <p style="font-size:0.82rem;color:var(--muted)">
+            这个 Hook 会检测文件路径，匹配 .env / .key / .pem / config.prod / secrets / cookie 时直接阻断写入。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pillar 4: Skills -->
+<section>
+  <div class="pillar-section">
+    <div class="pillar-header green">
+      🧩 支柱四：Skills
+      <span class="badge done">✅ 6 个 Skills 就绪</span>
+    </div>
+    <div class="pillar-body">
+      <p>你已经有一套成熟的 Skill 库：</p>
+      <div class="skill-list">
+        <span class="skill-chip">storage-analyzer</span>
+        <span class="skill-chip">teach</span>
+        <span class="skill-chip">aihot</span>
+        <span class="skill-chip">hv-analysis</span>
+        <span class="skill-chip">khazix-writer</span>
+        <span class="skill-chip">neat-freak</span>
+      </div>
+      <p>
+        这些 Skills 在需要时按需加载（0 token 消耗）。
+        <strong>这个支柱无需改动</strong>——随着工作需要自然增长就好。
+      </p>
+      <p style="font-size:0.85rem;color:var(--muted)">
+        💡 下一个建议的 Skill：<code>crawl-planner</code>（爬虫规划工作流），
+        或 <code>script-writer</code>（广告脚本标准化流程）。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Pillar 5: Commands -->
+<section>
+  <div class="pillar-section">
+    <div class="pillar-header red">
+      ⚡ 支柱五：Custom Commands
+      <span class="badge missing">❌ 现在来创建</span>
+    </div>
+    <div class="pillar-body">
+      <p>针对你的工作（抖音千川编导），创建三个最实用的命令：</p>
+
+      <div class="action-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>/script — 生成广告视频脚本</strong>
+          <p>文件：<code>~/.claude/commands/script.md</code></p>
+          <pre><code>为以下产品/卖点生成一条抖音千川广告视频脚本：$ARGUMENTS
+
+脚本结构：
+1. **黄金3秒钩子**：强视觉冲击或强痛点，开门见山
+2. **痛点放大**（5-8秒）：描述目标用户的真实困扰
+3. **产品登场**（8-15秒）：展示产品如何解决痛点
+4. **社会证明**（15-20秒）：数据、用户评价或权威背书
+5. **行动号召**（最后2秒）：限时/限量/清晰指令
+
+风格要求：
+- 口语化，不写书面语
+- 每句话不超过15字
+- 避免夸大词汇（最、第一、唯一）
+- 输出旁白文案 + 画面描述（分两列）</code></pre>
+        </div>
+      </div>
+
+      <div class="action-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>/analysis — 竞品分析框架</strong>
+          <p>文件：<code>~/.claude/commands/analysis.md</code></p>
+          <pre><code>对以下竞品进行抖音千川广告分析：$ARGUMENTS
+
+分析维度：
+1. **投放策略**：定向人群、出价方式、投放时段
+2. **素材风格**：视频风格、时长、开头钩子类型
+3. **文案特点**：标题公式、痛点切入角度、行动号召
+4. **差异化机会**：对方薄弱的环节，我们可以切入的角度
+
+输出格式：表格 + 简短结论
+
+注意：基于公开可见的广告内容分析，不涉及非公开数据。</code></pre>
+        </div>
+      </div>
+
+      <div class="action-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>/commit — 生成提交信息</strong>
+          <p>文件：<code>~/.claude/commands/commit.md</code></p>
+          <pre><code>根据当前 staged 的变更，生成一条 git commit 信息。
+
+```bash
+git diff --staged
+```
+
+格式：50字以内中文摘要，动词开头（添加/修复/重构/更新）。
+只输出 commit 信息本身，不要解释。</code></pre>
+        </div>
+      </div>
+
+      <p>直接说"帮我创建这三个命令"，我现在就为你建好。</p>
+    </div>
+  </div>
+</section>
+
+<!-- How it all connects -->
+<section>
+  <h2>五个支柱如何协同工作</h2>
+
+  <p>一次完整的工作会话是这样运转的：</p>
+
+  <div class="flow-row">
+    <div class="flow-box claude-md">CLAUDE.md</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">Claude 自动加载：我的角色、偏好、工作上下文，无需重复说明</span>
+  </div>
+  <div class="flow-row">
+    <div class="flow-box settings">Settings</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">权限过滤：危险命令自动拦截，安全操作无感通过</span>
+  </div>
+  <div class="flow-row">
+    <div class="flow-box hooks">Hooks</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">自动守卫：敏感文件被修改前，Hook 先运行并阻断</span>
+  </div>
+  <div class="flow-row">
+    <div class="flow-box skills">Skills</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">按需加载：说出关键词，专用工作流自动激活</span>
+  </div>
+  <div class="flow-row">
+    <div class="flow-box commands">Commands</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">一键触发：/script 产品名 → 完整广告脚本</span>
+  </div>
+  <div class="flow-row" style="margin-top:0.8rem">
+    <div class="flow-box result" style="font-family:sans-serif">= 你的个人 Harness</div>
+    <div class="flow-arrow">→</div>
+    <span style="font-size:0.82rem;color:var(--muted)">Claude 在每个项目里都像了解你的协作者，而不是陌生人</span>
+  </div>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>最终测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">你打开一个新的 Claude Code 会话，什么东西是自动加载的？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">所有 Skills 和 Commands</button></li>
+      <li><button class="quiz-option" data-correct="true">CLAUDE.md + Settings + Hooks（始终生效）</button></li>
+      <li><button class="quiz-option" data-correct="false">只有 Settings（Skills 和 CLAUDE.md 要手动加载）</button></li>
+      <li><button class="quiz-option" data-correct="false">什么都不自动加载，全部手动配置</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！CLAUDE.md + Settings + Hooks 是会话级别的，每次打开自动生效。Skills 按需加载，Commands 等你输入 / 才触发。"
+      data-wrong="CLAUDE.md、Settings、Hooks 三个是'环境层'，每次会话自动加载。Skills 和 Commands 是'触发层'，需要条件触发。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">你写了一个 Hook，exit code 是 2，但 onFailure 是 "warn"——结果是？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">操作被阻断，Claude 停下来</button></li>
+      <li><button class="quiz-option" data-correct="true">显示警告，但操作继续执行</button></li>
+      <li><button class="quiz-option" data-correct="false">Hook 报错，Claude 崩溃</button></li>
+      <li><button class="quiz-option" data-correct="false">什么都不发生</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！真正阻断需要 exit code 2 AND onFailure: &quot;fail&quot; 同时满足。只有 exit 2 配 warn，结果只是警告不阻断。"
+      data-wrong="阻断的充要条件：exit code 2 + onFailure: 'fail'，缺一不可。onFailure: 'warn' 时 exit 2 无法触发阻断。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">你需要一个"爬虫规划"工具：10个步骤、有专属文档、每周用一次、会自动在你说"帮我爬"时触发——应该做成什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">写进 CLAUDE.md</button></li>
+      <li><button class="quiz-option" data-correct="false">做成 Custom Command（.md 文件）</button></li>
+      <li><button class="quiz-option" data-correct="true">做成 Skill（完整目录 + SKILL.md）</button></li>
+      <li><button class="quiz-option" data-correct="false">加进 settings.json 的 allow 列表</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！多步骤 + 专属文档 + 频率低 + 自动触发关键词 = Skill 的四大标志。"
+      data-wrong="判断标准：步骤多/需专属文档/频率低/可关键词触发 → Skill。轻量/用户主动触发/一个文件 → Command。">
+    </div>
+  </div>
+</section>
+
+<!-- Graduation -->
+<div class="graduation">
+  <span class="grad-star">🎓</span>
+  <h2>Harness Engineering 完成！</h2>
+  <p>你已经系统地学完了 Claude Code 的两个完整阶段：</p>
+
+  <div class="completion-items">
+    <div class="comp-item">
+      <span class="comp-count">10</span>
+      claude-howto 模块
+    </div>
+    <div class="comp-item">
+      <span class="comp-count">7</span>
+      Harness Engineering 课
+    </div>
+    <div class="comp-item">
+      <span class="comp-count">17</span>
+      学习记录
+    </div>
+    <div class="comp-item">
+      <span class="comp-count">5</span>
+      Harness 支柱
+    </div>
+  </div>
+
+  <p style="margin-top:1.5rem">
+    你现在拥有的不只是知识——<br>
+    你有一套会记住你、保护你、配合你工作的 Claude 环境。
+  </p>
+</div>
+
+<section>
+  <h2>你的下一步</h2>
+
+  <p>学完之后，最重要的事是<strong>在真实工作中用起来</strong>：</p>
+
+  <ol style="line-height:2.5">
+    <li>把 Hook 配置加进 <code>settings.json</code>（今天就能做）</li>
+    <li>让我帮你创建三个 Commands（说"帮我创建"）</li>
+    <li>强化你的 <code>CLAUDE.md</code>（加工作上下文和命令速查）</li>
+    <li>下次写爬虫时，试试用 <code>storage-analyzer</code> 分析输出结构</li>
+    <li>当某个任务重复超过 3 次，停下来问自己：<em>这能做成 Skill 吗？</em></li>
+  </ol>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">Harness Engineering 最完整的参考</div>
+  <a href="https://restato.github.io/blog/harness-engineering-guide-claude-code/" target="_blank">📖 Harness Engineering Guide — restato.github.io</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">你学完的内容都源自这里。遇到具体问题时回来查。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 现在就可以动手</strong>
+  说"帮我创建三个命令"，我立刻为你建好 /script、/analysis、/commit。
+  说"帮我更新 CLAUDE.md"，我帮你加入工作上下文。
+  说"帮我配置 Hook"，我帮你写入 settings.json。
+</div>
+
+<nav class="lesson-nav">
+  <a href="h006-commands.html">← 上一课：Custom Commands</a>
+  <span style="color:var(--muted);font-size:0.85rem">🎉 课程完成</span>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

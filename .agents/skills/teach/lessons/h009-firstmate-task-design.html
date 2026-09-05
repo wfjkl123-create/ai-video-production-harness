@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H9：把模糊需求改写成 firstmate 任务包</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/quiz.js" defer></script>
+  <style>
+    .formula {
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.2rem;
+      margin: 1.5rem 0;
+      background: white;
+      font-family: sans-serif;
+    }
+    .formula strong {
+      color: var(--accent);
+    }
+    .rewrite-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .rewrite-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: white;
+      overflow: hidden;
+    }
+    .rewrite-card header {
+      margin: 0;
+      padding: 0.7rem 1rem;
+      border-bottom: 1px solid var(--border);
+      font-family: sans-serif;
+      font-size: 0.9rem;
+      background: var(--code-bg);
+    }
+    .rewrite-card .body {
+      padding: 1rem;
+    }
+    .bad {
+      color: #8a1f11;
+    }
+    .good {
+      color: #226622;
+    }
+    .checklist {
+      list-style: none;
+      margin: 1.2rem 0;
+      font-family: sans-serif;
+    }
+    .checklist li {
+      padding: 0.55rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="course-label">Harness Engineering · Firstmate</div>
+  <h1>把模糊需求改写成任务包</h1>
+  <div class="lesson-meta">H9 · 预计 15 分钟 · 目标：让 firstmate 更容易并行、少返工、少误改</div>
+</header>
+
+<section>
+  <h2>先说结论</h2>
+  <p>firstmate 最怕的不是任务难，而是任务边界模糊。你给它一句“帮我优化一下”，它很难知道该调查、该改代码、该跑测试，还是该等你确认。</p>
+  <p>所以你要学的不是写长提示词，而是把需求拆成一个清楚的任务包。</p>
+
+  <div class="formula">
+    <strong>任务包公式：</strong>
+    背景 + 目标 + 任务类型 + 边界 + 验收标准 + 汇报方式
+  </div>
+</section>
+
+<section>
+  <h2>六格模板</h2>
+  <pre><code>背景：我现在遇到/想完成的是……
+目标：最终我希望得到……
+任务类型：先 scout / 直接 ship / scout 后等我确认
+边界：不要改……；不要碰……；只看……
+验收：完成时必须告诉我……；必须跑……
+汇报：用小白能看懂的话，给我结论、风险、下一步。</code></pre>
+
+  <p>如果你不确定怎么填，先把“任务类型”写成 scout。scout 会把未知变少，再决定是否 ship。</p>
+</section>
+
+<section>
+  <h2>三个改写例子</h2>
+
+  <div class="rewrite-grid">
+    <div class="rewrite-card">
+      <header>例子 1：优化项目</header>
+      <div class="body">
+        <p class="bad">坏说法：帮我优化一下这个项目。</p>
+        <p class="good">好说法：</p>
+        <pre><code>请 scout 当前项目。
+不要改文件。
+找出三个最值得优化的点，按收益/风险排序。
+每个点说明：为什么重要、涉及哪些文件、是否适合 ship。
+最后给我一个第一步最小任务建议。</code></pre>
+      </div>
+    </div>
+
+    <div class="rewrite-card">
+      <header>例子 2：修 bug</header>
+      <div class="body">
+        <p class="bad">坏说法：登录坏了，修一下。</p>
+        <p class="good">好说法：</p>
+        <pre><code>请先 scout 登录失败问题。
+已知现象：用户输入正确账号后仍停留在登录页。
+不要改代码。
+请复现问题，定位可能原因，列出最小修复方案。
+如果确认修复范围小，再问我是否转成 ship。</code></pre>
+      </div>
+    </div>
+
+    <div class="rewrite-card">
+      <header>例子 3：并行调研</header>
+      <div class="body">
+        <p class="bad">坏说法：帮我看看这个产品能不能做。</p>
+        <p class="good">好说法：</p>
+        <pre><code>请并行做三个 scout：
+1. 技术可行性：现有代码能不能支撑这个功能
+2. 产品风险：用户流程哪里最容易出错
+3. 实施范围：最小可上线版本需要改哪些模块
+都不要改文件。
+最后合并成一份决策报告：做/不做/先验证什么。</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>什么时候并行</h2>
+  <p>并行适合彼此不互相依赖的任务，例如一个人看测试，一个人看文档，一个人看产品风险。</p>
+  <p>不适合并行的是同一批核心文件的多个改动，因为容易互相打架。遇到这种情况，先 scout，让 firstmate 建议拆分顺序。</p>
+
+  <ul class="checklist">
+    <li>可以并行：多个独立调研。</li>
+    <li>可以并行：一个 ship 加两个 scout。</li>
+    <li>谨慎并行：多个 ship 都改同一模块。</li>
+    <li>不要并行：你自己还没说清楚目标。</li>
+  </ul>
+</section>
+
+<section>
+  <h2>交付前的验收口令</h2>
+  <p>当 firstmate 汇报完成后，你可以直接问：</p>
+  <pre><code>请按验收清单汇报：
+1. 完成了什么
+2. 改了哪些文件
+3. 跑了哪些验证
+4. 剩余风险是什么
+5. 需要我批准什么</code></pre>
+  <p>如果它回答不完整，先让它补充，不要急着合并。</p>
+</section>
+
+<section class="quiz" aria-label="小测验">
+  <div class="quiz-title">快速自检</div>
+  <div class="quiz-question">“帮我优化项目”这种模糊需求，最稳的第一步是什么？</div>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">直接合并</button>
+    <button class="quiz-option" data-correct="true">先做 scout</button>
+    <button class="quiz-option" data-correct="false">同时全改</button>
+  </div>
+  <div class="quiz-feedback" data-correct="对。先 scout，把优化点变成可排序的任务。" data-wrong="不稳。模糊需求先 scout。"></div>
+</section>
+
+<section>
+  <h2>今天的练习</h2>
+  <p>把你最近一个真实想法，用六格模板发给 firstmate。不要追求完美，只要把“不要改文件”和“先 scout”写清楚。</p>
+  <pre><code>背景：
+目标：
+任务类型：先 scout，不要改文件
+边界：
+验收：
+汇报：</code></pre>
+</section>
+
+</body>
+</html>

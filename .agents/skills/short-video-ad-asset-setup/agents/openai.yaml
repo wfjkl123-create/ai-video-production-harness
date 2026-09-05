@@ -1,0 +1,6 @@
+interface:
+  display_name: "Short-video ad asset setup"
+  short_description: "建立可审计的短视频广告审核、连续切分、产品审计与视觉资产流程"
+  default_prompt: "Use $short-video-ad-asset-setup to set up a reviewable short-video ad asset project from my brief, references, and product image."
+policy:
+  allow_implicit_invocation: true

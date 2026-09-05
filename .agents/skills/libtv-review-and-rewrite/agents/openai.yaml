@@ -1,0 +1,4 @@
+interface:
+  display_name: "LibTV 审片与改写"
+  short_description: "直审生成稿、定位根因并给出最低成本修复与提示词重写"
+  default_prompt: "使用 $libtv-review-and-rewrite 审查这版 LibTV 生成稿，直接说明问题、原因和修复办法。"

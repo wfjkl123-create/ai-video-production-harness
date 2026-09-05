@@ -6,7 +6,7 @@
 
 > 默认生成路由：Codex `image_gen`。只有用户当前明确指定其他图片平台时才切换；模板内容与零上下文合同不因平台变化而省略。
 
-> 已接受实战配方：`knowledge/accepted-asset-prompt-recipes/2026-07-30-imagegen-gate2-v3.md`。后续制作 40+ 生活流短剧人物板、场景九宫格、产品四区板、站位图和调度图时，先使用本文件的基础模板，再加载该配方中的 Gate 2 通过经验与反例规则。
+> 已接受通用配方：`knowledge/accepted-asset-prompt-recipes/asset-contract-v1.md`。后续制作人物板、场景九宫格、产品视图、站位图和调度图时，先使用本文件的基础模板，再加载该配方中的 Gate 2/3 验收约束；不得引用任何真实项目案例作为隐藏上下文。
 
 ---
 

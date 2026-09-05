@@ -1,0 +1,117 @@
+[
+  {
+    "name": "abstract_dialogue_must_fail",
+    "profile": "dialogue",
+    "duration": 7,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["MISSING_PERFORMANCE_TIMELINE", "ABSTRACT_EMOTION_WITHOUT_CARRIER", "NEGATIVE_OVERLOAD"],
+    "prompt": "两个人自然地聊天。甲很克制地说：“你怎么还穿这个？”乙尴尬地问：“那我穿什么？”不要僵硬，不要看镜头，不要假笑，不要塑料皮肤，不要字幕，不要文字，不要水印，不要夸张，不要卡顿，不要多余动作。"
+  },
+  {
+    "name": "timecoded_lived_in_dialogue_passes",
+    "profile": "dialogue",
+    "duration": 7,
+    "expectedStatus": "PASS",
+    "expectedCodes": [],
+    "prompt": "0-0.7秒：乙原本在整理肩上的包带，甲看到包带旁的衣领，视线从衣领移到乙的脸。0.7-3.8秒：甲下颌轻收，先看向乙的脸再开口说：“这件不合适。”听者乙仍捏着包带，听见这句话时拇指停住，短促鼻息后没有立刻转头。3.8-5.2秒：乙眼睛先看向甲，头晚半拍跟过去，选择把不舒服压住；对方甲看见后收住准备继续说的气口。5.2-6.5秒：乙音量略低地开口问：“那我穿什么？”说后仍看着甲；听者甲肩膀松开一点，视线留在乙脸上。6.5-7秒：收尾末态保持两人原位，乙手指仍搭在包带上，甲没有定格，远处路人从背景经过。无字幕、无水印。"
+  },
+  {
+    "name": "generic_nod_is_not_performance",
+    "profile": "dialogue",
+    "duration": 5,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["MISSING_PERFORMANCE_TIMELINE", "GENERIC_REACTION_ACTION"],
+    "prompt": "两人面对面。甲自然地介绍产品，乙轻轻点头，然后甲说：“你试试。”乙说：“好。”最后开心微笑。"
+  },
+  {
+    "name": "keyword_stuffing_without_dialogue_fails",
+    "profile": "dialogue",
+    "duration": 3,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["MISSING_DIALOGUE"],
+    "prompt": "0-1秒：听见。1-2秒：视线、呼吸、选择、对方反馈。2-3秒：收尾末态。"
+  },
+  {
+    "name": "out_of_order_timeline_fails",
+    "profile": "dialogue",
+    "duration": 3,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["TIMELINE_OUT_OF_ORDER"],
+    "prompt": "2-3秒：收尾末态，对方肩膀放松。0-1秒：甲看到乙，视线转过去，手指停住，开口说：“你还好吗？”听者乙没有立刻回答。1-2秒：乙选择移开目光，呼吸停半拍。"
+  },
+  {
+    "name": "dialogue_without_trigger_clock_fails",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["MISSING_DIALOGUE_TRIGGER_CLOCK"],
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲看向乙，开口说：“钥匙还你。”听者乙手指停住，呼吸变轻。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。"
+  },
+  {
+    "name": "facs_codes_never_enter_model_prompt",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["FACS_AU_IN_MODEL_PROMPT"],
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲说到“还给你”后才把钥匙推向乙，开口说：“钥匙还给你。”听者乙听见后手指停住，眉间收紧，内部使用AU4校准。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。"
+  },
+  {
+    "name": "bare_au_never_enters_model_prompt",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["FACS_AU_IN_MODEL_PROMPT"],
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲说到“还给你”后才把钥匙推向乙，开口说：“钥匙还给你。”听者乙听见后手指停住，眉间收紧，内部使用AU校准。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。"
+  },
+  {
+    "name": "action_unit_words_never_enter_model_prompt",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["FACS_AU_IN_MODEL_PROMPT"],
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲说到“还给你”后才把钥匙推向乙，开口说：“钥匙还给你。”听者乙听见后手指停住，眉间收紧，内部使用Action Unit校准。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。"
+  },
+  {
+    "name": "reversed_time_range_fails",
+    "profile": "dialogue",
+    "duration": 2,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["INVALID_TIME_RANGE"],
+    "prompt": "0-1秒：甲看到乙，视线移向对方，手指停住，开口说：“你还好吗？”听者乙听见后没有立刻回答。1-2秒：乙选择移开目光，呼吸停半拍，对方肩膀放松。2-1秒：收尾末态。"
+  },
+  {
+    "name": "dialogue_before_timeline_fails",
+    "profile": "dialogue",
+    "duration": 3,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["DIALOGUE_OUTSIDE_TIMELINE"],
+    "prompt": "人物甲开口说：“你还好吗？” 0-1秒：甲看到乙，视线移向对方，手指停住。1-2秒：听者乙听见后没有立刻回答，呼吸停半拍，选择移开目光。2-3秒：对方肩膀放松，收尾末态。"
+  },
+  {
+    "name": "compiler_governance_blocks_do_not_create_dialogue_or_negative_overload",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "PASS",
+    "expectedCodes": [],
+    "expectedDialogueCount": 1,
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲说到还给你后才把钥匙推向乙，开口说：“钥匙还给你。”听者乙听见后手指停住，呼吸变轻，没有立刻回答。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。\n【director-constraints-v1｜S01】\n动作终点：钥匙停在乙手边。\n禁止动作：无动机挥手；机械重复\n【/director-constraints-v1｜S01】\n【performance-continuity-v1｜S01｜person-a】\n禁止提前反应：直到甲说出“还给你”才允许乙移动手指。\n结束状态：钥匙停在乙手边。\n连续保留：两人身份与桌面位置不变。\n【/performance-continuity-v1｜S01】"
+  },
+  {
+    "name": "mismatched_governance_close_cannot_hide_negative_prose",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "FAIL",
+    "expectedCodes": ["MALFORMED_GOVERNANCE_BLOCK", "NEGATIVE_OVERLOAD"],
+    "expectedDialogueCount": 1,
+    "prompt": "0-1秒：甲看到桌上的钥匙，视线停在钥匙上，拇指压住票据。1-2秒：甲说到还给你后才把钥匙推向乙，开口说：“钥匙还给你。”听者乙听见后手指停住，呼吸变轻，没有立刻回答。2-3秒：乙选择移开目光，对方甲收住气口。3-4秒：收尾末态保持两人原位，乙手仍停在桌沿，人物没有定格。\n【director-constraints-v1｜S01】禁止挥手，不要假笑，不得跳切，不能重置，避免穿模，无字幕，无文字，无水印，不看镜头。【/performance-continuity-v1｜S01】"
+  },
+  {
+    "name": "long_dialogue_and_original_audio_continue_are_counted",
+    "profile": "dialogue",
+    "duration": 4,
+    "expectedStatus": "PASS",
+    "expectedCodes": [],
+    "expectedDialogueCount": 2,
+    "prompt": "0-1秒：人物看到产品，视线移向手指，身体略微靠近。1-2秒：她说到舒适后才靠近镜头，按原音频说：“This deliberately long spoken sentence contains more than one hundred characters so the validator must keep the whole real dialogue turn instead of silently dropping it.”听者从镜头看见她的呼吸变化，肩膀放松，没有立刻移开视线。2-3秒：她按原音频继续：“Still comfortable.”听者仍看向她的手指，选择继续保持静默。3-4秒：最后保持原位，手指松开布料，留下呼吸余波。"
+  }
+]

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 1 课：斜杠命令 — Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 10%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 1</div>
+  <h1>斜杠命令：你的第一个超能力</h1>
+  <div class="lesson-meta">第 1 课，共 10 模块 · 预计 10 分钟</div>
+</header>
+
+<section>
+  <h2>你已经用过它了</h2>
+
+  <p>
+    你学这门课的方式，就是通过一个斜杠命令：<code>/teach</code>。
+    在 Claude Code 的输入框里输入 <code>/</code>，就会弹出一个命令菜单——这些就是<strong>斜杠命令（Slash Commands）</strong>。
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">核心概念</div>
+    斜杠命令是你给 Claude 发出的<strong>快捷指令</strong>。一个命令背后，可能藏着几百行复杂的行为说明——你只需要输入几个字，就能触发它。
+  </div>
+
+  <p>
+    想象它是一个咖啡馆的点单系统。你不需要每次都说"帮我做一杯意式浓缩，加两份奶泡，温度 70 度……"，你只需要说"一杯拿铁"——背后的复杂流程已经被预先定义好了。
+  </p>
+</section>
+
+<section>
+  <h2>斜杠命令在哪里</h2>
+
+  <p>斜杠命令有两个来源：</p>
+
+  <h3>1. 内置命令（Claude Code 自带）</h3>
+  <p>这些命令安装 Claude Code 就有，不需要任何配置。常见的有：</p>
+
+  <pre><code>/help          查看帮助
+/clear         清空当前对话
+/config        打开设置
+/review        审查当前代码变更
+/init          为当前项目生成 CLAUDE.md 文档
+/memory        查看和编辑 Claude 的记忆</code></pre>
+
+  <h3>2. 自定义命令（放在 <code>commands/</code> 目录里）</h3>
+  <p>
+    你可以自己写命令，或者安装插件获得新命令。命令的本质是一个 <code>.md</code> 文件，放在特定路径下：
+  </p>
+
+  <pre><code>~/.claude/commands/        ← 全局命令（任何项目都能用）
+.claude/commands/          ← 项目命令（只在当前项目有效）</code></pre>
+
+  <p>
+    你现在用的 <code>/teach</code> 就是一个自定义命令，它的定义文件在
+    <code>~/.claude/skills/teach/SKILL.md</code>。
+  </p>
+</section>
+
+<section>
+  <h2>命令文件长什么样</h2>
+
+  <p>每个命令其实就是一个 Markdown 文件，里面写的是<em>给 Claude 的指令</em>。比如一个简单的命令：</p>
+
+  <pre><code># /hello
+
+向用户用中文打招呼，并问他们今天想学什么。</code></pre>
+
+  <p>把这个文件保存为 <code>~/.claude/commands/hello.md</code>，重启 Claude Code 后，你就可以在任何地方输入 <code>/hello</code> 来触发它。</p>
+
+  <div class="callout">
+    <div class="callout-label">关键规律</div>
+    <strong>文件名 = 命令名。</strong>文件 <code>hello.md</code> → 命令 <code>/hello</code>。文件里的内容 = Claude 收到这个命令后要做的事。
+  </div>
+</section>
+
+<section>
+  <h2>动手：查看你有哪些命令</h2>
+
+  <p>现在，在 Claude Code 的输入框里输入 <code>/</code>（不要按回车），看看弹出的命令列表。</p>
+
+  <p>你会看到：</p>
+  <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2;">
+    <li>一些带 <strong>🔧</strong> 图标的内置命令</li>
+    <li>你安装的斜杠技能，比如 <code>/teach</code></li>
+  </ul>
+
+  <p>这就是你目前拥有的"工具箱"。</p>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+  <p>测验帮助你记住知识。每道题都试着从记忆中回答，不要往上翻。</p>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">斜杠命令的本质是什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">Claude Code 安装包自带的二进制程序</button></li>
+      <li><button class="quiz-option" data-correct="true">放在特定目录下的 Markdown 文件</button></li>
+      <li><button class="quiz-option" data-correct="false">发送到 Anthropic 服务器的 API 请求</button></li>
+      <li><button class="quiz-option" data-correct="false">Claude Code 里的图形界面按钮</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！命令就是 .md 文件，文件名就是命令名，文件内容是给 Claude 的指令。"
+      data-wrong="不是。斜杠命令其实非常简单——它就是一个 Markdown 文本文件。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">你想创建一个只在"当前项目"里生效的斜杠命令，文件应该放在哪？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">~/.claude/commands/</button></li>
+      <li><button class="quiz-option" data-correct="true">.claude/commands/（项目根目录下）</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/skills/</button></li>
+      <li><button class="quiz-option" data-correct="false">任意位置都可以</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！项目级命令放在项目根目录的 .claude/commands/ 里，全局命令放在 ~/.claude/commands/ 里。"
+      data-wrong="再想想：题目说的是「只在当前项目里生效」，这对应的是哪个路径？">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">文件名为 <code>summarize.md</code> 的命令，用户应该输入什么来触发它？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">/summarize.md</button></li>
+      <li><button class="quiz-option" data-correct="false">run summarize</button></li>
+      <li><button class="quiz-option" data-correct="true">/summarize</button></li>
+      <li><button class="quiz-option" data-correct="false">!summarize</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！文件名去掉 .md 扩展名，加上 / 前缀，就是命令名。"
+      data-wrong="规律是：文件名（去掉 .md）= 命令名。所以 summarize.md → /summarize。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    你已经理解了斜杠命令的工作原理。下一课，我们会学 <strong>Memory（记忆）</strong>——Claude 如何跨会话记住你的偏好和项目背景，让它越用越"懂你"。
+  </p>
+  <p>
+    你也可以现在就动手创建你的第一个命令——只需要在 <code>~/.claude/commands/</code> 下新建一个 <code>.md</code> 文件，写上你想要 Claude 做的事情。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 1 — Slash Commands</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">本课程的主要教材，有大量可复制的命令模板。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  我是你的老师。如果有什么不清楚的、想深入了解的，或者想动手试试什么，直接在对话框里告诉我就好。
+</div>
+
+<nav class="lesson-nav">
+  <span style="color: var(--muted)">← 上一课</span>
+  <a href="0002-memory.html">下一课：Memory（记忆）→</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

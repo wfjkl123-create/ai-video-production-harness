@@ -1,0 +1,58 @@
+[
+  {
+    "id": "canonical-asset-role",
+    "mode": "standard",
+    "duration": 15,
+    "prompt": "@素材[person-a]只负责人物身份、发型和当前服装。全片保持人物一致，无字幕。",
+    "mustPass": true,
+    "mustContainCodes": []
+  },
+  {
+    "id": "extension-explicit-append",
+    "mode": "extend",
+    "duration": 5,
+    "prompt": "新增0–5秒接在@素材[source-a]原片末帧之后；继承末尾人物朝向、门把手位置、走廊光线和环境声。人物继续关门，原片保持不变。",
+    "mustPass": true,
+    "mustContainCodes": []
+  },
+  {
+    "id": "extension-ambiguous-direction",
+    "mode": "extend",
+    "duration": 5,
+    "prompt": "参考@素材[source-a]向前续写5秒，人物走进房间并保持一致。",
+    "mustPass": false,
+    "mustContainCodes": ["EXTEND_DIRECTION_AMBIGUOUS", "EXTEND_BOUNDARY"]
+  },
+  {
+    "id": "extension-missing-boundary",
+    "mode": "extend",
+    "duration": 5,
+    "prompt": "继承原片末尾人物朝向、走廊光线和环境声，人物继续关门。",
+    "mustPass": false,
+    "mustContainCodes": ["EXTEND_BOUNDARY"]
+  },
+  {
+    "id": "marked-edit-preserves-context",
+    "mode": "edit",
+    "duration": 8,
+    "prompt": "5–8秒把红框内蓝色杯子替换成白色花瓶；保留框外人物、动作、背景、机位和声音。",
+    "mustPass": true,
+    "mustContainCodes": []
+  },
+  {
+    "id": "coarse-white-model-role",
+    "mode": "white_model",
+    "duration": 12,
+    "prompt": "白模只负责女王的动作、站位和运镜；人物身份与服装由@素材[queen-a]负责，移除坐标轴和轨迹线。",
+    "mustPass": true,
+    "mustContainCodes": []
+  },
+  {
+    "id": "ordered-storyboard",
+    "mode": "storyboard",
+    "duration": 15,
+    "prompt": "@素材[board-a]每格是一镜，按左上到右下的阅读顺序播放；@素材[hero-a]只负责主角身份，保持跨格站位连续。",
+    "mustPass": true,
+    "mustContainCodes": []
+  }
+]

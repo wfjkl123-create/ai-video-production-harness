@@ -1,0 +1,4 @@
+interface:
+  display_name: "Seedance 2.x 提示词导演"
+  short_description: "导演式 Seedance 提示词，人物对白强制通过表演语义硬门"
+  default_prompt: "Use $seedance2-prompt and its integrated Seedance 2.0 v6.7 knowledge to turn my idea or source material into a self-contained Seedance 2.0/2.5 prompt. For any visible human emotion, dialogue, or relationship change, load reference 39, write a continuous timecoded trigger-to-reaction performance chain for every speaker and listener, run validate_narrative_performance.py against the final file, and do not call it final or generation-ready unless both the SHA-bound validator and a manual beat-by-beat enactment pass."

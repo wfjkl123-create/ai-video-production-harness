@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H3 课：Settings & Permissions — Harness Engineering</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .phase-banner {
+      background: #1a1a2e;
+      color: #e8e0ff;
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .phase-banner strong { color: white; }
+
+    .scope-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-family: sans-serif;
+      font-size: 0.86rem;
+    }
+    .scope-table th {
+      background: #f4f4f0;
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .scope-table td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .scope-table tr:nth-child(even) td { background: #fafaf6; }
+    .scope-table .highlight td { background: #fff8e8; }
+
+    .permission-anatomy {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .perm-block {
+      border-radius: 8px;
+      padding: 1.1rem;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .perm-block.allow { background: #f0fff0; border: 1.5px solid #9c9; }
+    .perm-block.deny  { background: #fff5f5; border: 1.5px solid #e99; }
+    .perm-block h3 { margin: 0 0 0.6rem; font-size: 0.9rem; padding: 0; border: none; }
+    .perm-block.allow h3 { color: #060; }
+    .perm-block.deny  h3 { color: #900; }
+    .perm-block ul { margin: 0; padding-left: 1.1rem; line-height: 2.1; color: var(--muted); font-size: 0.82rem; }
+
+    .rule-example {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .rule-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .rule-row:last-child { border-bottom: none; }
+    .rule-pattern {
+      padding: 0.65rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+    .rule-meaning {
+      padding: 0.65rem 1rem;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .current-settings {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.83rem;
+      line-height: 1.8;
+      margin: 1.2rem 0;
+      position: relative;
+    }
+    .current-settings .cs-label {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.75rem;
+      font-size: 0.7rem;
+      color: #6c7086;
+      font-family: sans-serif;
+    }
+    .cs-key   { color: #89b4fa; }
+    .cs-str   { color: #a6e3a1; }
+    .cs-bool  { color: #fab387; }
+    .cs-comment { color: #6c7086; font-style: italic; }
+
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1.2rem 0;
+    }
+    .phi-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .phi-card h3 { font-size: 0.9rem; margin: 0 0 0.5rem; padding: 0; border: none; }
+    .phi-card p  { margin: 0; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+    .phi-card.bad  { border-color: #e99; }
+    .phi-card.good { border-color: #9c9; }
+    .phi-card.bad  h3 { color: #900; }
+    .phi-card.good h3 { color: #060; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 42%"></div>
+</div>
+
+<div class="phase-banner">
+  <div>🏗️</div>
+  <div><strong>Harness Engineering · 第 3 课</strong> — 共 7 课</div>
+</div>
+
+<header>
+  <div class="course-label">Harness Engineering · 支柱 2</div>
+  <h1>Settings & Permissions：为 Harness 建立安全边界</h1>
+  <div class="lesson-meta">第 3 课，共 7 课 · 预计 12 分钟</div>
+</header>
+
+<section>
+  <h2>你的 settings.json 现在长这样</h2>
+
+  <p>你目前的 <code>~/.claude/settings.json</code>：</p>
+
+  <div class="current-settings">
+    <div class="cs-label">~/.claude/settings.json（当前）</div>
+    {<br>
+    &nbsp;&nbsp;<span class="cs-key">"env"</span>: {},<br>
+    &nbsp;&nbsp;<span class="cs-key">"statusLine"</span>: { <span class="cs-comment">← claude-hud 插件加的</span><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-key">"type"</span>: <span class="cs-str">"command"</span>,<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="cs-key">"command"</span>: <span class="cs-str">"..."</span><br>
+    &nbsp;&nbsp;},<br>
+    &nbsp;&nbsp;<span class="cs-key">"skipDangerousModePermissionPrompt"</span>: <span class="cs-bool">true</span>  <span class="cs-comment">← 跳过危险操作提示</span><br>
+    }
+  </div>
+
+  <p>
+    目前没有任何权限规则——Claude 基本上可以做任何事。
+    这节课教你如何用 <code>permissions</code> 字段给它装上"护栏"。
+  </p>
+</section>
+
+<section>
+  <h2>三层 settings.json</h2>
+
+  <p>settings.json 和 CLAUDE.md 一样，也有层级：</p>
+
+  <table class="scope-table">
+    <thead>
+      <tr>
+        <th>文件位置</th>
+        <th>作用范围</th>
+        <th>是否提交到 Git</th>
+        <th>用途</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>~/.claude/settings.json</code></td>
+        <td>所有项目</td>
+        <td>否（个人机器）</td>
+        <td>个人全局偏好、全局 Hooks</td>
+      </tr>
+      <tr class="highlight">
+        <td><code>.claude/settings.json</code></td>
+        <td>当前项目</td>
+        <td><strong>是</strong>（团队共享）</td>
+        <td>项目权限规则、项目 Hooks</td>
+      </tr>
+      <tr>
+        <td><code>.claude/settings.local.json</code></td>
+        <td>当前项目</td>
+        <td>否（.gitignore）</td>
+        <td>个人的项目级配置（不想提交的）</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">重要</div>
+    项目的 <code>.claude/settings.json</code> 会提交到 Git，团队所有人共享同一套规则。
+    个人的 API Key、本地路径等敏感信息写在 <code>settings.local.json</code> 里，加入 .gitignore。
+  </div>
+</section>
+
+<section>
+  <h2>权限系统：allow 和 deny</h2>
+
+  <p>
+    <code>permissions</code> 字段有两个列表，逻辑很简单：
+    <strong>deny 永远优先于 allow</strong>。
+  </p>
+
+  <div class="permission-anatomy">
+    <div class="perm-block allow">
+      <h3>✅ allow（白名单）</h3>
+      <ul>
+        <li>明确允许的操作</li>
+        <li>Claude 可以不经询问直接执行</li>
+        <li>减少权限确认弹窗的摩擦</li>
+      </ul>
+    </div>
+    <div class="perm-block deny">
+      <h3>🚫 deny（黑名单）</h3>
+      <ul>
+        <li>明确禁止的操作</li>
+        <li>Claude 尝试执行时会被阻止</li>
+        <li><strong>优先级高于 allow</strong></li>
+      </ul>
+    </div>
+  </div>
+
+  <pre><code>{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Bash(npm run test)",
+      "Bash(npm run lint)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)",
+      "Bash(DROP TABLE:*)"
+    ]
+  }
+}</code></pre>
+</section>
+
+<section>
+  <h2>权限规则的写法</h2>
+
+  <p>规则支持精确匹配和通配符，从宽到窄：</p>
+
+  <div class="rule-example">
+    <div class="rule-row">
+      <div class="rule-pattern">"Read"</div>
+      <div class="rule-meaning">允许读取所有文件，不限路径</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-pattern">"Bash(npm run test)"</div>
+      <div class="rule-meaning">只允许这一条精确命令</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-pattern">"Bash(npm run:*)"</div>
+      <div class="rule-meaning">允许所有 npm run 开头的命令</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-pattern">"Bash(git:*)"</div>
+      <div class="rule-meaning">允许所有 git 命令</div>
+    </div>
+    <div class="rule-row">
+      <div class="rule-pattern">"Bash(rm -rf:*)"</div>
+      <div class="rule-meaning">禁止所有 rm -rf（放在 deny 里）</div>
+    </div>
+  </div>
+
+  <p>常用的工具名称：<code>Read</code>、<code>Edit</code>、<code>Write</code>、<code>Bash</code>、<code>WebFetch</code>、<code>WebSearch</code></p>
+</section>
+
+<section>
+  <h2>正确的权限哲学</h2>
+
+  <p>关于权限管控，有两个常见的错误极端：</p>
+
+  <div class="philosophy-grid">
+    <div class="phi-card bad">
+      <h3>❌ 过度限制</h3>
+      <p>"拒绝一切，只允许最小权限"——听起来安全，但 Claude 无法调查问题、查看日志、运行测试，彻底瘫痪。</p>
+    </div>
+    <div class="phi-card bad">
+      <h3>❌ 完全放开</h3>
+      <p>不设任何 deny，Claude 可能意外执行 force push、删除文件、修改生产配置。</p>
+    </div>
+    <div class="phi-card good" style="grid-column: 1 / -1;">
+      <h3>✅ 精准防护（推荐）</h3>
+      <p>只 deny 真正危险的、不可逆的操作（force push、rm -rf、生产数据库写入）。
+      其余保持开放，让 Claude 能自由探索和解决问题。</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>一套实用的起点配置</h2>
+
+  <p>这是一个适合大多数个人项目的 <code>.claude/settings.json</code> 起点：</p>
+
+  <pre><code>{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "Write",
+      "Bash(npm run:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ],
+    "deny": [
+      "Bash(git push --force:*)",
+      "Bash(rm -rf:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(DROP:*)",
+      "Bash(DELETE FROM:*)"
+    ]
+  }
+}</code></pre>
+
+  <p>
+    这个配置让 Claude 可以自由读写代码、跑测试、做 Git 提交，
+    但阻止它做任何不可逆的危险操作。
+  </p>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">allow 列表里有 "Bash(git:*)"，deny 列表里有 "Bash(git push --force:*)"，Claude 执行 git push --force 时会怎样？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">正常执行，因为 allow 里有 git:*</button></li>
+      <li><button class="quiz-option" data-correct="true">被阻止，因为 deny 的优先级永远高于 allow</button></li>
+      <li><button class="quiz-option" data-correct="false">弹出确认框，让用户决定</button></li>
+      <li><button class="quiz-option" data-correct="false">取决于两条规则哪个写在前面</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！deny 永远优先于 allow。无论 allow 里写了什么，deny 列表里的规则都会生效。"
+      data-wrong="核心规则：deny 的优先级永远高于 allow，跟顺序无关。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">你在团队项目里有一个 API Token，不想提交到 Git，应该放在哪个文件？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">.claude/settings.json</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/CLAUDE.md</button></li>
+      <li><button class="quiz-option" data-correct="true">.claude/settings.local.json</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/settings.json</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！settings.local.json 专门用来放个人的、不想提交到 Git 的配置（它默认被 .gitignore）。"
+      data-wrong="敏感信息放在 settings.local.json，它不会被提交到 Git。settings.json 会被团队共享。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">以下哪条是"精准防护"哲学的正确做法？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">deny 所有 Bash 命令，只允许 Read 和 Write</button></li>
+      <li><button class="quiz-option" data-correct="false">不设任何 deny，完全信任 Claude</button></li>
+      <li><button class="quiz-option" data-correct="true">只 deny 不可逆的危险操作，其余保持开放</button></li>
+      <li><button class="quiz-option" data-correct="false">每次操作都弹确认框，逐一批准</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！精准防护 = 只拦截真正危险的操作，保留 Claude 自由探索的能力。"
+      data-wrong="精准防护的核心是「只堵危险的口子」——过度限制会让 Claude 无法正常工作。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>下一课</h2>
+  <p>
+    <strong>Hooks 深度实践</strong>——把 claude-howto 里学过的 Hooks 概念，
+    升级为真正能在你的 Harness 里运转的自动化工作流。
+    我们会写几个真实可用的 Hook 脚本。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://restato.github.io/blog/harness-engineering-guide-claude-code/" target="_blank">📖 Harness Engineering Guide — Settings & Permissions 章节</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含不同项目类型（前端/后端/数据库）的权限配置模板。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"能帮我检查一下我的权限配置合不合理吗"、"WebFetch 权限怎么控制"——直接说就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="h002-claude-md.html">← 上一课：CLAUDE.md 工程化</a>
+  <a href="h004-hooks-deep.html">下一课：Hooks 深度实践 →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>
