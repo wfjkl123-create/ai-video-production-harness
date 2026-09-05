@@ -1,0 +1,16 @@
+{
+  "shotStructure": "editorial_sequence",
+  "cameraComposition": "standard",
+  "controlMode": "standard",
+  "shotCount": 2,
+  "peopleCount": 2,
+  "hasPreviousSegment": true,
+  "strictSpatialCarryover": false,
+  "hasDialogue": true,
+  "complexPhysicalAction": false,
+  "complexBlocking": false,
+  "productInteraction": "none",
+  "motionReferenceAvailable": false,
+  "visibleDrift": false,
+  "extensionDepth": 0
+}

@@ -1,0 +1,310 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "creative-brief.schema.json",
+  "title": "Gate 1 Director Creative Decision",
+  "type": "object",
+  "required": ["schemaVersion", "id", "projectId", "targetDurationSec", "creativeDecision", "lockedConstraints"],
+  "properties": {
+    "schemaVersion": { "enum": [1, 2, 3] },
+    "id": { "$ref": "#/$defs/id" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "targetDurationSec": { "type": "number", "minimum": 1, "maximum": 3600 },
+    "creativeDecision": {
+      "type": "object",
+      "properties": {
+        "storyDirection": { "$ref": "#/$defs/nonEmptyText" },
+        "successDefinition": { "$ref": "#/$defs/nonEmptyText" },
+        "segmentationStrategy": { "enum": ["scene", "story_beat", "hybrid", "single_clip"] },
+        "segmentationRationale": { "$ref": "#/$defs/nonEmptyText" },
+        "executionMode": { "enum": ["parallel", "sequential", "mixed"] },
+        "assetExecutionMode": { "enum": ["parallel", "sequential", "mixed"] },
+        "videoExecutionMode": { "enum": ["parallel", "sequential", "mixed"] },
+        "parallelPlan": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+        "estimatedAssetCombination": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+        "visualControlMethod": { "enum": ["storyboard", "depth", "modeling"] },
+        "referenceWorkflow": {
+          "type": "object",
+          "required": ["referenceIntent", "sourceVideoIds"],
+          "properties": {
+            "referenceIntent": { "enum": ["idea_only", "inspiration_only", "faithful_remake", "source_modification"] },
+            "sourceVideoIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+            "sourceRole": { "enum": ["none", "inspiration", "authority"] },
+            "workflowRoute": { "enum": ["standard_creation", "source_fact"] },
+            "requiresSourceFactWorkflow": { "type": "boolean" },
+            "requiredStages": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          },
+          "additionalProperties": false
+        },
+        "directorCreativeContract": { "$ref": "#/$defs/directorCreativeContract" },
+        "revisionImpact": { "$ref": "#/$defs/revisionImpact" }
+      },
+      "required": ["storyDirection", "successDefinition", "segmentationStrategy", "segmentationRationale", "executionMode", "assetExecutionMode", "videoExecutionMode", "parallelPlan", "estimatedAssetCombination"]
+    },
+    "lockedConstraints": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "schemaVersion": { "enum": [2, 3] } }, "required": ["schemaVersion"] },
+      "then": { "properties": { "creativeDecision": { "required": ["referenceWorkflow"] } } }
+    },
+    {
+      "if": { "properties": { "schemaVersion": { "const": 3 } }, "required": ["schemaVersion"] },
+      "then": { "properties": { "creativeDecision": { "required": ["directorCreativeContract", "revisionImpact"] } } }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "nonEmptyText": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "textArray": { "type": "array", "items": { "$ref": "#/$defs/nonEmptyText" } },
+    "directorCreativeContract": {
+      "type": "object",
+      "required": ["structureMode", "characterMode", "projectIntent", "recommendedDirection", "alternativesConsidered", "characters", "storyOutline", "scenePriorities", "emotionAndRhythm", "audiovisualStrategy", "creativeBoundaries", "uncertaintyLedger", "decisionLedger", "provisionalExecution"],
+      "properties": {
+        "structureMode": { "enum": ["narrative", "montage", "interview", "product_demo", "local_edit", "faithful_remake", "other"] },
+        "characterMode": { "enum": ["character_driven", "subject_only", "none"] },
+        "projectIntent": {
+          "type": "object",
+          "required": ["purpose", "audience", "desiredAudienceEffect", "deliveryContext", "commercialIntent"],
+          "properties": {
+            "purpose": { "$ref": "#/$defs/nonEmptyText" },
+            "audience": { "$ref": "#/$defs/nonEmptyText" },
+            "desiredAudienceEffect": { "$ref": "#/$defs/nonEmptyText" },
+            "deliveryContext": { "$ref": "#/$defs/nonEmptyText" },
+            "commercialIntent": { "type": "boolean" },
+            "productDramaticFunction": { "$ref": "#/$defs/nonEmptyText" },
+            "nonCommercialRationale": { "$ref": "#/$defs/nonEmptyText" }
+          },
+          "allOf": [
+            { "if": { "properties": { "commercialIntent": { "const": true } }, "required": ["commercialIntent"] }, "then": { "required": ["productDramaticFunction"], "not": { "required": ["nonCommercialRationale"] } } },
+            { "if": { "properties": { "commercialIntent": { "const": false } }, "required": ["commercialIntent"] }, "then": { "required": ["nonCommercialRationale"], "not": { "required": ["productDramaticFunction"] } } }
+          ],
+          "additionalProperties": false
+        },
+        "recommendedDirection": {
+          "type": "object",
+          "required": ["directionId", "logline", "coreMeaning", "extensionOfUserIdea", "openingDesign", "progressionLogic", "recommendationRationale"],
+          "properties": {
+            "directionId": { "$ref": "#/$defs/id" },
+            "logline": { "$ref": "#/$defs/nonEmptyText" },
+            "coreMeaning": { "$ref": "#/$defs/nonEmptyText" },
+            "extensionOfUserIdea": { "$ref": "#/$defs/nonEmptyText" },
+            "openingDesign": {
+              "type": "object",
+              "required": ["firstFrame", "trigger", "audienceQuestion", "storyBridge", "rationale"],
+              "properties": {
+                "firstFrame": { "$ref": "#/$defs/nonEmptyText" },
+                "trigger": { "$ref": "#/$defs/nonEmptyText" },
+                "audienceQuestion": { "$ref": "#/$defs/nonEmptyText" },
+                "storyBridge": { "$ref": "#/$defs/nonEmptyText" },
+                "rationale": { "$ref": "#/$defs/nonEmptyText" }
+              },
+              "additionalProperties": false
+            },
+            "centralConflict": { "$ref": "#/$defs/nonEmptyText" },
+            "coreTurn": { "$ref": "#/$defs/nonEmptyText" },
+            "endingPayoff": { "$ref": "#/$defs/nonEmptyText" },
+            "progressionLogic": { "$ref": "#/$defs/nonEmptyText" },
+            "recommendationRationale": {
+              "type": "object",
+              "required": ["audienceEffect", "storyCausality", "executionRisk"],
+              "properties": {
+                "audienceEffect": { "$ref": "#/$defs/nonEmptyText" },
+                "storyCausality": { "$ref": "#/$defs/nonEmptyText" },
+                "productFunction": { "$ref": "#/$defs/nonEmptyText" },
+                "executionRisk": { "$ref": "#/$defs/nonEmptyText" }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "alternativesConsidered": {
+          "type": "array",
+          "maxItems": 2,
+          "items": {
+            "type": "object",
+            "required": ["directionId", "materialDifference", "expectedAudienceEffect", "tradeoff", "notSelectedReason"],
+            "properties": {
+              "directionId": { "$ref": "#/$defs/id" },
+              "materialDifference": { "$ref": "#/$defs/nonEmptyText" },
+              "expectedAudienceEffect": { "$ref": "#/$defs/nonEmptyText" },
+              "tradeoff": { "$ref": "#/$defs/nonEmptyText" },
+              "notSelectedReason": { "$ref": "#/$defs/nonEmptyText" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "characters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["characterId", "importance", "dramaticFunction", "emotionalBaseline", "audienceRelationship", "visibleBehavior"],
+            "properties": {
+              "characterId": { "$ref": "#/$defs/id" },
+              "importance": { "enum": ["lead", "key_opponent", "supporting", "functional"] },
+              "dramaticFunction": { "$ref": "#/$defs/nonEmptyText" },
+              "emotionalBaseline": { "$ref": "#/$defs/nonEmptyText" },
+              "audienceRelationship": { "$ref": "#/$defs/nonEmptyText" },
+              "visibleBehavior": { "$ref": "#/$defs/nonEmptyText" },
+              "objective": { "$ref": "#/$defs/nonEmptyText" },
+              "obstacle": { "$ref": "#/$defs/nonEmptyText" },
+              "tactic": { "$ref": "#/$defs/nonEmptyText" },
+              "arc": { "$ref": "#/$defs/nonEmptyText" }
+            },
+            "allOf": [
+              {
+                "if": { "properties": { "importance": { "enum": ["lead", "key_opponent"] } }, "required": ["importance"] },
+                "then": { "required": ["objective", "obstacle", "tactic", "arc"] }
+              }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "storyOutline": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+        "scenePriorities": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+        "emotionAndRhythm": {
+          "type": "object",
+          "required": ["emotionCurve", "rhythmStrategy"],
+          "properties": {
+            "emotionCurve": { "$ref": "#/$defs/nonEmptyText" },
+            "rhythmStrategy": { "$ref": "#/$defs/nonEmptyText" }
+          },
+          "additionalProperties": false
+        },
+        "audiovisualStrategy": {
+          "type": "object",
+          "required": ["pointOfView", "cameraMotive", "editingStrategy", "soundStrategy", "specialTechniques"],
+          "properties": {
+            "pointOfView": { "$ref": "#/$defs/nonEmptyText" },
+            "cameraMotive": { "$ref": "#/$defs/nonEmptyText" },
+            "editingStrategy": { "$ref": "#/$defs/nonEmptyText" },
+            "soundStrategy": { "$ref": "#/$defs/nonEmptyText" },
+            "specialTechniques": { "$ref": "#/$defs/textArray" }
+          },
+          "additionalProperties": false
+        },
+        "creativeBoundaries": {
+          "type": "object",
+          "required": ["mustKeep", "mustAvoid"],
+          "properties": {
+            "mustKeep": { "$ref": "#/$defs/textArray" },
+            "mustAvoid": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] }
+          },
+          "additionalProperties": false
+        },
+        "uncertaintyLedger": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["variable", "disposition", "owner", "status", "resolution", "evidenceOrReason", "revisitAt"],
+            "properties": {
+              "variable": { "$ref": "#/$defs/nonEmptyText" },
+              "disposition": { "enum": ["must_answer_now", "director_recommendation", "deferred_to_gate2", "experiment_required", "irrelevant_to_scope"] },
+              "owner": { "enum": ["user", "director", "system", "evidence"] },
+              "status": { "enum": ["resolved", "deferred", "planned", "not_applicable", "unresolved"] },
+              "resolution": { "$ref": "#/$defs/nonEmptyText" },
+              "evidenceOrReason": { "$ref": "#/$defs/nonEmptyText" },
+              "revisitAt": { "$ref": "#/$defs/nonEmptyText" }
+            },
+            "allOf": [
+              { "if": { "properties": { "disposition": { "const": "must_answer_now" } }, "required": ["disposition"] }, "then": { "properties": { "status": { "const": "resolved" } } } },
+              { "if": { "properties": { "disposition": { "const": "director_recommendation" } }, "required": ["disposition"] }, "then": { "properties": { "status": { "const": "resolved" } } } },
+              { "if": { "properties": { "disposition": { "const": "deferred_to_gate2" } }, "required": ["disposition"] }, "then": { "properties": { "status": { "const": "deferred" } } } },
+              { "if": { "properties": { "disposition": { "const": "experiment_required" } }, "required": ["disposition"] }, "then": { "properties": { "status": { "const": "planned" } } } },
+              { "if": { "properties": { "disposition": { "const": "irrelevant_to_scope" } }, "required": ["disposition"] }, "then": { "properties": { "status": { "const": "not_applicable" } } } }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "decisionLedger": {
+          "type": "object",
+          "required": ["confirmedFacts", "professionalRecommendations", "lockedVariables", "rejectedPatterns"],
+          "properties": {
+            "confirmedFacts": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+            "professionalRecommendations": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+            "lockedVariables": { "allOf": [{ "$ref": "#/$defs/textArray" }, { "minItems": 1 }] },
+            "rejectedPatterns": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["pattern", "reason", "scope", "reopenTrigger"],
+                "properties": {
+                  "pattern": { "$ref": "#/$defs/nonEmptyText" },
+                  "reason": { "$ref": "#/$defs/nonEmptyText" },
+                  "scope": { "$ref": "#/$defs/nonEmptyText" },
+                  "reopenTrigger": { "$ref": "#/$defs/nonEmptyText" }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "provisionalExecution": {
+          "type": "object",
+          "required": ["segmentation", "assetScope", "parallelism"],
+          "properties": {
+            "segmentation": { "const": "provisional_until_gate2" },
+            "assetScope": { "const": "provisional_until_gate2" },
+            "parallelism": { "const": "provisional_until_gate2" }
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "structureMode": { "enum": ["narrative", "product_demo", "faithful_remake"] } }, "required": ["structureMode"] },
+          "then": {
+            "properties": {
+              "recommendedDirection": { "required": ["centralConflict", "coreTurn", "endingPayoff"] },
+              "storyOutline": { "minItems": 3 }
+            }
+          }
+        }
+        ,
+        {
+          "if": { "properties": { "projectIntent": { "properties": { "commercialIntent": { "const": true } }, "required": ["commercialIntent"] } }, "required": ["projectIntent"] },
+          "then": { "properties": { "recommendedDirection": { "properties": { "recommendationRationale": { "required": ["productFunction"] } } } } }
+        },
+        {
+          "if": { "properties": { "projectIntent": { "properties": { "commercialIntent": { "const": false } }, "required": ["commercialIntent"] } }, "required": ["projectIntent"] },
+          "then": {
+            "properties": {
+              "recommendedDirection": {
+                "properties": {
+                  "recommendationRationale": { "not": { "required": ["productFunction"] } }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "characterMode": { "const": "character_driven" } }, "required": ["characterMode"] },
+          "then": { "properties": { "characters": { "minItems": 1, "contains": { "type": "object", "properties": { "importance": { "enum": ["lead", "key_opponent"] } }, "required": ["importance"] }, "minContains": 1 } } }
+        },
+        {
+          "if": { "properties": { "characterMode": { "const": "none" } }, "required": ["characterMode"] },
+          "then": { "properties": { "characters": { "maxItems": 0 } } }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "revisionImpact": {
+      "type": "object",
+      "required": ["previousCreativeBriefId", "changeSummary", "changedDecisionPaths", "affectedStages", "affectedArtifactIds", "requiredRework", "preservedDecisions", "impactPolicy"],
+      "properties": {
+        "previousCreativeBriefId": { "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+        "changeSummary": { "$ref": "#/$defs/nonEmptyText" },
+        "changedDecisionPaths": { "$ref": "#/$defs/textArray" },
+        "affectedStages": { "$ref": "#/$defs/textArray" },
+        "affectedArtifactIds": { "$ref": "#/$defs/textArray" },
+        "requiredRework": { "$ref": "#/$defs/textArray" },
+        "preservedDecisions": { "$ref": "#/$defs/textArray" },
+        "impactPolicy": { "const": "conservative_v1" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": true
+}

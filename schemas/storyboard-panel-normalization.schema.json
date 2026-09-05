@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "storyboard-panel-normalization.schema.json",
+  "title": "Native Atomic Storyboard Panel Normalization Plan",
+  "type": "object",
+  "required": ["id", "kind", "projectId", "segmentId", "storyboardSequenceId", "source", "output", "crop", "renderer"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "storyboard_panel_normalization_plan" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "storyboardSequenceId": { "type": "string", "minLength": 1 },
+    "source": {
+      "type": "object",
+      "required": ["assetId", "visualAuditId", "path", "sha256", "revision", "panelIndex", "shotId", "segmentId", "storyboardSequenceId", "sourcePromptPlanPath", "sourcePromptPlanSha256", "sourceRequestId", "sourceRequestFingerprint", "expectedFinalAssetId", "expectedFinalVisualAuditId", "expectedFinalRevision"]
+    },
+    "output": { "type": "object" },
+    "crop": { "type": "object" },
+    "renderer": { "const": "ffmpeg-lossless-native-storyboard-panel-crop-v1" }
+  },
+  "additionalProperties": true
+}

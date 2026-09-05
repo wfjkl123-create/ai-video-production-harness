@@ -1,0 +1,46 @@
+{
+  "id": "segment-001-prop-grid-v1",
+  "assetId": "segment-001-prop-board-v1",
+  "layoutProfile": "story-prop-grid-v1",
+  "grid": { "rows": 2, "columns": 2, "width": 1600, "height": 1200 },
+  "panels": [
+    {
+      "panelIndex": 1,
+      "assetId": "segment-001-prop-front-v1",
+      "assetType": "story_prop_v1",
+      "revision": 1,
+      "path": "assets/segment-001/prop-front-v1.png",
+      "sha256": "替换为正面原子图SHA256",
+      "visualAuditId": "audit-segment-001-prop-front-v1"
+    },
+    {
+      "panelIndex": 2,
+      "assetId": "segment-001-prop-side-v1",
+      "assetType": "story_prop_v1",
+      "revision": 1,
+      "path": "assets/segment-001/prop-side-v1.png",
+      "sha256": "替换为侧面原子图SHA256",
+      "visualAuditId": "audit-segment-001-prop-side-v1"
+    },
+    {
+      "panelIndex": 3,
+      "assetId": "segment-001-prop-back-v1",
+      "assetType": "story_prop_v1",
+      "revision": 1,
+      "path": "assets/segment-001/prop-back-v1.png",
+      "sha256": "替换为背面原子图SHA256",
+      "visualAuditId": "audit-segment-001-prop-back-v1"
+    },
+    {
+      "panelIndex": 4,
+      "assetId": "segment-001-prop-detail-v1",
+      "assetType": "story_prop_v1",
+      "revision": 1,
+      "path": "assets/segment-001/prop-detail-v1.png",
+      "sha256": "替换为细节原子图SHA256",
+      "visualAuditId": "audit-segment-001-prop-detail-v1"
+    }
+  ],
+  "outputPath": "assets/segment-001/prop-board-v1.png",
+  "renderer": "ffmpeg-deterministic-asset-grid-v1"
+}

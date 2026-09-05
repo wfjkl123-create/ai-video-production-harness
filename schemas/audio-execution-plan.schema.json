@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "audio-execution-plan.schema.json",
+  "title": "Audio Execution Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "strategy", "generateAudio", "enableSound", "syncAuthority", "promptPolicy", "remux", "capabilitySnapshot", "rationale"],
+  "properties": {
+    "kind": { "const": "audio_execution_plan_v1" },
+    "version": { "const": 1 },
+    "strategy": { "enum": ["preserve_source_audio_exact", "native_generate", "reference_guided", "external_remux", "silent_visual_test"] },
+    "generateAudio": { "type": "boolean" },
+    "enableSound": { "type": "boolean" },
+    "syncAuthority": { "type": "string", "minLength": 1 },
+    "promptPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["allowedAudibleFacts", "prohibitedClaims"],
+      "properties": {
+        "allowedAudibleFacts": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "prohibitedClaims": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "approvedSourceAudio": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifactId", "sha256", "elementaryStreamSha256", "codec", "timeBase", "startPts", "durationSec"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "elementaryStreamSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "codec": { "type": "string", "minLength": 1 },
+        "timeBase": { "type": "string", "minLength": 1 },
+        "startPts": { "type": "number" },
+        "durationSec": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "remux": {
+      "type": "object", "additionalProperties": false,
+      "required": ["required", "mode", "verifyElementaryStreamSha"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "mode": { "enum": ["none", "stream_copy", "external_mix"] },
+        "verifyElementaryStreamSha": { "type": "boolean" }
+      }
+    },
+    "capabilitySnapshot": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "surface", "model", "operation", "expiresAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "surface": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "operation": { "type": "string", "minLength": 1 },
+        "expiresAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "rationale": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "strategy": { "enum": ["preserve_source_audio_exact", "reference_guided", "external_remux"] } }, "required": ["strategy"] },
+      "then": { "required": ["approvedSourceAudio"] }
+    }
+  ]
+}

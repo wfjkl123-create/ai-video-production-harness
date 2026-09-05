@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "character-identity-pack.schema.json",
+  "title": "Character Identity Pack V2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "characterId", "coveragePlan", "requiredMembers", "optionalMembers", "responsibility", "mustNotControl"],
+  "properties": {
+    "kind": { "const": "character_identity_pack_v2" },
+    "version": { "const": 2 },
+    "id": { "type": "string", "minLength": 1 },
+    "characterId": { "type": "string", "minLength": 1 },
+    "coveragePlan": {
+      "type": "object", "additionalProperties": true,
+      "required": ["kind", "version", "characterId", "requirements", "requiredProfileIds", "explicitlyNotRequired"],
+      "properties": {
+        "kind": { "const": "character_shot_coverage_v1" },
+        "version": { "const": 1 },
+        "characterId": { "type": "string", "minLength": 1 },
+        "requirements": { "type": "array", "minItems": 1 },
+        "requiredProfileIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "explicitlyNotRequired": { "type": "array" }
+      }
+    },
+    "requiredMembers": { "$ref": "#/$defs/members", "minItems": 1 },
+    "optionalMembers": { "$ref": "#/$defs/members" },
+    "responsibility": { "type": "string", "minLength": 1 },
+    "mustNotControl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  },
+  "$defs": {
+    "members": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": true,
+        "required": ["id", "profileId", "characterId", "status", "sha256"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "profileId": { "type": "string", "minLength": 1 },
+          "characterId": { "type": "string", "minLength": 1 },
+          "status": { "const": "locked" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

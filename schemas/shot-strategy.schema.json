@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shot Strategy Input",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "shotStructure", "shotCount", "peopleCount", "hasPreviousSegment",
+    "strictSpatialCarryover", "hasDialogue", "complexPhysicalAction",
+    "complexBlocking", "productInteraction", "motionReferenceAvailable",
+    "visibleDrift", "extensionDepth"
+  ],
+  "properties": {
+    "shotStructure": { "enum": ["standalone", "editorial_sequence", "continuous_take"] },
+    "cameraComposition": { "enum": ["standard", "over_shoulder", "foreground_layered", "multi_subject"] },
+    "controlMode": { "enum": ["standard", "modeling_strong_control"] },
+    "modelingInputMode": { "enum": ["keyframes_only", "animatic_video"] },
+    "shotCount": { "type": "integer", "minimum": 1, "maximum": 20 },
+    "peopleCount": { "type": "integer", "minimum": 0, "maximum": 20 },
+    "hasPreviousSegment": { "type": "boolean" },
+    "strictSpatialCarryover": { "type": "boolean" },
+    "hasDialogue": { "type": "boolean" },
+    "complexPhysicalAction": { "type": "boolean" },
+    "complexBlocking": { "type": "boolean" },
+    "productInteraction": { "enum": ["none", "display", "scale_sensitive", "wearing"] },
+    "motionReferenceAvailable": { "type": "boolean" },
+    "visibleDrift": { "type": "boolean" },
+    "extensionDepth": { "type": "integer", "minimum": 0, "maximum": 3 }
+  }
+}

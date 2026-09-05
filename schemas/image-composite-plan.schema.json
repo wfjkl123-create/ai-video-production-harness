@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-composite-plan.schema.json",
+  "title": "Deterministic Character Board Composite Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "assetId", "layoutProfile", "canvas", "panels", "background", "outputPath", "renderer"],
+  "properties": {
+    "id": { "type": "string", "pattern": ".*\\S.*" },
+    "assetId": { "type": "string", "pattern": ".*\\S.*" },
+    "layoutProfile": { "const": "character-board-template-b-v1" },
+    "canvas": {
+      "type": "object", "additionalProperties": false,
+      "required": ["aspectRatio", "width", "height"],
+      "properties": {
+        "aspectRatio": { "const": "4:3" },
+        "width": { "type": "integer", "minimum": 4, "multipleOf": 2 },
+        "height": { "type": "integer", "minimum": 6, "multipleOf": 3 }
+      }
+    },
+    "panels": {
+      "type": "array", "minItems": 4, "maxItems": 4,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["slot", "atomicAssetId", "profileId", "revision", "path", "sha256", "visualAuditId"],
+        "properties": {
+          "slot": { "enum": ["top_left", "top_right", "bottom_left", "bottom_right"] },
+          "atomicAssetId": { "type": "string", "pattern": ".*\\S.*" },
+          "profileId": { "enum": ["character_front_face_closeup_v1", "character_profile_face_closeup_v1", "character_front_wardrobe_no_head_v1", "character_full_body_back_v1"] },
+          "revision": { "type": "integer", "minimum": 1 },
+          "path": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).*\\S.*" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "visualAuditId": { "type": "string", "pattern": ".*\\S.*" },
+          "humanVisualExceptionId": { "type": "string", "pattern": ".*\\S.*" }
+        }
+      }
+    },
+    "background": { "type": "string", "pattern": "^#[A-Fa-f0-9]{6}$" },
+    "outputPath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).*\\S.*" },
+    "renderer": { "const": "ffmpeg-deterministic-character-board-v1" }
+  }
+}

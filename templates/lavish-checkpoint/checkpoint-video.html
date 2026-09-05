@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  CHECKPOINT 5 · 视频审片模板
+  用法：复制本文件到 .lavish/<项目>-<段>-video-review/index.html，
+  替换 {{...}} 占位符，把视频文件和关键帧截图复制到同目录用相对路径引用，
+  `lavish-axi <html-file>` 打开，`lavish-axi poll <html-file>` 等待决定。
+  用户选 A 后，代理执行 checkpoint-approve --checkpoint checkpoint_video 并准备交接。
+-->
+<html lang="zh-CN" data-theme="luxury">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PROJECT_ID}} · 视频审片</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080b09;color:#edf3ee;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}
+.shell{max-width:1180px;margin:auto;padding:28px}
+.hero,.panel,.review{padding:26px;border:1px solid #33463a;background:#101612;border-radius:23px;margin-bottom:20px}
+.hero{background:radial-gradient(circle at 88% 0,#1d3a4b,transparent 39%),linear-gradient(135deg,#142127,#080b09)}
+.eyebrow{color:#91c4d5;letter-spacing:.13em;font-size:12px}
+h1{font-size:clamp(34px,5vw,56px);line-height:1.2;margin:10px 0}
+h2{font-size:20px;margin:0 0 14px}
+.lead,.muted{color:#b8c4c7;line-height:1.75}
+.verdict{display:inline-flex;padding:8px 13px;border:1px solid #4e8a9a;border-radius:999px;color:#a8d5e1;background:#10242b;font-weight:900}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
+.statx{padding:16px;border:1px solid #313c40;background:#0c0f10;border-radius:15px}
+.statx b{display:block;color:#d8bf79;font-size:26px}
+.statx span{font-size:12px;color:#96a0a1}
+.video-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px;align-items:start}
+video{width:100%;border-radius:14px;background:#000;display:block}
+.frames{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.frames img{width:100%;border-radius:10px;background:#141a1b;display:block}
+.rubric{display:grid;gap:8px}
+.rubric .row{display:flex;justify-content:space-between;gap:12px;padding:10px 14px;border:1px solid #313c40;border-radius:10px;background:#0c0f10}
+.rubric .score{font-weight:900;color:#a8e1b5}
+.rubric .low{color:#e1a8a8}
+.mono{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:#8f9aa0;overflow-wrap:anywhere}
+.callout{border-left:4px solid #d8bf79;background:#211d10;padding:16px;border-radius:10px;line-height:1.7}
+.choices{display:grid;gap:11px}
+.choices label{display:flex;gap:11px;padding:15px;border:1px solid #39444a;background:#0b0e0f;border-radius:14px;cursor:pointer}
+.choices small{color:#9ca8ac;line-height:1.55}
+textarea{width:100%;padding:12px;border-radius:12px;background:#080b09;color:#eee;border:1px solid #3e4c51}
+button{margin-top:14px;padding:14px 20px;border:0;border-radius:14px;background:#d8bf79;color:#17130a;font-weight:900;cursor:pointer}
+@media(max-width:820px){.stats,.video-wrap,.frames{grid-template-columns:1fr}.shell{padding:14px}.hero,.panel,.review{padding:19px}}
+p,h1,h2,h3,label{overflow-wrap:anywhere}
+</style>
+</head>
+<body>
+<main class="shell">
+
+<section class="hero">
+  <span class="eyebrow">CHECKPOINT 5 · 视频审片</span>
+  <h1>{{PROJECT_ID}} · {{SEGMENT_ID}} 成片</h1>
+  <p class="lead">视频已生成并通过机器检查与非 GPT 语义后审（{{AUDIT_MODEL}}）。这是本段最后一个审核点——通过后自动准备交接证据并进入下一段。</p>
+  <span class="verdict">机审 {{MACHINE_RESULT}} · 语义后审 {{POST_AUDIT_RESULT}}</span>
+  <div class="stats">
+    <div class="statx"><b>{{DURATION}}s</b><span>时长 · 9:16 · 720p</span></div>
+    <div class="statx"><b>{{QUALITY_SCORE}}</b><span>质量总分 / 100</span></div>
+    <div class="statx"><b>{{VETO_COUNT}}</b><span>veto 触发</span></div>
+    <div class="statx"><b>{{ATTEMPT_INDEX}}</b><span>本段第几次生成</span></div>
+  </div>
+</section>
+
+<section class="panel">
+  <h2>成片与关键帧</h2>
+  <div class="video-wrap">
+    <video controls src="{{VIDEO_FILE}}"></video>
+    <div class="frames">
+      <img src="{{FRAME_1}}" alt="关键帧1">
+      <img src="{{FRAME_2}}" alt="关键帧2">
+      <img src="{{FRAME_3}}" alt="关键帧3">
+      <img src="{{FRAME_4}}" alt="关键帧4">
+    </div>
+  </div>
+  <p class="mono">视频 SHA {{VIDEO_SHA}} · 运行 {{RUN_ID}} · taskId {{TASK_ID}}</p>
+</section>
+
+<section class="panel">
+  <h2>质量量表打分（{{RUBRIC_ID}}）</h2>
+  <div class="rubric">
+    <div class="row"><span>人物身份一致性 identity_state</span><span class="score">{{SCORE_IDENTITY}}</span></div>
+    <div class="row"><span>产品保真度 product_fidelity</span><span class="score">{{SCORE_PRODUCT}}</span></div>
+    <div class="row"><span>空间连续性 spatial_continuity</span><span class="score">{{SCORE_SPATIAL}}</span></div>
+    <div class="row"><span>动作物理 motion_physics</span><span class="score">{{SCORE_MOTION}}</span></div>
+    <div class="row"><span>镜头叙事 camera_story</span><span class="score">{{SCORE_CAMERA}}</span></div>
+    <div class="row"><span>视觉风格 visual_style</span><span class="score">{{SCORE_STYLE}}</span></div>
+  </div>
+  <p class="muted">后审观察：{{POST_AUDIT_NOTES}}</p>
+</section>
+
+<section class="panel">
+  <div class="callout"><b>边界：</b>交付边界是审核通过的分段视频，不含剪辑、字幕、口播、音乐或最终拼接。通过后尾帧只作观察证据，下一段首帧会按规则重新派生，不会直接截取本片尾帧。</div>
+</section>
+
+<section class="review">
+  <h2>人工决定</h2>
+  <form data-lavish-question="checkpoint_video_decision" onsubmit="submitChoice(event)">
+    <div class="choices">
+      <label><input type="radio" name="choice" value="approve" checked><span><b>A｜通过，锁定本段视频</b><br><small>执行 checkpoint-approve --checkpoint checkpoint_video，准备交接证据，自动进入下一段。</small></span></label>
+      <label><input type="radio" name="choice" value="reject"><span><b>B｜不通过（写明时间码和问题）</b><br><small>本段进入失败记录与免费诊断，不会自动付费重试。请在下方写明证据。</small></span></label>
+      <textarea name="reason" rows="3" placeholder="选择 B 时填写：时间码 + 可见问题 + 对应剧情条款"></textarea>
+    </div>
+    <button type="submit">把选择加入发送队列</button>
+  </form>
+  <p class="mono">项目 {{PROJECT_ID}} · 段 {{SEGMENT_ID}} · 检查点 checkpoint_video · 当前累计失败 {{FAILURE_COUNT}} / 容忍 {{FAILURE_TOLERANCE}}</p>
+</section>
+
+</main>
+<script>
+function submitChoice(e){
+  e.preventDefault();
+  const f=e.currentTarget,d=new FormData(f),c=d.get('choice'),r=(d.get('reason')||'').trim();
+  let p;
+  if(c==='approve'){
+    p='CHECKPOINT_VIDEO 选择A。通过 {{PROJECT_ID}} / {{SEGMENT_ID}} 成片，视频 SHA {{VIDEO_SHA}}。执行 checkpoint-approve --checkpoint checkpoint_video，准备交接证据并进入下一段。';
+  }else{
+    if(!r){alert('请填写时间码和可见问题');return}
+    p='CHECKPOINT_VIDEO 选择B。不通过 {{PROJECT_ID}} / {{SEGMENT_ID}} 成片，证据：'+r+'。记录失败并免费诊断，不得自动付费重试。';
+  }
+  window.lavish.queuePrompt(p,{tag:'{{PROJECT_ID}} 视频检查点',text:c==='approve'?'A：通过':'B：不通过',element:f,queueKey:'{{PROJECT_ID}}-{{SEGMENT_ID}}-video',data:{choice:c,reason:r}});
+}
+</script>
+</body>
+</html>

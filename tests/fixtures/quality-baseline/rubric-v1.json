@@ -1,0 +1,19 @@
+{
+  "id": "rubric-v1",
+  "version": 1,
+  "threshold": 80,
+  "dimensions": [
+    { "id": "identity_state", "label": "人物身份与状态一致性", "weight": 20, "minimum": 85, "critical": true },
+    { "id": "product_fidelity", "label": "产品结构、材质、穿着关系与卖点", "weight": 20, "minimum": 85, "critical": true },
+    { "id": "spatial_continuity", "label": "空间、站位、朝向与段间连续性", "weight": 15, "minimum": 80, "critical": true },
+    { "id": "motion_physics", "label": "动作物理、肢体与道具交互", "weight": 15, "minimum": 75, "critical": true },
+    { "id": "camera_story", "label": "镜头叙事、节奏与重点画面达成", "weight": 15, "minimum": 70, "critical": false },
+    { "id": "visual_style", "label": "画面质量、风格与禁止内容", "weight": 15, "minimum": 70, "critical": false }
+  ],
+  "vetoes": [
+    { "id": "identity_changed", "label": "主角身份发生明显变化" },
+    { "id": "product_deformed", "label": "收腹裤结构或关键细节明显变形" },
+    { "id": "continuity_broken", "label": "人物或镜头空间关系无法与上一段衔接" },
+    { "id": "forbidden_content", "label": "出现人工锁定的禁止内容" }
+  ]
+}

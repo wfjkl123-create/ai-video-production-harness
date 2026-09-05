@@ -1,0 +1,150 @@
+{
+  "id": "narration-segment-001",
+  "segmentId": "segment-001",
+  "sourceSegmentId": "segment-001",
+  "revision": 2,
+  "status": "draft",
+  "capabilityManifestId": "capability-story-plan-v1-v1",
+  "capabilityManifestSha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "shots": [
+    {
+      "shotId": "shot-001",
+      "physicalActions": [
+        "Character A 先看向桌面钥匙，右手伸到一半后停住，再把手掌缓慢翻转向上"
+      ],
+      "cameraMove": "中近景固定机位，镜头不做无原因推拉",
+      "lightSources": [
+        "画面左后方窗光作为柔和主光",
+        "桌面右侧暖色实用灯保留轻微轮廓"
+      ],
+      "emotionThroughAction": "Character A 吞咽一次，视线从钥匙重新回到 Character B，肩膀随短呼气轻微下沉",
+      "skillsApplied": ["seedance2-prompt", "seedance-camera", "seedance-characters", "seedance-antislop"],
+      "realismPlan": {
+        "focusedCharacter": "character-a",
+        "motivatedAction": "character-a听到对方放下钥匙后，手指先停在桌沿，再抬眼看向character-b",
+        "physicalEndpoint": "character-a的视线停在character-b眼睛位置，手掌仍压在钥匙旁边",
+        "naturalVariation": "抬眼前保留一次短暂停顿，左右肩高度略不对称，动作没有完全做满",
+        "persistentMicroMotions": [
+          { "characterId": "character-b", "action": "character-b保持自然呼吸，右手指腹仍停在钥匙边缘并轻眨一次眼" }
+        ],
+        "forbiddenGenericActions": ["无动机挥手", "呆滞凝视", "标准笑容", "机械重复"]
+      },
+      "interactionPlan": {
+        "participants": ["character-a", "character-b"],
+        "focusedCharacter": "character-a",
+        "partnerCharacter": "character-b",
+        "trigger": "character-b把钥匙放到桌面并收回手",
+        "gazeTarget": "character-b的眼睛位置",
+        "eyeLineAction": "先看钥匙接触点，再抬眼看向character-b并停住半秒",
+        "partnerReaction": "character-b在对视建立后轻眨一次眼，嘴角收紧，肩膀保持呼吸微动",
+        "axisConstraint": "两人视线方向保持互为反向，摄影机不跨越两人轴线",
+        "endState": "两人保持对视，character-a的手仍停在钥匙旁边"
+      },
+      "spatialContract": {
+        "firstFramePolicy": "all_required_visible",
+        "requiredSubjects": ["character-a", "character-b"],
+        "cameraSide": "摄影机保持在两人轴线同一侧，从character-a右肩外侧观察",
+        "shotMode": "single_continuous_take",
+        "subjects": [
+          {
+            "subjectId": "character-a",
+            "screenPosition": "画面左侧三分之一",
+            "worldPosition": "桌面左边椅前，右手距钥匙一个手掌宽",
+            "depthLayer": "midground",
+            "bodyFacing": "躯干朝向character-b",
+            "gazeTarget": "character-b的眼睛位置",
+            "movementDirection": "右手向桌面中央伸出后停住",
+            "landmarkAnchor": "右手始终停在桌面钥匙左侧"
+          },
+          {
+            "subjectId": "character-b",
+            "screenPosition": "画面右侧三分之一",
+            "worldPosition": "桌面右边椅前，手指停在钥匙右侧",
+            "depthLayer": "midground",
+            "bodyFacing": "躯干朝向character-a",
+            "gazeTarget": "character-a的眼睛位置",
+            "movementDirection": "保持原位，仅用呼吸和眨眼回应",
+            "landmarkAnchor": "右手指腹停在钥匙边缘"
+          }
+        ]
+      },
+      "performanceMode": "emotion_dlc",
+      "performancePlan": {
+        "dlcId": "emotion-performance-v1",
+        "actingControlVersion": 2,
+        "hasDialogue": true,
+        "templateSource": "knowledge/capabilities/dlc/emotion-performance.md",
+        "skillsApplied": ["seedance2-prompt", "seedance-characters"],
+        "focusedCharacter": "Character A",
+        "objective": "不让 Character B 用归还钥匙结束关系",
+        "subtext": "嘴上表现平静，身体却拒绝接下钥匙",
+        "obstacle": "Character B 已把钥匙放到桌面中央，并等待 Character A 接下它",
+        "tactic": "先用停住的手拒绝接钥匙，再用对视逼对方承认这不是普通归还",
+        "beatPlan": [
+          { "tactic": "克制停住", "visibleChange": "右手伸到一半后停在钥匙旁，吞咽一次" },
+          { "tactic": "建立压力", "visibleChange": "手掌翻向上却不触碰钥匙，视线重新锁向 Character B" }
+        ],
+        "performanceArc": {
+          "protectiveStrategy": "Character A 继续维持平静协商的姿态，用停在桌沿的手假装自己只是在听",
+          "fractureTrigger": "Character B 说到“钥匙还给你”里的“还给你”并把钥匙推到桌面中央",
+          "exposedState": "Character A 的手伸出后突然停住，眉间短暂收紧，呼吸卡住半拍",
+          "chosenAction": "Character A 把停住的右手掌翻向上，但选择不接触钥匙并重新看向 Character B",
+          "externalFeedback": "Character B 看见未被接走的钥匙后收回指腹，向前的身体重心退回椅背",
+          "recoveryState": "Character A 松开眉间，把手掌翻向上但仍不接钥匙，声音压低后重新看向 Character B"
+        },
+        "trigger": "Character B 把钥匙放到桌面中央，发出轻微金属声",
+        "dialoguePerformance": [
+          {
+            "speaker": "Character B",
+            "respondingCharacter": "Character A",
+            "lineText": "钥匙还给你",
+            "triggerCue": "Character B 把钥匙推到桌面中央并说出“还给你”",
+            "stressPhrase": "还给你",
+            "preSpeechState": "Character A 仍低头看着钥匙，右手停在自己一侧",
+            "visibleResponse": "听到“还给你”后，Character A 的视线先抬向 Character B，手才伸向钥匙又停住",
+            "voiceBreathPause": "Character B 在“还给你”前短停半拍，Character A 听完后先短吸气再开口",
+            "postSpeechState": "Character A 没有接钥匙，手掌翻向上并维持对视"
+          }
+        ],
+        "performanceEnvelope": {
+          "onset": "听到“还给你”后，Character A 的眉间开始收紧，视线离开钥匙",
+          "apex": "右手停在钥匙旁时眉间最紧，呼吸同时停住半拍",
+          "offset": "手掌翻向上时眉间松开，压力转移到压低的声线和未接钥匙的手"
+        },
+        "facialCalibration": {
+          "observableAction": "眉间逐渐收紧，下眼睑短暂绷住，随后在开口前松开",
+          "facsAuHints": ["AU4", "AU7"]
+        },
+        "prohibitedEarlyReactions": [
+          {
+            "respondingCharacter": "Character A",
+            "reaction": "Character A 不抬眼、不伸手、不收紧眉间",
+            "stressPhrase": "还给你",
+            "untilCue": "Character B 说出“还给你”"
+          }
+        ],
+        "performanceRegister": "restrained_realism",
+        "intensity": "restrained",
+        "dominantTrack": "hands",
+        "startBehavior": "Character A 的视线先落到钥匙，右手仍停在自己一侧",
+        "primaryAction": "右手伸到一半后停在钥匙旁，再把手掌缓慢翻转向上而不触碰钥匙",
+        "supportingCues": [
+          "吞咽一次后呼吸变轻",
+          "视线重新抬向 Character B"
+        ],
+        "voiceBreath": "先短吸一口气，再压低声音说完台词，尾音轻轻落下",
+        "endBehavior": "右手掌仍停在钥匙旁，视线保持看向 Character B",
+        "continuityCarry": [
+          "钥匙仍在桌面中央",
+          "Character A 没有接触钥匙"
+        ],
+        "backgroundCharacters": [
+          {
+            "characterTag": "Character B",
+            "persistentMicroMotion": "保持自然呼吸，右手指腹仍停在钥匙边缘"
+          }
+        ]
+      }
+    }
+  ]
+}

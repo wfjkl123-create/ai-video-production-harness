@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-event.schema.json",
+  "title": "Authoritative Execution Event",
+  "type": "object",
+  "required": [
+    "schemaVersion", "id", "kind", "projectId", "sequence", "type", "occurredAt", "actor",
+    "segmentId", "correlationId", "causationId", "idempotencyKey", "references", "facts", "eventHash"
+  ],
+  "properties": {
+    "schemaVersion": { "enum": [1, 2] },
+    "id": { "$ref": "#/$defs/id" },
+    "kind": { "const": "execution_event" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "type": {
+      "enum": [
+        "ledger.bootstrap", "preflight.ready", "paid_approval.granted", "generation.claimed",
+        "generation.submitted", "generation.submission_uncertain", "generation.reconciled",
+        "generation.succeeded", "generation.failed", "generation.interrupted",
+        "generation.confirmed_not_submitted", "quality_review.accepted", "quality_review.rejected",
+        "generation_output_failure.recorded", "generation_remediation.approved",
+        "execution_observation.recorded", "delivery.finalized"
+      ]
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "actor": {
+      "type": "object",
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "enum": ["system", "human", "delegated_policy"] },
+        "id": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] }
+      },
+      "additionalProperties": false
+    },
+    "segmentId": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+    "correlationId": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+    "causationId": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+    "idempotencyKey": { "type": "string", "minLength": 1 },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "id"],
+        "properties": {
+          "kind": { "$ref": "#/$defs/id" },
+          "id": { "$ref": "#/$defs/id" },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "facts": { "type": "object" },
+    "observation": { "$ref": "#/$defs/observation" },
+    "eventHash": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "type": { "const": "execution_observation.recorded" } }, "required": ["type"] },
+      "then": { "properties": { "schemaVersion": { "const": 2 } }, "required": ["observation"] },
+      "else": {
+        "properties": { "schemaVersion": { "const": 1 } },
+        "not": { "required": ["observation"] }
+      }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "observation": {
+      "type": "object",
+      "required": ["subjectId", "scope", "stage"],
+      "properties": {
+        "subjectId": { "$ref": "#/$defs/id" },
+        "scope": { "enum": ["project", "segment", "generation_attempt", "delivery"] },
+        "stage": {
+          "enum": [
+            "intake", "source_analysis", "creative", "story", "segmentation", "storyboard",
+            "assets", "prompt", "paid_approval", "generation", "editing", "technical_review",
+            "gate5", "delivery"
+          ]
+        },
+        "timing": {
+          "type": "object",
+          "minProperties": 1,
+          "properties": {
+            "machineExecutionMs": { "type": "number", "minimum": 0 },
+            "externalQueueMs": { "type": "number", "minimum": 0 },
+            "humanWaitMs": { "type": "number", "minimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "cost": {
+          "type": "object",
+          "required": ["amount", "unit", "evidenceLevel", "purpose"],
+          "properties": {
+            "amount": { "type": "number", "minimum": 0 },
+            "unit": { "enum": ["CNY", "USD", "credits", "tasks"] },
+            "evidenceLevel": { "enum": ["actual_billed", "actual_consumed", "usage_derived", "estimated"] },
+            "purpose": { "enum": ["initial_generation", "paid_retry", "external_audit", "asset_generation", "other"] }
+          },
+          "allOf": [
+            {
+              "if": { "properties": { "unit": { "const": "tasks" } }, "required": ["unit"] },
+              "then": { "properties": { "amount": { "type": "integer", "minimum": 0 } } }
+            }
+          ],
+          "additionalProperties": false
+        },
+        "media": {
+          "type": "object",
+          "required": ["kind", "durationMs"],
+          "properties": {
+            "kind": { "enum": ["generated_output", "final_delivery"] },
+            "durationMs": { "type": "number", "exclusiveMinimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "failure": {
+          "type": "object",
+          "required": ["category", "rootCauseKey", "responsibilityStage", "returnStage", "retryKind"],
+          "properties": {
+            "category": {
+              "enum": [
+                "prompt_fact_error", "prompt_asset_reference_error", "asset_missing", "asset_wrong_binding",
+                "asset_extra", "asset_generation_error", "unsupported_parameter", "missing_shot",
+                "wrong_shot_order", "identity_drift", "product_drift", "scene_drift", "continuity_break",
+                "technical_output_failure", "external_submission_unknown", "user_creative_rejection", "other"
+              ]
+            },
+            "rootCauseKey": { "$ref": "#/$defs/id" },
+            "responsibilityStage": { "$ref": "#/$defs/observationStage" },
+            "returnStage": { "$ref": "#/$defs/observationStage" },
+            "retryKind": { "enum": ["none", "free", "paid"] }
+          },
+          "additionalProperties": false
+        }
+      },
+      "anyOf": [
+        { "required": ["timing"] }, { "required": ["cost"] },
+        { "required": ["media"] }, { "required": ["failure"] }
+      ],
+      "additionalProperties": false
+    },
+    "observationStage": {
+      "enum": [
+        "intake", "source_analysis", "creative", "story", "segmentation", "storyboard",
+        "assets", "prompt", "paid_approval", "generation", "editing", "technical_review",
+        "gate5", "delivery"
+      ]
+    }
+  },
+  "additionalProperties": false
+}

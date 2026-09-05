@@ -1,0 +1,55 @@
+<!doctype html>
+<!-- 复制到 .lavish/<项目>-creative-review/index.html，替换全部占位符后用 lavish-axi 打开。 -->
+<html lang="zh-CN" data-theme="luxury">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{{PROJECT_ID}} · 创意审核</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/daisyui.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daisyui@5.5.19/themes.css">
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.2.4/dist/index.global.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#080b09;color:#edf3ee;font-family:Inter,"PingFang SC","Microsoft YaHei",sans-serif}.shell{max-width:1100px;margin:auto;padding:28px}.hero,.panel,.review{padding:26px;border:1px solid #33463a;background:#101612;border-radius:23px;margin-bottom:20px}.hero{background:radial-gradient(circle at 88% 0,#1d4b2b,transparent 39%),linear-gradient(135deg,#14271a,#080b09)}.eyebrow{color:#91d5a2;letter-spacing:.13em;font-size:12px}h1{font-size:clamp(34px,5vw,56px);line-height:1.2;margin:10px 0}h2{font-size:20px;margin:0 0 14px}.lead,.muted{color:#b8c7bb;line-height:1.75}.verdict{display:inline-flex;padding:8px 13px;border:1px solid #4e9a61;border-radius:999px;color:#a8e1b5;background:#102b18;font-weight:900}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.cardx{padding:17px;border:1px solid #34453a;background:#0b100c;border-radius:15px;line-height:1.7}.cardx b{display:block;color:#d8bf79;margin-bottom:5px}.callout{border-left:4px solid #d8bf79;background:#211d10;padding:16px;border-radius:10px;line-height:1.7}.choices{display:grid;gap:11px}.choices label{display:flex;gap:11px;padding:15px;border:1px solid #394a3e;background:#0b0f0c;border-radius:14px;cursor:pointer}.choices small{color:#9cac9f;line-height:1.55}details{margin-top:14px;border:1px solid #34453a;border-radius:15px;background:#0b100c;padding:15px}summary{cursor:pointer;color:#d8bf79;font-weight:800}textarea{width:100%;padding:12px;border-radius:12px;background:#080b09;color:#eee;border:1px solid #3e5143}button{margin-top:14px;padding:14px 20px;border:0;border-radius:14px;background:#d8bf79;color:#17130a;font-weight:900;cursor:pointer}.mono{font:12px ui-monospace,SFMono-Regular,Menlo,monospace;color:#8fa095;overflow-wrap:anywhere}@media(max-width:760px){.grid{grid-template-columns:1fr}.shell{padding:14px}.hero,.panel,.review{padding:19px}}p,h1,h2,label,summary{overflow-wrap:anywhere}
+</style>
+</head>
+<body><main class="shell">
+<section class="hero">
+  <span class="eyebrow">CHECKPOINT 1 · 创意决策审核</span>
+  <h1>{{PROJECT_ID}} · 导演创意母版</h1>
+  <p class="lead">这一页锁定“为什么拍、拍给谁、人物与故事如何变化”。精确分段、Shotlist 和最小资产范围会在门2从完整镜头计划反推，不在这里假装确定。</p>
+  <span class="verdict">Gate 0 已收敛 · 只在 Gate 1 正式确认一次</span>
+</section>
+<section class="panel">
+  <h2>主方向与故事闭环</h2>
+  <div class="grid">
+    <div class="cardx"><b>为什么做 / 给谁看</b>{{PURPOSE_AUDIENCE}}</div>
+    <div class="cardx"><b>希望观众发生什么变化</b>{{DESIRED_AUDIENCE_EFFECT}}</div>
+    <div class="cardx"><b>导演推荐主方向</b>{{RECOMMENDED_DIRECTION}}</div>
+    <div class="cardx"><b>为什么推荐</b>{{RECOMMENDATION_RATIONALE}}</div>
+    <div class="cardx"><b>人物底色与戏剧功能</b>{{CHARACTER_FUNCTIONS}}</div>
+    <div class="cardx"><b>开头承诺</b>{{OPENING_PROMISE}}</div>
+    <div class="cardx"><b>核心冲突与转折</b>{{CONFLICT_AND_TURN}}</div>
+    <div class="cardx"><b>结尾兑现 / 反转</b>{{ENDING_PAYOFF}}</div>
+    <div class="cardx"><b>商业产品功能 / 非商业理由</b>{{COMMERCIAL_FUNCTION_OR_NONCOMMERCIAL_RATIONALE}}</div>
+    <div class="cardx"><b>情绪与节奏曲线</b>{{EMOTION_RHYTHM}}</div>
+    <div class="cardx"><b>镜头、剪辑与声音策略</b>{{AUDIOVISUAL_STRATEGY}}</div>
+    <div class="cardx"><b>必须保留 / 明确避免</b>{{CREATIVE_BOUNDARIES}}</div>
+  </div>
+  <details><summary>展开：对照方向、未知处置与暂定执行建议</summary><p class="muted"><b>本轮比较但未选择的方向：</b>{{ALTERNATIVES_CONSIDERED}}</p><p class="muted"><b>禁止无条件回退的模式及重开条件：</b>{{REJECTED_PATTERNS}}</p><p class="muted"><b>已确认事实 / 导演建议 / 锁定变量：</b>{{DECISION_LEDGER}}</p><p class="muted"><b>未知处置：</b>{{UNCERTAINTY_LEDGER}}</p><p class="muted"><b>目标时长：</b>{{TARGET_DURATION}} 秒</p><p class="muted"><b>暂定分段：</b>{{SEGMENTATION_STRATEGY}} · {{SEGMENTATION_RATIONALE}}</p><p class="muted"><b>暂定并行：</b>{{ASSET_EXECUTION_MODE}} / {{VIDEO_EXECUTION_MODE}} · {{ASSET_PARALLEL_PLAN}} · {{VIDEO_PARALLEL_PLAN}}</p><p class="muted"><b>预估资产：</b>{{ESTIMATED_ASSETS}}</p><p class="muted"><b>本次变更影响：</b>{{CHANGE_IMPACT}}</p></details>
+</section>
+<section class="panel"><div class="callout"><b>批准代表：</b>同意按本页主方向继续写剧本和分镜。<b>不代表：</b>精确分段/资产已经锁定，也不代表批准资产图、授权付费生成或接受最终视频。下一次只在完整剧本和分镜已经准备好时再找你。</div></section>
+<section class="review">
+  <h2>人工决定</h2>
+  <form data-lavish-question="checkpoint_creative_decision" onsubmit="submitChoice(event)">
+    <div class="choices">
+      <label><input type="radio" name="choice" value="approve" checked><span><b>A｜方向正确，继续完成剧本和分镜</b><br><small>锁定本页的导演创意母版；分段、并行和资产范围仍由门2精确化。</small></span></label>
+      <label><input type="radio" name="choice" value="reject"><span><b>B｜需要调整方向</b><br><small>先写优先级最高的问题；必要时可附 1–3 个有序修改点，AI 修改后重新给一页完整方案。</small></span></label>
+      <textarea name="reason" rows="4" placeholder="选择 B 时填写：1. 最重要的问题；2–3. 其他会改变方向的修改点（可选）"></textarea>
+    </div>
+    <button type="submit">把选择加入发送队列</button>
+  </form>
+  <p class="mono">项目 {{PROJECT_ID}} · 产物 {{CREATIVE_BRIEF_ID}} · SHA {{CREATIVE_BRIEF_SHA}} · checkpoint_creative</p>
+</section>
+</main>
+<script>
+function submitChoice(e){e.preventDefault();const f=e.currentTarget,d=new FormData(f),c=d.get('choice'),r=(d.get('reason')||'').trim();let p;if(c==='approve'){p='CHECKPOINT_CREATIVE 选择A。批准并锁定 {{CREATIVE_BRIEF_ID}}，执行 checkpoint-approve --checkpoint checkpoint_creative。随后自主完成剧本、人物圣经和镜头规划，中间不新增审核点。';}else{if(!r){alert('请填写最重要的修改点');return}p='CHECKPOINT_CREATIVE 选择B。退回 {{CREATIVE_BRIEF_ID}}，原因：'+r+'。执行 reject 并修改创意决策，不得进入剧本或资产阶段。';}window.lavish.queuePrompt(p,{tag:'{{PROJECT_ID}} 创意检查点',text:c==='approve'?'A：批准方向':'B：调整方向',element:f,queueKey:'{{PROJECT_ID}}-creative',data:{choice:c,reason:r}})}
+</script></body></html>

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "harness-surface-audit.schema.json",
+  "title": "Read-only Harness Surface Audit",
+  "type": "object",
+  "required": [
+    "schemaVersion", "kind", "readOnly", "generatedAt", "summary",
+    "commandSurface", "capabilitySurface", "codeSurface", "projectSurface", "findings"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "harness_surface_audit" },
+    "readOnly": { "const": true },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "summary": {
+      "type": "object",
+      "required": [
+        "registeredCommandCount", "commandModuleCount", "capabilityFileCount", "capabilityBytes",
+        "alwaysLoadedInstructionBytes", "onDemandRunbookBytes", "findingCount", "warningCount"
+      ],
+      "properties": {
+        "registeredCommandCount": { "type": "integer", "minimum": 0 },
+        "commandModuleCount": { "type": "integer", "minimum": 0 },
+        "capabilityFileCount": { "type": "integer", "minimum": 0 },
+        "capabilityBytes": { "type": "integer", "minimum": 0 },
+        "alwaysLoadedInstructionBytes": { "type": "integer", "minimum": 0 },
+        "onDemandRunbookBytes": { "type": "integer", "minimum": 0 },
+        "findingCount": { "type": "integer", "minimum": 0 },
+        "warningCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "commandSurface": {
+      "type": "object",
+      "required": ["registeredCommands", "undocumentedCommands", "unreferencedCommandModules"],
+      "properties": {
+        "registeredCommands": { "$ref": "#/$defs/stringArray" },
+        "undocumentedCommands": { "$ref": "#/$defs/stringArray" },
+        "unreferencedCommandModules": { "$ref": "#/$defs/stringArray" }
+      },
+      "additionalProperties": false
+    },
+    "capabilitySurface": {
+      "type": "object",
+      "required": ["unreferencedCapabilities", "largestContextFiles"],
+      "properties": {
+        "unreferencedCapabilities": { "$ref": "#/$defs/stringArray" },
+        "largestContextFiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["path", "bytes", "lines"],
+            "properties": {
+              "path": { "$ref": "#/$defs/text" },
+              "bytes": { "type": "integer", "minimum": 0 },
+              "lines": { "type": "integer", "minimum": 0 }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "codeSurface": {
+      "type": "object",
+      "required": ["duplicateDefinitions"],
+      "properties": {
+        "duplicateDefinitions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "count", "locations"],
+            "properties": {
+              "id": { "$ref": "#/$defs/text" },
+              "count": { "type": "integer", "minimum": 2 },
+              "locations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["path", "count"],
+                  "properties": {
+                    "path": { "$ref": "#/$defs/text" },
+                    "count": { "type": "integer", "minimum": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "projectSurface": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": [
+            "projectId", "projectStateBytes", "artifactCount", "ruleCount", "hardRuleCount",
+            "candidateRuleCount", "neverAppliedCandidateCount", "invalidRuleCount", "duplicateArtifactShaCount",
+            "lockedVideoSegmentCount", "missingSegmentSummaryCount"
+          ],
+          "properties": {
+            "projectId": { "$ref": "#/$defs/text" },
+            "projectStateBytes": { "type": "integer", "minimum": 0 },
+            "artifactCount": { "type": "integer", "minimum": 0 },
+            "ruleCount": { "type": "integer", "minimum": 0 },
+            "hardRuleCount": { "type": "integer", "minimum": 0 },
+            "candidateRuleCount": { "type": "integer", "minimum": 0 },
+            "neverAppliedCandidateCount": { "type": "integer", "minimum": 0 },
+            "invalidRuleCount": { "type": "integer", "minimum": 0 },
+            "duplicateArtifactShaCount": { "type": "integer", "minimum": 0 },
+            "lockedVideoSegmentCount": { "type": "integer", "minimum": 0 },
+            "missingSegmentSummaryCount": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "severity", "category", "evidence", "recommendation", "automaticAction"],
+        "properties": {
+          "id": { "$ref": "#/$defs/text" },
+          "severity": { "enum": ["info", "warning"] },
+          "category": { "$ref": "#/$defs/text" },
+          "evidence": { "$ref": "#/$defs/stringArray" },
+          "recommendation": { "$ref": "#/$defs/text" },
+          "automaticAction": { "const": "none" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "pattern": ".*\\S.*" },
+    "stringArray": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "scene-geometry.schema.json",
+  "title": "Scene Geometry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "projectId", "sceneId", "applicability", "responsibility", "mustNotControl"],
+  "properties": {
+    "kind": { "const": "scene_geometry_v2" }, "version": { "const": 2 },
+    "id": { "$ref": "#/$defs/text" }, "projectId": { "$ref": "#/$defs/text" }, "sceneId": { "$ref": "#/$defs/text" },
+    "applicability": { "enum": ["required", "not_applicable"] }, "directorLabel": { "const": "1/4" },
+    "observableAnchor": { "type": "object", "additionalProperties": false, "required": ["openingDirection", "entranceExitRelation", "pathToDepthPlane", "wallReveal", "depthRead"], "properties": { "openingDirection": { "$ref": "#/$defs/text" }, "entranceExitRelation": { "$ref": "#/$defs/text" }, "pathToDepthPlane": { "$ref": "#/$defs/text" }, "wallReveal": { "$ref": "#/$defs/text" }, "depthRead": { "$ref": "#/$defs/text" } } },
+    "landmarks": { "type": "array", "minItems": 2, "items": { "type": "object", "additionalProperties": false, "required": ["id", "worldRelation", "screenRelation"], "properties": { "id": { "$ref": "#/$defs/text" }, "worldRelation": { "$ref": "#/$defs/text" }, "screenRelation": { "$ref": "#/$defs/text" } } } },
+    "screenDirectionAxes": { "type": "object", "additionalProperties": false, "required": ["characterTravel", "cameraSide", "eyelineAxis"], "properties": { "characterTravel": { "$ref": "#/$defs/text" }, "cameraSide": { "$ref": "#/$defs/text" }, "eyelineAxis": { "$ref": "#/$defs/text" } } },
+    "reverseShotMap": { "type": "array", "items": { "type": "object", "additionalProperties": false, "required": ["shotId", "cameraSide", "preservedScreenDirection"], "properties": { "shotId": { "$ref": "#/$defs/text" }, "cameraSide": { "$ref": "#/$defs/text" }, "preservedScreenDirection": { "$ref": "#/$defs/text" } } } },
+    "notApplicableReason": { "$ref": "#/$defs/text" },
+    "responsibility": { "const": "observable space geometry, landmarks and screen-direction continuity only" },
+    "mustNotControl": { "$ref": "#/$defs/textList" }
+  },
+  "allOf": [
+    { "if": { "properties": { "applicability": { "const": "required" } }, "required": ["applicability"] }, "then": { "required": ["directorLabel", "observableAnchor", "landmarks", "screenDirectionAxes", "reverseShotMap"], "not": { "required": ["notApplicableReason"] } } },
+    { "if": { "properties": { "applicability": { "const": "not_applicable" } }, "required": ["applicability"] }, "then": { "required": ["notApplicableReason"], "not": { "anyOf": [{ "required": ["directorLabel"] }, { "required": ["observableAnchor"] }, { "required": ["landmarks"] }, { "required": ["screenDirectionAxes"] }, { "required": ["reverseShotMap"] }] } } }
+  ],
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "textList": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } }
+  }
+}

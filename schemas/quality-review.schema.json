@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quality-review.schema.json",
+  "title": "Human Quality Review Evidence",
+  "type": "object",
+  "required": ["id", "kind", "actor", "artifactId", "artifactSha256", "submittedArtifactSha256", "rubricId", "rubricSha256", "rubricVersion", "decision", "scores", "triggeredVetoIds", "overall", "qualifies", "failures", "note", "correction", "overrideReason", "createdAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "quality_review" },
+    "actor": { "const": "human" },
+    "artifactId": { "type": "string", "minLength": 1 },
+    "artifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "submittedArtifactSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rubricId": { "type": "string", "minLength": 1 },
+    "rubricSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "rubricVersion": { "type": "integer", "minimum": 1 },
+    "decision": { "enum": ["approved", "rejected"] },
+    "scores": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 100 } },
+    "evidenceByDimension": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["observation", "timestampsOrRegions", "anchorIds", "anchorSha256ById"],
+        "properties": {
+          "observation": { "type": "string", "minLength": 1 },
+          "timestampsOrRegions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+          "anchorIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "anchorSha256ById": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" } }
+        },
+        "additionalProperties": false
+      }
+    },
+    "triggeredVetoIds": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "overall": { "type": "number", "minimum": 0, "maximum": 100 },
+    "qualifies": { "type": "boolean" },
+    "failures": { "type": "array", "items": { "type": "string" } },
+    "note": { "type": "string", "minLength": 1 },
+    "correction": { "type": ["string", "null"] },
+    "overrideReason": { "type": ["string", "null"] },
+    "failureObservation": { "$ref": "execution-event.schema.json#/$defs/observation/properties/failure" },
+    "resolvedRejection": {
+      "type": "object",
+      "required": ["reviewId", "artifactId", "artifactSha256", "reviewPath", "reviewSha256"],
+      "properties": {
+        "reviewId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+        "reviewPath": { "type": "string", "minLength": 1 },
+        "reviewSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [{
+    "if": { "properties": { "rubricVersion": { "minimum": 2 } }, "required": ["rubricVersion"] },
+    "then": { "required": ["evidenceByDimension"] }
+  }],
+  "additionalProperties": false
+}

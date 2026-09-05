@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asset-grid-plan.schema.json",
+  "title": "Deterministic Asset Grid Plan",
+  "type": "object",
+  "required": ["id", "assetId", "layoutProfile", "grid", "panels", "outputPath", "renderer"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "assetId": { "type": "string", "minLength": 1 },
+    "layoutProfile": { "enum": ["scene-multiview-grid-v1", "story-prop-grid-v1", "mannequin-grid-v1", "storyboard-contact-sheet-v1"] },
+    "grid": { "type": "object", "required": ["rows", "columns", "width", "height"] },
+    "panels": { "type": "array", "minItems": 1 },
+    "outputPath": { "type": "string", "minLength": 1 },
+    "renderer": { "const": "ffmpeg-deterministic-asset-grid-v1" }
+  },
+  "additionalProperties": true
+}

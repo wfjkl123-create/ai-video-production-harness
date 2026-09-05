@@ -1,0 +1,404 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shot-narration.schema.json",
+  "title": "Shot Narration (讲戏本)",
+  "type": "object",
+  "required": ["id", "segmentId", "sourceSegmentId", "revision", "status", "shots"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "segmentId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "sourceSegmentId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "awaiting_review", "locked", "rejected", "rework", "blocked"] },
+    "capabilityManifestId": { "type": "string", "minLength": 1 },
+    "capabilityManifestSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "shots": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["shotId", "physicalActions", "cameraMove", "lightSources", "emotionThroughAction"],
+        "properties": {
+          "shotId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+          "physicalActions": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" } },
+          "cameraMove": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+          "lightSources": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" } },
+          "emotionThroughAction": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" }
+          ,"authorityAdaptation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["version", "characters", "sceneGeometry", "audioStrategy"],
+            "properties": {
+              "version": { "const": 1 },
+              "characters": {
+                "type": "array", "minItems": 1,
+                "items": {
+                  "type": "object", "additionalProperties": false,
+                  "required": ["characterId", "actingMasterBinding", "selectedMasterCues", "activeStillness", "gazeTarget", "breathVoice", "endCarry"],
+                  "properties": {
+                    "characterId": { "type": "string", "minLength": 1 },
+                    "identityPackBinding": { "$ref": "#/$defs/authorityBinding" },
+                    "actingMasterBinding": { "$ref": "#/$defs/authorityBinding" },
+                    "storyStateBinding": { "$ref": "#/$defs/authorityBinding" },
+                    "voiceIdentityBinding": { "$ref": "#/$defs/authorityBinding" },
+                    "selectedMasterCues": {
+                      "type": "array", "minItems": 1, "maxItems": 3,
+                      "items": {
+                        "type": "object", "additionalProperties": false,
+                        "required": ["masterCueId", "masterCue", "triggerInShot", "cameraVisibleAction"],
+                        "properties": {
+                          "masterCueId": { "type": "string", "minLength": 1 },
+                          "masterCue": { "type": "string", "minLength": 1 },
+                          "triggerInShot": { "type": "string", "minLength": 1 },
+                          "cameraVisibleAction": { "type": "string", "minLength": 1 }
+                        }
+                      }
+                    },
+                    "activeStillness": { "type": "string", "minLength": 1 },
+                    "gazeTarget": { "type": "string", "minLength": 1 },
+                    "breathVoice": { "type": "string", "minLength": 1 },
+                    "endCarry": { "type": "string", "minLength": 1 },
+                    "voiceStateDelta": {
+                      "type": "object", "additionalProperties": false,
+                      "required": ["voiceDeltaId", "triggerInShot", "audibleChange", "stableCore"],
+                      "properties": {
+                        "voiceDeltaId": { "type": "string", "minLength": 1 },
+                        "triggerInShot": { "type": "string", "minLength": 1 },
+                        "audibleChange": { "type": "string", "minLength": 1 },
+                        "stableCore": { "type": "string", "minLength": 1 }
+                      }
+                    }
+                  },
+                  "allOf": [
+                    { "if": { "required": ["voiceIdentityBinding"] }, "then": { "required": ["voiceStateDelta"] } },
+                    { "if": { "required": ["voiceStateDelta"] }, "then": { "required": ["voiceIdentityBinding"] } }
+                  ]
+                }
+              },
+              "sceneGeometry": {
+                "oneOf": [
+                  {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["applicability", "binding", "directorLabel", "visibleGeometry"],
+                    "properties": {
+                      "applicability": { "const": "required" },
+                      "binding": { "$ref": "#/$defs/authorityBinding" },
+                      "directorLabel": { "const": "1/4" },
+                      "visibleGeometry": { "type": "string", "minLength": 1 }
+                    }
+                  },
+                  {
+                    "type": "object", "additionalProperties": false,
+                    "required": ["applicability", "reason"],
+                    "properties": {
+                      "applicability": { "const": "not_applicable" },
+                      "reason": { "type": "string", "minLength": 1 }
+                    }
+                  }
+                ]
+              },
+              "audioStrategy": {
+                "type": "object", "additionalProperties": false,
+                "required": ["strategy", "generateAudio"],
+                "properties": {
+                  "strategy": { "enum": ["preserve_source_audio_exact", "native_generate", "reference_guided", "external_remux", "silent_visual_test"] },
+                  "generateAudio": { "type": "boolean" }
+                }
+              }
+            }
+          }
+          ,"skillsApplied": { "type": "array", "minItems": 1, "maxItems": 12, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+          ,"realismPlan": {
+            "type": "object",
+            "required": ["focusedCharacter", "motivatedAction", "physicalEndpoint", "naturalVariation", "persistentMicroMotions", "forbiddenGenericActions"],
+            "properties": {
+              "focusedCharacter": { "type": "string", "minLength": 1 },
+              "motivatedAction": { "type": "string", "minLength": 1 },
+              "physicalEndpoint": { "type": "string", "minLength": 1 },
+              "naturalVariation": { "type": "string", "minLength": 1 },
+              "persistentMicroMotions": { "type": "array", "items": { "type": "object", "required": ["characterId", "action"], "properties": { "characterId": { "type": "string", "minLength": 1 }, "action": { "type": "string", "minLength": 1 } }, "additionalProperties": false } },
+              "forbiddenGenericActions": { "type": "array", "minItems": 4, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+            },
+            "additionalProperties": false
+          }
+          ,"interactionPlan": {
+            "type": "object",
+            "required": ["participants", "focusedCharacter", "partnerCharacter", "trigger", "gazeTarget", "eyeLineAction", "partnerReaction", "axisConstraint", "endState"],
+            "properties": {
+              "participants": { "type": "array", "minItems": 2, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+              "focusedCharacter": { "type": "string", "minLength": 1 },
+              "partnerCharacter": { "type": "string", "minLength": 1 },
+              "trigger": { "type": "string", "minLength": 1 },
+              "gazeTarget": { "type": "string", "minLength": 1 },
+              "eyeLineAction": { "type": "string", "minLength": 1 },
+              "partnerReaction": { "type": "string", "minLength": 1 },
+              "axisConstraint": { "type": "string", "minLength": 1 },
+              "endState": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+          ,"spatialContract": {
+            "type": "object",
+            "required": ["firstFramePolicy", "requiredSubjects", "cameraSide", "shotMode", "subjects"],
+            "properties": {
+              "firstFramePolicy": { "enum": ["all_required_visible", "deliberate_reveal"] },
+              "requiredSubjects": { "type": "array", "minItems": 1, "maxItems": 12, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+              "cameraSide": { "type": "string", "minLength": 1 },
+              "shotMode": { "enum": ["single_continuous_take", "controlled_multi_shot"] },
+              "revealAction": { "type": "string", "minLength": 1 },
+              "subjects": {
+                "type": "array", "minItems": 1, "maxItems": 12,
+                "items": {
+                  "type": "object",
+                  "required": ["subjectId", "screenPosition", "worldPosition", "depthLayer", "bodyFacing", "gazeTarget", "movementDirection"],
+                  "properties": {
+                    "subjectId": { "type": "string", "minLength": 1 },
+                    "screenPosition": { "type": "string", "minLength": 1 },
+                    "worldPosition": { "type": "string", "minLength": 1 },
+                    "depthLayer": { "enum": ["foreground", "midground", "background"] },
+                    "bodyFacing": { "type": "string", "minLength": 1 },
+                    "gazeTarget": { "type": "string", "minLength": 1 },
+                    "movementDirection": { "type": "string", "minLength": 1 },
+                    "landmarkAnchor": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "cutPlan": {
+                "type": "array", "minItems": 1, "maxItems": 6,
+                "items": {
+                  "type": "object",
+                  "required": ["type", "afterBeat", "reason"],
+                  "properties": {
+                    "type": { "enum": ["hard_cut", "smash_cut", "match_cut", "insert_cut", "reverse_cut", "whip_cut"] },
+                    "afterBeat": { "type": "string", "minLength": 1 },
+                    "reason": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": { "properties": { "firstFramePolicy": { "const": "deliberate_reveal" } } },
+                "then": { "required": ["revealAction"] }
+              },
+              {
+                "if": { "properties": { "shotMode": { "const": "controlled_multi_shot" } } },
+                "then": { "required": ["cutPlan"] }
+              }
+            ],
+            "additionalProperties": false
+          }
+          ,"performanceMode": { "enum": ["none", "basic", "emotion_dlc"] }
+          ,"performancePlan": {
+            "type": "object",
+            "required": ["dlcId", "templateSource", "skillsApplied", "focusedCharacter", "objective", "subtext", "trigger", "performanceRegister", "intensity", "dominantTrack", "startBehavior", "primaryAction", "supportingCues", "voiceBreath", "endBehavior", "continuityCarry", "backgroundCharacters"],
+            "properties": {
+              "dlcId": { "const": "emotion-performance-v1" },
+              "actingControlVersion": { "const": 2 },
+              "hasDialogue": { "type": "boolean" },
+              "templateSource": { "const": "knowledge/capabilities/dlc/emotion-performance.md" },
+              "skillsApplied": {
+                "type": "array",
+                "minItems": 2,
+                "maxItems": 6,
+                "uniqueItems": true,
+                "items": { "type": "string", "minLength": 1 },
+                "allOf": [
+                  { "contains": { "const": "seedance2-prompt" } },
+                  { "contains": { "const": "seedance-characters" } }
+                ]
+              },
+              "focusedCharacter": { "type": "string", "minLength": 1 },
+              "objective": { "type": "string", "minLength": 1 },
+              "subtext": { "type": "string", "minLength": 1 },
+              "obstacle": { "type": "string", "minLength": 1 },
+              "tactic": { "type": "string", "minLength": 1 },
+              "beatPlan": {
+                "type": "array", "minItems": 1, "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "required": ["tactic", "visibleChange"],
+                  "properties": {
+                    "tactic": { "type": "string", "minLength": 1 },
+                    "visibleChange": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "performanceArc": {
+                "type": "object",
+                "required": ["protectiveStrategy", "fractureTrigger", "exposedState", "chosenAction", "externalFeedback", "recoveryState"],
+                "properties": {
+                  "protectiveStrategy": { "type": "string", "minLength": 1 },
+                  "fractureTrigger": { "type": "string", "minLength": 1 },
+                  "exposedState": { "type": "string", "minLength": 1 },
+                  "chosenAction": { "type": "string", "minLength": 1 },
+                  "externalFeedback": { "type": "string", "minLength": 1 },
+                  "recoveryState": { "type": "string", "minLength": 1 }
+                },
+                "additionalProperties": false
+              },
+              "dialoguePerformance": {
+                "type": "array", "minItems": 1, "maxItems": 6,
+                "items": {
+                  "type": "object",
+                  "required": ["speaker", "respondingCharacter", "lineText", "triggerCue", "stressPhrase", "preSpeechState", "visibleResponse", "voiceBreathPause", "postSpeechState"],
+                  "properties": {
+                    "speaker": { "type": "string", "minLength": 1 },
+                    "respondingCharacter": { "type": "string", "minLength": 1 },
+                    "lineText": { "type": "string", "minLength": 1 },
+                    "triggerCue": { "type": "string", "minLength": 1 },
+                    "stressPhrase": { "type": "string", "minLength": 1 },
+                    "preSpeechState": { "type": "string", "minLength": 1 },
+                    "visibleResponse": { "type": "string", "minLength": 1 },
+                    "voiceBreathPause": { "type": "string", "minLength": 1 },
+                    "postSpeechState": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "performanceEnvelope": {
+                "type": "object",
+                "required": ["onset", "apex", "offset"],
+                "properties": {
+                  "onset": { "type": "string", "minLength": 1 },
+                  "apex": { "type": "string", "minLength": 1 },
+                  "offset": { "type": "string", "minLength": 1 }
+                },
+                "additionalProperties": false
+              },
+              "facialCalibration": {
+                "type": "object",
+                "required": ["observableAction"],
+                "properties": {
+                  "observableAction": { "type": "string", "minLength": 1 },
+                  "facsAuHints": {
+                    "type": "array", "minItems": 1, "maxItems": 6, "uniqueItems": true,
+                    "items": { "type": "string", "pattern": "^AU\\s*\\d{1,2}(?:[A-E])?$" }
+                  }
+                },
+                "additionalProperties": false
+              },
+              "prohibitedEarlyReactions": {
+                "type": "array", "minItems": 1, "maxItems": 4,
+                "items": {
+                  "type": "object",
+                  "required": ["respondingCharacter", "reaction", "stressPhrase", "untilCue"],
+                  "properties": {
+                    "respondingCharacter": { "type": "string", "minLength": 1 },
+                    "reaction": { "type": "string", "minLength": 1 },
+                    "stressPhrase": { "type": "string", "minLength": 1 },
+                    "untilCue": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "trigger": { "type": "string", "minLength": 1 },
+              "performanceRegister": { "enum": ["restrained_realism", "grounded_realism", "heightened_drama", "stylized_deadpan"] },
+              "intensity": { "enum": ["micro", "restrained", "clear", "explosive"] },
+              "dominantTrack": { "enum": ["eyes", "face", "head_shoulders", "hands", "body", "breath_voice"] },
+              "startBehavior": { "type": "string", "minLength": 1 },
+              "primaryAction": { "type": "string", "minLength": 1 },
+              "supportingCues": { "type": "array", "minItems": 1, "maxItems": 2, "items": { "type": "string", "minLength": 1 } },
+              "voiceBreath": { "type": "string", "minLength": 1 },
+              "endBehavior": { "type": "string", "minLength": 1 },
+              "continuityCarry": { "type": "array", "minItems": 1, "maxItems": 3, "items": { "type": "string", "minLength": 1 } },
+              "backgroundCharacters": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["characterTag", "persistentMicroMotion"],
+                  "properties": {
+                    "characterTag": { "type": "string", "minLength": 1 },
+                    "persistentMicroMotion": { "type": "string", "minLength": 1 }
+                  },
+                  "additionalProperties": false
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": {
+                  "anyOf": [
+                    { "required": ["hasDialogue"] },
+                    { "required": ["performanceArc"] },
+                    { "required": ["dialoguePerformance"] },
+                    { "required": ["performanceEnvelope"] },
+                    { "required": ["facialCalibration"] },
+                    { "required": ["prohibitedEarlyReactions"] }
+                  ]
+                },
+                "then": { "required": ["actingControlVersion"] }
+              },
+              {
+                "if": { "required": ["actingControlVersion"], "properties": { "actingControlVersion": { "const": 2 } } },
+                "then": { "required": ["hasDialogue", "obstacle", "tactic", "beatPlan", "performanceArc", "prohibitedEarlyReactions"] }
+              },
+              {
+                "if": {
+                  "required": ["actingControlVersion", "dominantTrack", "intensity"],
+                  "properties": { "actingControlVersion": { "const": 2 }, "dominantTrack": { "const": "face" }, "intensity": { "const": "clear" } }
+                },
+                "then": { "required": ["performanceEnvelope"] }
+              },
+              {
+                "if": {
+                  "required": ["actingControlVersion", "intensity", "facialCalibration"],
+                  "properties": { "actingControlVersion": { "const": 2 }, "intensity": { "const": "clear" } }
+                },
+                "then": { "required": ["performanceEnvelope"] }
+              },
+              {
+                "if": {
+                  "required": ["actingControlVersion", "hasDialogue"],
+                  "properties": { "actingControlVersion": { "const": 2 }, "hasDialogue": { "const": true } }
+                },
+                "then": { "required": ["dialoguePerformance"] }
+              },
+              {
+                "if": {
+                  "required": ["actingControlVersion", "hasDialogue"],
+                  "properties": { "actingControlVersion": { "const": 2 }, "hasDialogue": { "const": false } }
+                },
+                "then": { "not": { "required": ["dialoguePerformance"] } }
+              },
+              {
+                "if": {
+                  "required": ["actingControlVersion", "intensity"],
+                  "properties": { "actingControlVersion": { "const": 2 }, "intensity": { "const": "explosive" } }
+                },
+                "then": { "required": ["performanceEnvelope"] }
+              }
+            ],
+            "additionalProperties": false
+          }
+        },
+        "allOf": [
+          {
+            "if": { "required": ["performanceMode"], "properties": { "performanceMode": { "const": "emotion_dlc" } } },
+            "then": { "required": ["performancePlan"] }
+          },
+          {
+            "if": { "required": ["performancePlan"] },
+            "then": { "required": ["performanceMode"], "properties": { "performanceMode": { "const": "emotion_dlc" } } }
+          }
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "authorityBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "sha256"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }
+    }
+  }
+}

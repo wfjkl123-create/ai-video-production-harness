@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gate5-rework-work-order.schema.json",
+  "title": "Gate 5 Resumable Minimal Rework Work Order",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "id", "status", "projectId", "failureReturnId", "failureReturnSha256", "scope", "segmentId", "rejection", "returnStage", "responsibilityStage", "reworkAction", "frozenEvidence", "allowedMutationStages", "replacementContract", "paidBoundary", "steps", "progressRevision", "pause", "lastTransition", "createdAt", "updatedAt"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "kind": { "const": "gate5_rework_work_order" },
+    "id": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "status": { "enum": ["READY", "IN_PROGRESS", "PAUSED", "COMPLETED"] },
+    "projectId": { "$ref": "execution-event.schema.json#/$defs/projectId" },
+    "failureReturnId": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "failureReturnSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+    "scope": { "enum": ["project", "segment"] },
+    "segmentId": { "oneOf": [{ "$ref": "execution-event.schema.json#/$defs/id" }, { "type": "null" }] },
+    "rejection": {
+      "type": "object",
+      "required": ["reviewId", "artifactId", "artifactSha256"],
+      "properties": {
+        "reviewId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "returnStage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+    "responsibilityStage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+    "reworkAction": { "type": "string", "minLength": 1 },
+    "frozenEvidence": {
+      "type": "object",
+      "required": ["artifacts", "fingerprintSha256"],
+      "properties": {
+        "artifacts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "type", "stage", "revision", "status", "path", "sha256", "lockedByReviewId"],
+            "properties": {
+              "id": { "$ref": "execution-event.schema.json#/$defs/id" },
+              "type": { "type": "string", "minLength": 1 },
+              "stage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+              "revision": { "type": "integer", "minimum": 1 },
+              "status": { "const": "locked" },
+              "path": { "type": "string", "minLength": 1 },
+              "sha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+              "lockedByReviewId": { "$ref": "execution-event.schema.json#/$defs/id" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "fingerprintSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "allowedMutationStages": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "execution-event.schema.json#/$defs/observationStage" } },
+    "replacementContract": {
+      "type": "object",
+      "required": ["mustSupersedeArtifactId", "minimumRevision", "mustReturnToGate5"],
+      "properties": {
+        "mustSupersedeArtifactId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "minimumRevision": { "type": "integer", "minimum": 2 },
+        "mustReturnToGate5": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "paidBoundary": {
+      "type": "object",
+      "required": ["newAuthorizationRequired", "automaticRetryAllowed", "existingApprovalReusable"],
+      "properties": {
+        "newAuthorizationRequired": { "type": "boolean" },
+        "automaticRetryAllowed": { "const": false },
+        "existingApprovalReusable": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+          "required": ["stage", "status", "startedAt", "completedAt", "checkpoint"],
+        "properties": {
+          "stage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+          "status": { "enum": ["pending", "in_progress", "completed"] },
+          "startedAt": { "oneOf": [{ "type": "null" }, { "type": "string", "format": "date-time" }] },
+          "completedAt": { "oneOf": [{ "type": "null" }, { "type": "string", "format": "date-time" }] },
+          "checkpoint": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["note", "evidence"],
+                "properties": {
+                  "note": { "type": "string", "minLength": 1 },
+                  "evidence": {
+                    "type": "array", "minItems": 1,
+                    "items": {
+                      "type": "object", "additionalProperties": false,
+                      "required": ["kind", "id", "sha256", "path"],
+                      "properties": {
+                        "kind": { "$ref": "execution-event.schema.json#/$defs/id" },
+                        "id": { "$ref": "execution-event.schema.json#/$defs/id" },
+                        "sha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+                        "path": { "oneOf": [{ "type": "null" }, { "type": "string", "minLength": 1 }] }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "progressRevision": { "type": "integer", "minimum": 0 },
+    "pause": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["reason", "pausedAt"],
+          "properties": {
+            "reason": { "type": "string", "minLength": 1 },
+            "pausedAt": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "lastTransition": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["action", "stage", "requestSha256", "occurredAt"],
+          "properties": {
+            "action": { "enum": ["start", "complete", "pause", "resume"] },
+            "stage": { "oneOf": [{ "type": "null" }, { "$ref": "execution-event.schema.json#/$defs/observationStage" }] },
+            "requestSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+            "occurredAt": { "type": "string", "format": "date-time" }
+          }
+        }
+      ]
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

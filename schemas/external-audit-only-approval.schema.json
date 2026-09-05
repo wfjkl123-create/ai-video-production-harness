@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "actor", "decision", "projectId", "segmentId", "model", "maxCalls", "budget", "executionPolicy", "permissions", "binding", "approvedAt"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "external_audit_only_approval" },
+    "actor": { "const": "human" },
+    "decision": { "const": "approved" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "pattern": "^(claude-ocx-(anthropic|kimi|qwen)--|(anthropic|kimi|qwen)/)[A-Za-z0-9._-]+$" },
+    "maxCalls": { "const": 1 },
+    "budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit", "perCallLimit", "totalLimit"],
+      "properties": { "unit": { "enum": ["USD", "CREDITS"] }, "perCallLimit": { "type": "number", "exclusiveMinimum": 0 }, "totalLimit": { "type": "number", "exclusiveMinimum": 0 } }
+    },
+    "executionPolicy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["costEvidenceRequired", "maxTurns", "maxInputTokensPerTurn", "maxOutputTokensPerTurn", "requiredExecutorCapabilities", "pricing"],
+      "properties": {
+        "costEvidenceRequired": { "enum": ["actual_billed_usd", "actual_consumed_credits"] },
+        "maxTurns": { "type": "integer", "minimum": 1 },
+        "maxInputTokensPerTurn": { "type": "integer", "minimum": 1 },
+        "maxOutputTokensPerTurn": { "type": "integer", "minimum": 1 },
+        "requiredExecutorCapabilities": { "const": ["max_output_tokens", "max_turns"] },
+        "pricing": { "type": "object" },
+        "worstCaseUsd": { "type": "number", "exclusiveMinimum": 0 },
+        "worstCaseCredits": { "type": "number", "exclusiveMinimum": 0 }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "costEvidenceRequired": { "const": "actual_billed_usd" },
+            "pricing": { "$ref": "#/$defs/usdPricing" }
+          },
+          "required": ["worstCaseUsd"],
+          "not": { "required": ["worstCaseCredits"] }
+        },
+        {
+          "properties": {
+            "costEvidenceRequired": { "const": "actual_consumed_credits" },
+            "pricing": { "$ref": "#/$defs/creditsPricing" }
+          },
+          "required": ["worstCaseCredits"],
+          "not": { "required": ["worstCaseUsd"] }
+        }
+      ]
+    },
+    "permissions": {
+      "type": "object", "additionalProperties": false,
+      "required": ["readOnly", "automaticRetries", "imageGeneration", "videoGeneration", "externalMessages"],
+      "properties": { "readOnly": { "const": true }, "automaticRetries": { "const": false }, "imageGeneration": { "const": false }, "videoGeneration": { "const": false }, "externalMessages": { "const": false } }
+    },
+    "binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["auditBrief", "prompt", "package", "inputMedia"],
+      "properties": {
+        "auditBrief": { "$ref": "#/$defs/file" }, "prompt": { "$ref": "#/$defs/media" }, "package": { "$ref": "#/$defs/file" },
+        "inputMedia": {
+          "type": "object", "additionalProperties": false, "required": ["images", "videos", "audio"],
+          "properties": { "images": { "type": "array", "items": { "$ref": "#/$defs/media" } }, "videos": { "type": "array", "items": { "$ref": "#/$defs/media" } }, "audio": { "type": "array", "items": { "$ref": "#/$defs/media" } } }
+        }
+      }
+    },
+    "approvedAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "usdPricing": { "type": "object", "additionalProperties": false, "required": ["unit", "inputUsdPerMillion", "outputUsdPerMillion", "source", "verifiedAt"], "properties": { "unit": { "const": "USD_per_million_tokens" }, "inputUsdPerMillion": { "type": "number", "exclusiveMinimum": 0 }, "outputUsdPerMillion": { "type": "number", "exclusiveMinimum": 0 }, "source": { "type": "string", "minLength": 1 }, "verifiedAt": { "type": "string", "format": "date-time" } } },
+    "creditsPricing": { "type": "object", "additionalProperties": false, "required": ["unit", "inputCreditsPerMillion", "outputCreditsPerMillion", "source", "verifiedAt"], "properties": { "unit": { "const": "CREDITS_per_million_tokens" }, "inputCreditsPerMillion": { "type": "number", "exclusiveMinimum": 0 }, "outputCreditsPerMillion": { "type": "number", "exclusiveMinimum": 0 }, "source": { "type": "string", "minLength": 1 }, "verifiedAt": { "type": "string", "format": "date-time" } } },
+    "file": { "type": "object", "additionalProperties": false, "required": ["path", "sha256"], "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } },
+    "media": { "type": "object", "additionalProperties": false, "required": ["id", "path", "sha256"], "properties": { "id": { "type": "string", "minLength": 1 }, "path": { "type": "string", "minLength": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "storyboard-contact-sheet.schema.json",
+  "title": "Lossless Atomic Storyboard Contact Sheet Plan",
+  "type": "object",
+  "required": ["id", "kind", "assetId", "revision", "visualAuditId", "projectId", "segmentId", "storyboardSequenceId", "segmentationId", "segmentationSha256", "layoutProfile", "canvas", "grid", "panels", "outputPath", "renderer"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "storyboard_contact_sheet_plan" },
+    "assetId": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "visualAuditId": { "type": "string", "minLength": 1 },
+    "projectId": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "storyboardSequenceId": { "type": "string", "minLength": 1 },
+    "segmentationId": { "type": "string", "minLength": 1 },
+    "segmentationSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "layoutProfile": { "const": "storyboard-contact-sheet-v1" },
+    "canvas": { "type": "object" },
+    "grid": { "type": "object" },
+    "panels": { "type": "array", "minItems": 11, "maxItems": 11 },
+    "outputPath": { "type": "string", "minLength": 1 },
+    "renderer": { "const": "ffmpeg-lossless-native-storyboard-contact-sheet-v1" }
+  },
+  "additionalProperties": true
+}

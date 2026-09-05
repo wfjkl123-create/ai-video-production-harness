@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "source-comparator-audit.schema.json",
+  "title": "Deterministic Source Comparator Audit",
+  "type": "object",
+  "required": ["schemaVersion", "id", "kind", "status", "comparatorVersion", "projectId", "decision", "gateEffect", "sourceAnalysisBinding", "storyPlanBinding", "sourceAnalysisContentFingerprintSha256", "inputFingerprintSha256", "factPolicy", "rowComparisons", "differences", "coverage", "uncertainties", "createdAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "kind": { "const": "source_comparator_audit" },
+    "status": { "const": "completed" },
+    "comparatorVersion": { "const": "source-comparator-v1" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "decision": { "enum": ["PASS", "FAIL"] },
+    "gateEffect": { "enum": ["GATE_2_ELIGIBLE", "BLOCK_GATE_2"] },
+    "sourceAnalysisBinding": { "$ref": "#/$defs/binding" },
+    "storyPlanBinding": { "$ref": "#/$defs/binding" },
+    "sourceAnalysisContentFingerprintSha256": { "$ref": "#/$defs/sha256" },
+    "inputFingerprintSha256": { "$ref": "#/$defs/sha256" },
+    "factPolicy": {
+      "type": "object",
+      "required": ["observedFactsOnly", "interpretationIsNonAuthoritative", "uncertaintiesMustRemainExplicit"],
+      "properties": { "observedFactsOnly": { "const": true }, "interpretationIsNonAuthoritative": { "const": true }, "uncertaintiesMustRemainExplicit": { "const": true } },
+      "additionalProperties": false
+    },
+    "rowComparisons": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/row" } },
+    "differences": { "type": "array", "items": { "$ref": "#/$defs/difference" } },
+    "coverage": { "type": "object" },
+    "uncertainties": {
+      "type": "object",
+      "required": ["source", "retained", "missing", "additionalContractUncertainties"],
+      "properties": {
+        "source": { "$ref": "#/$defs/textArray" }, "retained": { "$ref": "#/$defs/textArray" },
+        "missing": { "$ref": "#/$defs/textArray" }, "additionalContractUncertainties": { "$ref": "#/$defs/textArray" }
+      },
+      "additionalProperties": false
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "text": { "type": "string", "pattern": ".*\\S.*" },
+    "textArray": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+    "binding": {
+      "type": "object", "required": ["artifactId", "artifactRevision", "artifactSha256"],
+      "properties": { "artifactId": { "$ref": "#/$defs/id" }, "artifactRevision": { "type": "integer", "minimum": 1 }, "artifactSha256": { "$ref": "#/$defs/sha256" } },
+      "additionalProperties": false
+    },
+    "difference": {
+      "type": "object", "required": ["code", "scope", "statement", "details"],
+      "properties": { "code": { "$ref": "#/$defs/id" }, "scope": { "$ref": "#/$defs/id" }, "statement": { "$ref": "#/$defs/text" }, "details": { "$ref": "#/$defs/text" } },
+      "additionalProperties": false
+    },
+    "row": {
+      "type": "object",
+      "required": ["rowId", "startSec", "endSec", "observedFacts", "actionBeats", "sourceUncertainties", "contractUncertainties", "missingUncertainties", "interpretationExcluded", "decision", "differences"],
+      "properties": {
+        "rowId": { "$ref": "#/$defs/id" }, "startSec": { "type": "number", "minimum": 0 }, "endSec": { "type": "number", "exclusiveMinimum": 0 },
+        "observedFacts": { "type": "array" }, "actionBeats": { "type": "array" },
+        "sourceUncertainties": { "$ref": "#/$defs/textArray" }, "contractUncertainties": { "$ref": "#/$defs/textArray" },
+        "missingUncertainties": { "$ref": "#/$defs/textArray" }, "interpretationExcluded": { "$ref": "#/$defs/textArray" },
+        "decision": { "enum": ["PASS", "FAIL"] }, "differences": { "type": "array", "items": { "$ref": "#/$defs/difference" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

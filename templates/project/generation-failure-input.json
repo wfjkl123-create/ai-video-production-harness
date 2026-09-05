@@ -1,0 +1,45 @@
+{
+  "outputId": "generated-output-001",
+  "outputSha256": "REPLACE_WITH_LOWERCASE_SHA256",
+  "failureType": "third_party_video_audit_fail",
+  "rootCauseKey": "REPLACE_WITH_STABLE_ROOT_CAUSE_KEY",
+  "causalAttribution": {
+    "kind": "generation_failure_causal_attribution_v1",
+    "version": 1,
+    "rootCauseKey": "REPLACE_WITH_SAME_STABLE_ROOT_CAUSE_KEY",
+    "primary": {
+      "key": "REPLACE_WITH_SAME_STABLE_ROOT_CAUSE_KEY",
+      "stage": "REPLACE_WITH_EARLIEST_EVIDENCE_BACKED_STAGE",
+      "hypothesis": "REPLACE_WITH_TESTABLE_PRIMARY_CAUSE",
+      "confidence": "medium",
+      "evidence": ["REPLACE_WITH_DIRECT_EVIDENCE"],
+      "falsifier": "REPLACE_WITH_OBSERVATION_THAT_WOULD_DISPROVE_THIS_CAUSE"
+    },
+    "contributors": [],
+    "counterEvidence": [],
+    "unknowns": ["REPLACE_WITH_WHAT_THE_CURRENT_EVIDENCE_CANNOT_PROVE"],
+    "nextMinimalCheck": {
+      "variable": "REPLACE_WITH_ONE_PRIMARY_VARIABLE",
+      "action": "REPLACE_WITH_MINIMUM_ISOLATED_CHECK",
+      "expectedObservation": "REPLACE_WITH_PREDICTED_OBSERVATION",
+      "changesOnePrimaryVariable": true,
+      "costClass": "free"
+    },
+    "promptOnlyRetryAllowed": false,
+    "controlRouteChangeRequired": true
+  },
+  "segmentId": "segment-001",
+  "failureObservation": {
+    "category": "other",
+    "responsibilityStage": "generation",
+    "returnStage": "generation",
+    "retryKind": "none"
+  },
+  "controlRouteFingerprint": "REPLACE_WITH_LOWERCASE_SHA256",
+  "observableProblem": "REPLACE_WITH_OBSERVABLE_PROBLEM",
+  "exactTimestampsOrRegions": ["00:00.000-00:01.000"],
+  "observedEvidence": ["REPLACE_WITH_CONCRETE_FRAME_OR_REPORT_EVIDENCE"],
+  "expectedLockedRequirement": "REPLACE_WITH_EXACT_LOCKED_REQUIREMENT",
+  "mostLikelyCause": "REPLACE_WITH_EVIDENCE_BOUNDED_CAUSE",
+  "freeRevisionCompleted": "REPLACE_WITH_FREE_REVIEW_OR_REVISION_ALREADY_COMPLETED"
+}

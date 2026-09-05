@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "storyboard-panel-normalization-batch.schema.json",
+  "title": "Deterministic Atomic Storyboard Panel Normalization Batch",
+  "type": "object",
+  "required": ["id", "projectId", "segmentId", "storyboardSequenceId", "promptPlanPath", "promptPlanSha256", "outputDirectory", "revision", "panels"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "projectId": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "storyboardSequenceId": { "type": "string", "minLength": 1 },
+    "promptPlanPath": { "type": "string", "minLength": 1 },
+    "promptPlanSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "outputDirectory": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "panels": {
+      "type": "array", "minItems": 11, "maxItems": 11,
+      "items": {
+        "type": "object", "required": ["panelIndex", "assetId"],
+        "properties": {
+          "panelIndex": { "type": "integer", "minimum": 1, "maximum": 11 },
+          "assetId": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

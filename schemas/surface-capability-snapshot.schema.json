@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "surface-capability-snapshot.schema.json",
+  "title": "Surface Capability Snapshot",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "surface", "model", "operation", "capturedAt", "expiresAt", "capabilities", "rawReadback"],
+  "properties": {
+    "kind": { "const": "surface_capability_snapshot_v1" },
+    "version": { "const": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "surface": { "type": "string", "minLength": 1 },
+    "model": { "type": "string", "minLength": 1 },
+    "operation": { "type": "string", "minLength": 1 },
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": { "type": "string", "format": "date-time" },
+    "capabilities": {
+      "type": "object", "additionalProperties": false,
+      "required": ["generatedAudio", "disableGeneratedAudio", "audioReference", "sourceAudioPreservation", "streamCopyRemux", "multiShots"],
+      "properties": {
+        "generatedAudio": { "type": "boolean" },
+        "disableGeneratedAudio": { "type": "boolean" },
+        "audioReference": { "type": "boolean" },
+        "sourceAudioPreservation": { "type": "boolean" },
+        "streamCopyRemux": { "type": "boolean" },
+        "multiShots": { "type": "boolean" }
+      }
+    },
+    "rawReadback": {
+      "type": "object", "additionalProperties": false,
+      "required": ["artifactId", "sha256", "observedFields"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "observedFields": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

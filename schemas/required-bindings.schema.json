@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "required-bindings.schema.json",
+  "title": "Coverage-driven Required Bindings",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "entries"],
+  "properties": {
+    "version": { "const": 1 },
+    "entries": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["bindingType", "scopeKey", "applicability", "reason"],
+        "properties": {
+          "bindingType": {
+            "enum": ["source_video", "replacement_asset", "character_identity_pack_v2", "character_acting_master_v1", "character_story_state_v1", "voice_identity_v1", "approved_source_audio", "scene_geometry_v2", "observed_handoff", "handoff_reconciliation_v1", "spatial_proxy", "product_reference", "scene_reference", "audio_strategy"]
+          },
+          "scopeKey": { "type": "string", "minLength": 1 },
+          "applicability": { "enum": ["required", "not_applicable"] },
+          "reason": { "type": "string", "minLength": 1 },
+          "artifactId": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "applicability": { "const": "required" } }, "required": ["applicability"] },
+            "then": { "required": ["artifactId", "sha256"] }
+          },
+          {
+            "if": { "properties": { "applicability": { "const": "not_applicable" } }, "required": ["applicability"] },
+            "then": { "not": { "anyOf": [{ "required": ["artifactId"] }, { "required": ["sha256"] }] } }
+          }
+        ]
+      }
+    }
+  }
+}

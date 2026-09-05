@@ -1,0 +1,18 @@
+{
+  "name": "ai-video-production-harness",
+  "private": true,
+  "type": "module",
+  "bin": { "harness": "src/cli.js" },
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "studio": "node apps/harness-studio/server.js",
+    "studio:lan": "HARNESS_STUDIO_HOST=0.0.0.0 node apps/harness-studio/server.js",
+    "test": "node --env-file=.env.test --test",
+    "test:e2e": "node --test tests/e2e/*.test.js",
+    "test:governance": "node --test tests/domain/quality-review.test.js tests/services/quality-review-service.test.js tests/services/doctor-service.test.js tests/services/next-action-service.test.js tests/services/segment-contract-service.test.js tests/commands/governance-commands.test.js",
+    "audit:project-readiness": "node src/commands/audit-project-readiness.js",
+    "reconcile:project-phase": "node src/commands/reconcile-project-phase.js",
+    "check": "node --check src/cli.js && node --env-file=.env.test --test",
+    "verify": "node --check src/cli.js && node --env-file=.env.test --test"
+  }
+}

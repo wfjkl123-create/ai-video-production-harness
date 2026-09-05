@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "handoff-reconciliation.schema.json",
+  "title": "Handoff Reconciliation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "projectId", "previousSegmentId", "nextSegmentId", "segmentationBinding", "observedHandoffBinding", "canonicalAuthorityBindings", "plannedEndState", "observedEndState", "nextPlannedStartState", "dimensionAssessments", "decision", "spatialProxyPolicy"],
+  "properties": {
+    "kind": { "const": "handoff_reconciliation_v1" }, "version": { "const": 1 },
+    "id": { "$ref": "#/$defs/text" }, "projectId": { "$ref": "#/$defs/text" }, "previousSegmentId": { "$ref": "#/$defs/text" }, "nextSegmentId": { "$ref": "#/$defs/text" },
+    "segmentationBinding": { "$ref": "#/$defs/binding" }, "observedHandoffBinding": { "$ref": "#/$defs/binding" },
+    "canonicalAuthorityBindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/binding" } },
+    "plannedEndState": { "type": "object", "minProperties": 1 }, "observedEndState": { "type": "object", "minProperties": 1 }, "nextPlannedStartState": { "type": "object", "minProperties": 1 },
+    "dimensionAssessments": { "type": "array", "minItems": 9, "maxItems": 9, "items": { "type": "object", "additionalProperties": false, "required": ["dimension", "disposition", "evidence", "resolution", "observedEvidence"], "properties": { "dimension": { "enum": ["people", "distances", "product", "props", "camera", "open_motion", "light", "audio", "identity"] }, "disposition": { "enum": ["consistent", "absorb_in_next", "repair_previous", "unknown"] }, "evidence": { "$ref": "#/$defs/text" }, "resolution": { "$ref": "#/$defs/text" }, "observedEvidence": { "type": "object", "additionalProperties": false, "required": ["field", "basis", "timestamps"], "properties": { "field": { "enum": ["people", "distances", "productState", "props", "camera", "openMotion", "light", "audio", "identity"] }, "basis": { "enum": ["observed", "multi_frame_inference"] }, "timestamps": { "type": "array", "minItems": 1, "items": { "type": "number", "minimum": 0 } } } }, "nextStateInstruction": { "$ref": "#/$defs/text" } }, "allOf": [{ "if": { "properties": { "disposition": { "enum": ["absorb_in_next", "repair_previous", "unknown"] } }, "required": ["disposition"] }, "then": { "required": ["nextStateInstruction"] } }] } },
+    "decision": { "enum": ["PASS", "HOLD", "FAIL"] },
+    "spatialProxyPolicy": {
+      "oneOf": [
+        { "type": "object", "additionalProperties": false, "required": ["useObservedFrame", "binding", "responsibility", "mustNotControl"], "properties": { "useObservedFrame": { "const": true }, "binding": { "$ref": "#/$defs/binding" }, "responsibility": { "const": "instantaneous position, pose, gaze and motion phase only" }, "mustNotControl": { "type": "array", "minItems": 2, "allOf": [{ "contains": { "const": "character identity" } }, { "contains": { "const": "product structure" } }], "items": { "$ref": "#/$defs/text" } } } },
+        { "type": "object", "additionalProperties": false, "required": ["useObservedFrame", "reason"], "properties": { "useObservedFrame": { "const": false }, "reason": { "$ref": "#/$defs/text" } } }
+      ]
+    }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "binding": { "type": "object", "additionalProperties": false, "required": ["id", "revision", "sha256"], "properties": { "id": { "$ref": "#/$defs/text" }, "revision": { "type": "integer", "minimum": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } }
+  }
+}

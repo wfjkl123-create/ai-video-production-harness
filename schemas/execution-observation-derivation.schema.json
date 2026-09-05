@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-observation-derivation.schema.json",
+  "title": "Execution Observation Derivation Request",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "sourceType"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "execution_observation_derivation" },
+    "sourceType": {
+      "enum": [
+        "execution_trace_timing", "video_audit_media", "final_delivery_media",
+        "external_audit_cost", "generation_failure", "gate5_rejection"
+      ]
+    },
+    "traceId": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "reportPath": { "type": "string", "minLength": 1 },
+    "runId": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "failureEventId": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "reviewId": { "$ref": "execution-event.schema.json#/$defs/id" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "sourceType": { "const": "execution_trace_timing" } } },
+      "then": { "required": ["traceId"] }
+    },
+    {
+      "if": { "properties": { "sourceType": { "const": "video_audit_media" } } },
+      "then": { "required": ["reportPath"] }
+    },
+    {
+      "if": { "properties": { "sourceType": { "const": "external_audit_cost" } } },
+      "then": { "required": ["runId"] }
+    },
+    {
+      "if": { "properties": { "sourceType": { "const": "generation_failure" } } },
+      "then": { "required": ["failureEventId"] }
+    },
+    {
+      "if": { "properties": { "sourceType": { "const": "gate5_rejection" } } },
+      "then": { "required": ["reviewId"] }
+    }
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,102 @@
+{
+  "projectId": "project-ready",
+  "phase": "intake",
+  "activeSegmentId": null,
+  "blockedReason": null,
+  "artifacts": [
+    {
+      "id": "segmentation-001",
+      "type": "segmentation",
+      "revision": 1,
+      "status": "locked",
+      "path": "segments/segment-001.json",
+      "sha256": "fd128a68aef1325c30612e133c8e68d2307b6bc2ba64b62f60f99bd5c4f3c47f",
+      "lockedByReviewId": "review-segmentation-001"
+    },
+    {
+      "id": "contract-segment-001-v1",
+      "type": "segment_contract",
+      "revision": 1,
+      "status": "locked",
+      "path": "segments/segment-001-contract-v1.json",
+      "sha256": "f86cedf17410574251655233e79ec903c1d763ea0aebc7d0642153db2a61d369",
+      "lockedByReviewId": "review-contract-segment-001-v1",
+      "segmentId": "segment-001"
+    },
+    {
+      "id": "prompt-segment-001",
+      "type": "seedance_prompt",
+      "revision": 1,
+      "status": "locked",
+      "path": "prompts/segment-001.txt",
+      "sha256": "2602c55431602318c6a014368dccf58f1aa191c14bdfdf2a3fd8cbcb76d05136",
+      "lockedByReviewId": "review-prompt-segment-001",
+      "segmentId": "segment-001",
+      "narrationSourceId": "narration-segment-001",
+      "narrationSha256": "fc1aeea5425dbc2cf99fd7035ccd45f494f3622de992e6513d9edfc88126a6e5"
+    },
+    {
+      "id": "narration-segment-001",
+      "type": "shot_narration",
+      "revision": 1,
+      "status": "locked",
+      "path": "prompts/segment-001-narration.json",
+      "sha256": "fc1aeea5425dbc2cf99fd7035ccd45f494f3622de992e6513d9edfc88126a6e5",
+      "lockedByReviewId": "review-narration-segment-001",
+      "segmentId": "segment-001"
+    },
+    {
+      "id": "segment-001-storyboard",
+      "type": "segment_asset",
+      "assetType": "storyboard",
+      "segmentId": "segment-001",
+      "revision": 1,
+      "status": "locked",
+      "path": "outputs/segment-001-storyboard.png",
+      "sha256": "8723714af9a2560d2bd869b4aa3e539751c2d666c9d7cebce35f743a02821026",
+      "lockedByReviewId": "review-segment-001-storyboard"
+    },
+    {
+      "id": "segment-001-camera-blocking",
+      "type": "segment_asset",
+      "assetType": "camera_blocking",
+      "segmentId": "segment-001",
+      "revision": 1,
+      "status": "locked",
+      "path": "outputs/segment-001-camera-blocking.png",
+      "sha256": "6b9d1304ae9b80cb4a1946a8848f525a108bf2d5ea08a99cc21e1f951ad9bba8",
+      "lockedByReviewId": "review-segment-001-camera-blocking"
+    },
+    {
+      "id": "character-001",
+      "type": "project_asset",
+      "assetType": "character_board",
+      "revision": 1,
+      "status": "locked",
+      "path": "assets/project/character-001.png",
+      "sha256": "aa76c3c15f1641daa7c52b364da91c033603341409221cc32114f937684c7849",
+      "lockedByReviewId": "review-character-001"
+    },
+    {
+      "id": "scene-001",
+      "type": "project_asset",
+      "assetType": "scene_multiview",
+      "revision": 1,
+      "status": "locked",
+      "path": "assets/project/scene-001.png",
+      "sha256": "4ff6dbc31b3f752912f8053549050cbc3944570d7522fdbc7256b9ebc6db9ec0",
+      "lockedByReviewId": "review-scene-001"
+    },
+    {
+      "id": "product-001",
+      "type": "project_asset",
+      "assetType": "product_reference",
+      "revision": 1,
+      "status": "locked",
+      "path": "assets/project/product-001.png",
+      "sha256": "4e35c3547fb6383751fcced7ca8dab184fb2340623102bd8b83a17d7083529fb",
+      "lockedByReviewId": "review-product-001"
+    }
+  ],
+  "updatedAt": "2026-07-12T00:00:00.000Z"
+}

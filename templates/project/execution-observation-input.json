@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 2,
+  "kind": "execution_observation_evidence",
+  "id": "observation-segment-001-generation-001",
+  "evidencePath": "reviews/execution-observation-input.json",
+  "observedAt": "2026-08-24T10:00:00.000Z",
+  "actor": { "kind": "human", "id": null },
+  "segmentId": "segment-001",
+  "correlationId": "run-001",
+  "causationId": null,
+  "sourceReferences": [
+    {
+      "kind": "execution_trace",
+      "id": "trace-001",
+      "path": "traces/trace-001.json",
+      "sha256": "REPLACE_WITH_LOWERCASE_SHA256"
+    }
+  ],
+  "observation": {
+    "subjectId": "trace-001",
+    "scope": "generation_attempt",
+    "stage": "generation",
+    "timing": {
+      "machineExecutionMs": 0,
+      "externalQueueMs": 0,
+      "humanWaitMs": 0
+    }
+  }
+}

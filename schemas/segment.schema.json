@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "segment.schema.json",
+  "title": "Segment",
+  "type": "object",
+  "required": [
+    "id", "duration", "narrativeTask", "startState", "actionNodes", "endState",
+    "projectAssetIds", "segmentAssetRequirements", "previousSegmentId", "nextSegmentId", "status"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "duration": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+    "narrativeTask": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "startState": { "type": "object" },
+    "actionNodes": { "type": "array" },
+    "endState": { "type": "object" },
+    "projectAssetIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "segmentAssetRequirements": {
+      "type": "array",
+      "items": { "enum": ["initial_blocking", "handoff_blocking", "camera_blocking", "director_view_proxy", "spatial_control_animatic", "storyboard", "character_product_state", "expression_board", "wardrobe_board", "color_board", "dialogue_audio_reference", "timing_audio_reference"] },
+      "uniqueItems": true
+    },
+    "previousSegmentId": { "type": ["string", "null"] },
+    "nextSegmentId": { "type": ["string", "null"] },
+    "continuityStrategy": { "enum": ["canonical_open", "editorial_cut", "continuous_proxy_handoff"] },
+    "status": { "enum": ["awaiting_review", "locked", "rejected", "rework", "blocked"] }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "character-acting-master.schema.json",
+  "title": "Character Acting Master",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "projectId", "characterId", "sourceBindings", "physicalBiography", "psychologicalEngine", "triggeredHabits", "continuityLocks", "sceneAdaptationPolicy", "responsibility", "mustNotControl"],
+  "properties": {
+    "kind": { "const": "character_acting_master_v1" },
+    "version": { "const": 1 },
+    "id": { "$ref": "#/$defs/text" },
+    "projectId": { "$ref": "#/$defs/text" },
+    "characterId": { "$ref": "#/$defs/text" },
+    "sourceBindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/binding" } },
+    "physicalBiography": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ageAndPhysiology", "baselineEnergy", "posture", "gait", "breath", "gazeBaseline", "handBehavior"],
+      "properties": {
+        "ageAndPhysiology": { "$ref": "#/$defs/text" }, "baselineEnergy": { "$ref": "#/$defs/text" },
+        "posture": { "$ref": "#/$defs/text" }, "gait": { "$ref": "#/$defs/text" },
+        "breath": { "$ref": "#/$defs/text" }, "gazeBaseline": { "$ref": "#/$defs/text" },
+        "handBehavior": { "$ref": "#/$defs/text" }
+      }
+    },
+    "psychologicalEngine": {
+      "type": "object", "additionalProperties": false,
+      "required": ["want", "fear", "protectiveMask", "fracturePattern", "recoveryPattern"],
+      "properties": {
+        "want": { "$ref": "#/$defs/text" }, "fear": { "$ref": "#/$defs/text" },
+        "protectiveMask": { "$ref": "#/$defs/text" }, "fracturePattern": { "$ref": "#/$defs/text" },
+        "recoveryPattern": { "$ref": "#/$defs/text" }
+      }
+    },
+    "triggeredHabits": { "type": "array", "minItems": 1, "maxItems": 8, "items": { "$ref": "#/$defs/cue" } },
+    "continuityLocks": { "$ref": "#/$defs/textList" },
+    "sceneAdaptationPolicy": { "$ref": "#/$defs/text" },
+    "voiceIdentityBinding": { "$ref": "#/$defs/binding" },
+    "responsibility": { "const": "long-term behavior identity that remains stable across scenes" },
+    "mustNotControl": { "$ref": "#/$defs/textList" }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "textList": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+    "binding": { "type": "object", "additionalProperties": false, "required": ["id", "revision", "sha256"], "properties": { "id": { "$ref": "#/$defs/text" }, "revision": { "type": "integer", "minimum": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } },
+    "cue": { "type": "object", "additionalProperties": false, "required": ["cueId", "cue", "observableResponse", "doNotUseAsClock"], "properties": { "cueId": { "$ref": "#/$defs/text" }, "cue": { "$ref": "#/$defs/text" }, "observableResponse": { "$ref": "#/$defs/text" }, "doNotUseAsClock": { "const": true } } }
+  }
+}

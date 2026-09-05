@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "storyboard-panel-registration.schema.json",
+  "title": "Atomic Storyboard Panel Registration",
+  "type": "object",
+  "required": ["id", "kind", "projectId", "stage", "visualAuditId"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "const": "storyboard_panel_registration" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "stage": { "enum": ["raw_candidate", "final_normalized"] },
+    "visualAuditId": { "type": "string", "minLength": 1 },
+    "promptPlanPath": { "type": "string", "minLength": 1 },
+    "promptPlanSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "requestId": { "type": "string", "minLength": 1 },
+    "requestFingerprint": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "candidatePath": { "type": "string", "minLength": 1 },
+    "normalizationPlanPath": { "type": "string", "minLength": 1 },
+    "normalizationPlanSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+  },
+  "additionalProperties": false
+}

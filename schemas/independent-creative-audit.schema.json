@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "independent-creative-audit.schema.json",
+  "title": "Independent Zero-Context Creative Audit",
+  "type": "object",
+  "required": ["id", "kind", "segmentId", "revision", "decision", "agentContextMode", "agentTaskId", "sourceRange", "reportPath", "reportSha256", "promptSha256", "packageSha256", "inputMedia", "blockerCount", "importantCount", "reviewedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": ".*\\S.*" },
+    "kind": { "const": "independent_creative_audit" },
+    "segmentId": { "type": "string", "pattern": ".*\\S.*" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "decision": { "enum": ["PASS", "FAIL"] },
+    "agentContextMode": { "const": "clean_zero_context" },
+    "agentTaskId": { "type": "string", "pattern": ".*\\S.*" },
+    "sourceRange": { "type": "string", "pattern": ".*\\S.*" },
+    "reportPath": { "type": "string", "pattern": ".*\\S.*" },
+    "reportSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "promptSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "packageSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "inputMedia": {
+      "type": "object",
+      "required": ["images", "videos", "audio"],
+      "properties": {
+        "images": { "$ref": "#/$defs/mediaList" },
+        "videos": { "$ref": "#/$defs/mediaList" },
+        "audio": { "$ref": "#/$defs/mediaList" }
+      },
+      "additionalProperties": false
+    },
+    "blockerCount": { "type": "integer", "minimum": 0 },
+    "importantCount": { "type": "integer", "minimum": 0 },
+    "reviewedAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "mediaList": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "sha256"],
+        "properties": {
+          "id": { "type": "string", "pattern": ".*\\S.*" },
+          "path": { "type": "string", "pattern": ".*\\S.*" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Batch Generation Approval",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "actor", "decision", "projectId", "executor", "libtvProjectUuid", "externalAuditModel", "segments", "budget", "externalAuditBudget", "maxPaidSubmissions", "stopVetoes", "approvedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": ".*\\S.*" },
+    "kind": { "const": "batch_generation_approval" },
+    "actor": { "const": "human" },
+    "decision": { "const": "approved" },
+    "projectId": { "type": "string", "pattern": ".*\\S.*" },
+    "executor": { "enum": ["libtv", "runninghub"] },
+    "libtvProjectUuid": { "type": "string", "pattern": "^[a-f0-9]{32}$" },
+    "externalAuditModel": { "type": "string", "pattern": "^(?!.*(?:[Gg][Pp][Tt]|[Oo]pen[Aa][Ii]))(?:claude-ocx-(?:anthropic|kimi|qwen)--|(?:anthropic|kimi|qwen)/)[A-Za-z0-9._-]+$" },
+    "segments": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["segmentId", "strategy", "maxPaidAttempts"],
+        "properties": {
+          "segmentId": { "type": "string", "pattern": ".*\\S.*" },
+          "strategy": { "enum": ["canonical_open", "editorial_cut", "continuous_proxy_handoff"] },
+          "maxPaidAttempts": { "const": 1 }
+        }
+      }
+    },
+    "budget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit", "limit"],
+      "properties": { "unit": { "enum": ["CNY", "credits", "tasks"] }, "limit": { "type": "number", "exclusiveMinimum": 0 } }
+    },
+    "externalAuditBudget": {
+      "type": "object", "additionalProperties": false,
+      "required": ["unit", "perCallLimit", "totalLimit"],
+      "properties": {
+        "unit": { "const": "USD" },
+        "perCallLimit": { "type": "number", "exclusiveMinimum": 0 },
+        "totalLimit": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "maxPaidSubmissions": { "type": "integer", "minimum": 1 },
+    "stopVetoes": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": ".*\\S.*" }, "uniqueItems": true },
+    "approvedAt": { "type": "string", "format": "date-time" }
+  }
+}

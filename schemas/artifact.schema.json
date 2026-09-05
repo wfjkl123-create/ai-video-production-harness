@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "artifact.schema.json",
+  "title": "Artifact",
+  "type": "object",
+  "required": ["id", "type", "revision", "status", "path"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "type": {
+      "enum": ["brief", "creative_brief", "script", "shotlist", "story_plan", "source_fact_analysis", "capability_manifest", "segmentation", "reference_video", "spatial_control_model", "project_asset", "segment_asset", "storyboard_panel", "asset_visual_audit", "human_visual_exception", "character_acting_master", "character_story_state", "voice_identity", "scene_geometry", "handoff_reconciliation", "shot_narration", "seedance_prompt", "canonical_prompt_source", "execution_package", "independent_creative_audit", "video_segment", "final_edit", "handoff", "rule", "quality_rubric", "segment_contract"]
+    },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "enum": ["draft", "awaiting_review", "locked", "rejected", "rework", "blocked"] },
+    "path": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "supersedesArtifactId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "invalidatedByScopeRevisionId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "invalidationReason": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "lockedByReviewId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "rejectedByReviewId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["invalidatedByScopeRevisionId"] },
+      "then": { "required": ["invalidationReason"] }
+    },
+    {
+      "if": { "properties": { "status": { "const": "locked" } }, "required": ["status"] },
+      "then": { "required": ["lockedByReviewId"] }
+    },
+    {
+      "if": {
+        "properties": {
+        "status": { "const": "locked" },
+        "type": { "enum": ["project_asset", "segment_asset", "storyboard_panel", "video_segment", "final_edit"] }
+      },
+      "required": ["status", "type"]
+      },
+      "then": { "required": ["sha256"] }
+    }
+  ],
+  "additionalProperties": true
+}

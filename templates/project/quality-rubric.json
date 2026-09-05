@@ -1,0 +1,19 @@
+{
+  "id": "rubric-v2",
+  "version": 2,
+  "threshold": 80,
+  "dimensions": [
+    { "id": "identity_state", "label": "人物身份与状态一致性", "weight": 20, "minimum": 85, "critical": true, "observableRequirement": "主体识别点、起止状态和交互关系在镜内稳定可辨", "evidenceType": "frame_and_motion", "timeOrRegion": "全段及所有切点", "canonicalAnchorIds": ["canonical-subject"], "canonicalAnchorSha256ById": { "canonical-subject": "0000000000000000000000000000000000000000000000000000000000000000" } },
+    { "id": "product_fidelity", "label": "产品结构、材质、交互关系与卖点", "weight": 20, "minimum": 85, "critical": true, "observableRequirement": "产品几何、材质与功效证据在指定区域可见且无变形", "evidenceType": "canonical_comparison", "timeOrRegion": "产品出场与英雄帧", "canonicalAnchorIds": ["canonical-product"], "canonicalAnchorSha256ById": { "canonical-product": "0000000000000000000000000000000000000000000000000000000000000000" } },
+    { "id": "spatial_continuity", "label": "空间、站位、朝向与段间连续性", "weight": 15, "minimum": 80, "critical": true, "observableRequirement": "镜头前后空间轴线、屏幕方向和遮挡连续", "evidenceType": "cut_pair_comparison", "timeOrRegion": "每个切点前后", "canonicalAnchorIds": ["canonical-space"], "canonicalAnchorSha256ById": { "canonical-space": "0000000000000000000000000000000000000000000000000000000000000000" } },
+    { "id": "motion_physics", "label": "动作物理、材料接触与道具交互", "weight": 15, "minimum": 75, "critical": true, "observableRequirement": "力、接触、惯性、形变与动作终点保持因果连续", "evidenceType": "motion_evidence", "timeOrRegion": "所有物理交互时码", "canonicalAnchorIds": ["locked-action-contract"], "canonicalAnchorSha256ById": { "locked-action-contract": "0000000000000000000000000000000000000000000000000000000000000000" } },
+    { "id": "camera_story", "label": "镜头叙事、节奏与重点画面达成", "weight": 15, "minimum": 70, "critical": false, "observableRequirement": "景别变化、构图目的和动作接力切点均推进价值变化", "evidenceType": "timeline_and_cut_map", "timeOrRegion": "全段时间线", "canonicalAnchorIds": ["locked-shotlist"], "canonicalAnchorSha256ById": { "locked-shotlist": "0000000000000000000000000000000000000000000000000000000000000000" } },
+    { "id": "visual_style", "label": "画面质量、风格与禁止内容", "weight": 15, "minimum": 70, "critical": false, "observableRequirement": "光影、材质、细节密度与禁止项在画面中逐项可验", "evidenceType": "frame_regions", "timeOrRegion": "代表帧与高风险区域", "canonicalAnchorIds": ["locked-visual-contract"], "canonicalAnchorSha256ById": { "locked-visual-contract": "0000000000000000000000000000000000000000000000000000000000000000" } }
+  ],
+  "vetoes": [
+    { "id": "identity_changed", "label": "主角身份发生明显变化" },
+    { "id": "product_deformed", "label": "收腹裤结构或关键细节明显变形" },
+    { "id": "continuity_broken", "label": "人物或镜头空间关系无法与上一段衔接" },
+    { "id": "forbidden_content", "label": "出现人工锁定的禁止内容" }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "gate5-failure-return.schema.json",
+  "title": "Derived Gate 5 Minimal Failure Return",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "id", "status", "projectId", "scope", "segmentId", "rejection", "failure", "correction", "routing"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "gate5_failure_return" },
+    "id": { "$ref": "execution-event.schema.json#/$defs/id" },
+    "status": { "const": "OPEN" },
+    "projectId": { "$ref": "execution-event.schema.json#/$defs/projectId" },
+    "scope": { "enum": ["project", "segment"] },
+    "segmentId": { "oneOf": [{ "$ref": "execution-event.schema.json#/$defs/id" }, { "type": "null" }] },
+    "rejection": {
+      "type": "object",
+      "required": ["reviewId", "artifactId", "artifactType", "artifactRevision", "artifactSha256", "rejectedAt"],
+      "properties": {
+        "reviewId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "artifactType": { "enum": ["video_segment", "final_edit"] },
+        "artifactRevision": { "type": "integer", "minimum": 1 },
+        "artifactSha256": { "$ref": "execution-event.schema.json#/$defs/sha256" },
+        "rejectedAt": { "type": "string", "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "failure": { "$ref": "execution-event.schema.json#/$defs/observation/properties/failure" },
+    "correction": { "type": "string", "minLength": 1 },
+    "routing": {
+      "type": "object",
+      "required": ["returnStage", "responsibilityStage", "preserveStages", "reworkStages", "forbidWholeChainRestart", "preserveLockedEvidence", "requiresReplacementArtifact", "replacementMustSupersedeArtifactId", "minimumReplacementRevision", "automaticPaidRetryAllowed", "newPaidAuthorizationRequired"],
+      "properties": {
+        "returnStage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+        "responsibilityStage": { "$ref": "execution-event.schema.json#/$defs/observationStage" },
+        "preserveStages": { "type": "array", "items": { "$ref": "execution-event.schema.json#/$defs/observationStage" }, "uniqueItems": true },
+        "reworkStages": { "type": "array", "minItems": 1, "items": { "$ref": "execution-event.schema.json#/$defs/observationStage" }, "uniqueItems": true },
+        "forbidWholeChainRestart": { "type": "boolean" },
+        "preserveLockedEvidence": { "const": true },
+        "requiresReplacementArtifact": { "const": true },
+        "replacementMustSupersedeArtifactId": { "$ref": "execution-event.schema.json#/$defs/id" },
+        "minimumReplacementRevision": { "type": "integer", "minimum": 2 },
+        "automaticPaidRetryAllowed": { "const": false },
+        "newPaidAuthorizationRequired": { "type": "boolean" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

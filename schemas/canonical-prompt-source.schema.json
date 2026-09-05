@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "canonical-prompt-source.schema.json",
+  "title": "Canonical Prompt Source v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "id", "projectId", "segmentId", "revision", "skillId", "skillRoot", "skillTreeSha256", "sourcePrompt", "inputIrBindings", "lockedAssetBindings", "loadedReferences", "authorEvent", "sourceBody", "sourceBodyOrigin", "sourceBodySha256", "authorRequestFingerprint", "provenanceFingerprint"],
+  "properties": {
+    "kind": { "const": "canonical_prompt_source_v1" },
+    "id": { "type": "string", "minLength": 1 },
+    "projectId": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "skillId": { "const": "seedance2-prompt" },
+    "skillRoot": { "type": "string", "minLength": 1 },
+    "skillTreeSha256": { "$ref": "#/$defs/sha" },
+    "sourcePrompt": { "$ref": "#/$defs/artifactBinding" },
+    "inputIrBindings": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/artifactBinding" } },
+    "lockedAssetBindings": { "type": "array", "items": { "$ref": "#/$defs/artifactBinding" } },
+    "loadedReferences": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["path", "sha256"],
+        "properties": { "path": { "type": "string", "minLength": 1 }, "sha256": { "$ref": "#/$defs/sha" } }
+      }
+    },
+    "authorEvent": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "route", "skillId", "proofLevel", "occurredAt", "executionEvidence"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "route": { "const": "canonical_skill_author_service" },
+        "skillId": { "const": "seedance2-prompt" },
+        "proofLevel": { "const": "system_route_and_byte_integrity" },
+        "occurredAt": { "type": "string", "format": "date-time" },
+        "executionEvidence": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["taskId", "outputId", "completedAt"],
+          "properties": {
+            "taskId": { "type": "string", "minLength": 1 },
+            "outputId": { "type": "string", "minLength": 1 },
+            "completedAt": { "type": "string", "format": "date-time" }
+          }
+        }
+      }
+    },
+    "sourceBody": { "type": "string", "minLength": 1 },
+    "sourceBodyOrigin": { "const": "caller_supplied_unverified" },
+    "sourceBodySha256": { "$ref": "#/$defs/sha" },
+    "authorRequestFingerprint": { "$ref": "#/$defs/sha" },
+    "provenanceFingerprint": { "$ref": "#/$defs/sha" }
+  },
+  "$defs": {
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "artifactBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "revision", "sha256"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha" }
+      }
+    }
+  }
+}

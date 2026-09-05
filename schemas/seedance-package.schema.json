@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "seedance-package.schema.json",
+  "title": "Seedance Input Package",
+  "type": "object",
+  "required": ["sourcePromptPath", "promptPath", "duration", "ratio", "resolution", "generateAudio", "videoModelProfileId", "videoExecutor", "videoModel", "sourceResolutionBaseline", "imageInputs", "videoInputs", "audioInputs", "mediaBindingContractVersion", "mediaBindings", "responsibilityMap", "excludedInputs", "hardRuleIds", "governanceBindings"],
+  "properties": {
+    "sourcePromptPath": { "type": "string", "minLength": 1 },
+    "realismContractsVersion": { "enum": [1, 2] },
+    "sourceBodySha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "compiledBodySha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "promptPath": { "type": "string", "minLength": 1 },
+    "duration": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+    "ratio": { "const": "9:16" },
+    "resolution": { "enum": ["480p", "720p", "1080p", "4k"] },
+    "generateAudio": { "type": "boolean" },
+    "audioExecutionPlan": { "$ref": "audio-execution-plan.schema.json" },
+    "videoModelProfileId": { "type": "string", "minLength": 1 },
+    "videoExecutor": { "enum": ["libtv", "runninghub"] },
+    "videoModel": { "type": "string", "minLength": 1 },
+    "sourceResolutionBaseline": {
+      "type": ["object", "null"],
+      "required": ["artifactId", "path", "sha256", "width", "height"],
+      "properties": {
+        "artifactId": { "type": "string", "minLength": 1 },
+        "path": { "type": "string", "minLength": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 }
+      },
+      "additionalProperties": false
+    },
+    "executionControlContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "plannedShotCount", "generatedUnitShotCount", "executionUnitStrategy", "requiresIndependentShotControl", "platformCapability"],
+      "properties": {
+        "version": { "const": 1 },
+        "plannedShotCount": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "generatedUnitShotCount": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "executionUnitStrategy": { "enum": ["single_take", "platform_multi_shot", "segmented_editorial"] },
+        "requiresIndependentShotControl": { "type": "boolean" },
+        "platformCapability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["surface", "profileId", "parameter", "exposed", "enabled", "evidence"],
+          "properties": {
+            "surface": { "type": "string", "minLength": 1 },
+            "profileId": { "type": "string", "minLength": 1 },
+            "parameter": { "type": "string", "minLength": 1 },
+            "exposed": { "type": "boolean" },
+            "enabled": { "type": "boolean" },
+            "evidence": { "type": "string", "minLength": 1 },
+            "verificationMode": { "enum": ["libtv_canvas_node_readback"] }
+          }
+        }
+      }
+    },
+    "imageInputs": { "$ref": "#/$defs/inputs", "maxItems": 30 },
+    "videoInputs": { "$ref": "#/$defs/inputs", "maxItems": 10 },
+    "audioInputs": { "$ref": "#/$defs/inputs", "maxItems": 10 },
+    "mediaBindingContractVersion": { "const": 1 },
+    "mediaBindings": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/mediaBinding" }
+    },
+    "mediaTokenMappingManifest": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sourceToken", "sourceStart", "sourceEnd", "platformToken", "compiledStart", "compiledEnd", "assetId", "assetSha256"],
+        "properties": {
+          "sourceToken": { "type": "string", "minLength": 1 },
+          "sourceStart": { "type": "integer", "minimum": 0 },
+          "sourceEnd": { "type": "integer", "minimum": 1 },
+          "platformToken": { "type": "string", "pattern": "^@(图|视频|音频)[1-9][0-9]*$" },
+          "compiledStart": { "type": "integer", "minimum": 0 },
+          "compiledEnd": { "type": "integer", "minimum": 1 },
+          "assetId": { "type": "string", "minLength": 1 },
+          "assetSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    },
+    "responsibilityMap": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": ["controls", "mustNotControl"],
+        "properties": {
+          "controls": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "mustNotControl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        },
+        "additionalProperties": false
+      }
+    },
+    "excludedInputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "reason"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "reason": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "hardRuleIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "governanceBindings": {
+      "type": "object",
+      "required": ["segmentContract", "shotNarration", "seedancePrompt", "assetManifest"],
+      "properties": {
+        "segmentContract": { "$ref": "#/$defs/governanceArtifact" },
+        "shotNarration": { "$ref": "#/$defs/governanceArtifact" },
+        "seedancePrompt": { "$ref": "#/$defs/governanceArtifact" },
+        "canonicalPromptSource": { "$ref": "#/$defs/governanceArtifact" },
+        "requiredBindings": { "$ref": "required-bindings.schema.json" },
+        "assetManifest": {
+          "type": "object",
+          "required": ["id", "status", "sha256", "lockedByReviewId"],
+          "properties": {
+            "id": { "type": "string", "minLength": 1 },
+            "status": { "const": "locked" },
+            "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+            "lockedByReviewId": { "type": "string", "minLength": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "realismContractsVersion": { "const": 2 } }, "required": ["realismContractsVersion"] },
+      "then": {
+        "required": ["sourceBodySha256", "compiledBodySha256", "mediaTokenMappingManifest", "audioExecutionPlan"],
+        "properties": {
+          "governanceBindings": { "required": ["canonicalPromptSource", "requiredBindings"] }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "mediaBinding": {
+      "type": "object",
+      "required": ["tag", "semanticToken", "id", "mediaKind", "index", "sha256", "controls", "mustNotControl"],
+      "properties": {
+        "tag": { "type": "string", "pattern": "^@(图|视频|音频)[1-9][0-9]*$" },
+        "semanticToken": { "type": "string", "pattern": "^@素材\\[[A-Za-z0-9][A-Za-z0-9._:-]{0,191}\\]$" },
+        "id": { "type": "string", "minLength": 1 },
+        "mediaKind": { "enum": ["image", "video", "audio"] },
+        "index": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "controls": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "mustNotControl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "governanceArtifact": {
+      "type": "object",
+      "required": ["id", "revision", "status", "sha256", "lockedByReviewId"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "status": { "const": "locked" },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+        "lockedByReviewId": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "path", "sha256", "status", "reason"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "status": { "const": "locked" },
+          "reason": { "type": "string", "minLength": 1 }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

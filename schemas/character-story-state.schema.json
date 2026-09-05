@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "character-story-state.schema.json",
+  "title": "Character Story State",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "projectId", "characterId", "scopeKey", "identityPackBinding", "actingMasterBinding", "cause", "appearanceDeltas", "performanceDeltas", "preserve", "responsibility", "mustNotControl"],
+  "properties": {
+    "kind": { "const": "character_story_state_v1" }, "version": { "const": 1 },
+    "id": { "$ref": "#/$defs/text" }, "projectId": { "$ref": "#/$defs/text" }, "characterId": { "$ref": "#/$defs/text" }, "scopeKey": { "$ref": "#/$defs/text" },
+    "identityPackBinding": { "$ref": "#/$defs/binding" }, "actingMasterBinding": { "$ref": "#/$defs/binding" }, "parentStateBinding": { "$ref": "#/$defs/binding" },
+    "cause": { "$ref": "#/$defs/text" },
+    "appearanceDeltas": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["region", "observableChange", "persistence"], "properties": { "region": { "$ref": "#/$defs/text" }, "observableChange": { "$ref": "#/$defs/text" }, "persistence": { "$ref": "#/$defs/text" } } } },
+    "performanceDeltas": { "type": "array", "items": { "$ref": "#/$defs/cue" } },
+    "preserve": { "$ref": "#/$defs/textList" },
+    "responsibility": { "const": "story-caused appearance and behavior deltas for one character and one scope" },
+    "mustNotControl": { "$ref": "#/$defs/textList" }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "textList": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+    "binding": { "type": "object", "additionalProperties": false, "required": ["id", "revision", "sha256"], "properties": { "id": { "$ref": "#/$defs/text" }, "revision": { "type": "integer", "minimum": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } },
+    "cue": { "type": "object", "additionalProperties": false, "required": ["cue", "observableResponse", "doNotUseAsClock"], "properties": { "cue": { "$ref": "#/$defs/text" }, "observableResponse": { "$ref": "#/$defs/text" }, "doNotUseAsClock": { "const": true } } }
+  }
+}

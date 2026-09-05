@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://shengciharness.local/schemas/koc-remake-plan.schema.json",
+  "title": "KOC Remake Plan",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "kind",
+    "projectId",
+    "sourceVideo",
+    "sourceInventoryAudit",
+    "identityReference",
+    "firstFramePolicy",
+    "preparationBarrier",
+    "execution",
+    "durableMemory",
+    "fingerprintSha256"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "koc_remake_plan" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "firstFramePolicy": { "enum": ["none", "all_segments", "selected_segments"] },
+    "firstFrameSegmentIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "sourceVideo": { "$ref": "#/$defs/videoAsset" },
+    "sourceInventoryAudit": {
+      "type": "object",
+      "required": ["status", "sourceVideoSha256", "allArollRangesAccountedFor", "brollRangesExcluded", "auditSha256"],
+      "properties": {
+        "status": { "const": "PASS" },
+        "sourceVideoSha256": { "$ref": "#/$defs/sha256" },
+        "allArollRangesAccountedFor": { "const": true },
+        "brollRangesExcluded": { "const": true },
+        "auditSha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "identityReference": { "$ref": "#/$defs/imageAsset" },
+    "preparationBarrier": {
+      "type": "object",
+      "required": ["id", "status", "checks"],
+      "properties": {
+        "id": { "const": "koc-preparation-barrier" },
+        "status": { "const": "PASS" },
+        "checks": { "type": "array", "minItems": 8, "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "execution": {
+      "type": "object",
+      "required": ["strategy", "maxParallelLanes", "lanes", "serialCloseout"],
+      "properties": {
+        "strategy": { "const": "event_driven_parallel_dag" },
+        "maxParallelLanes": { "type": "integer", "minimum": 1 },
+        "lanes": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/lane" } },
+        "serialCloseout": { "type": "array", "minItems": 6, "items": { "type": "string" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "durableMemory": {
+      "type": "object",
+      "required": ["authority", "checkpointPerLane", "resumableFromLastPassedStep", "conversationMemoryIsNonAuthoritative"],
+      "properties": {
+        "authority": { "const": "project_artifacts_and_sha_bound_checkpoints" },
+        "checkpointPerLane": { "const": true },
+        "resumableFromLastPassedStep": { "const": true },
+        "conversationMemoryIsNonAuthoritative": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "fingerprintSha256": { "$ref": "#/$defs/sha256" }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "baseAsset": {
+      "type": "object",
+      "required": ["id", "sha256", "mediaKind"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "mediaKind": { "enum": ["image", "video"] }
+      }
+    },
+    "videoAsset": {
+      "allOf": [
+        { "$ref": "#/$defs/baseAsset" },
+        { "type": "object", "properties": { "mediaKind": { "const": "video" }, "durationSec": { "type": "number", "exclusiveMinimum": 0 } } }
+      ]
+    },
+    "imageAsset": {
+      "allOf": [
+        { "$ref": "#/$defs/baseAsset" },
+        { "type": "object", "properties": { "mediaKind": { "const": "image" } } }
+      ]
+    },
+    "lane": {
+      "type": "object",
+      "required": ["laneId", "segmentId", "sourceRange", "dependencies", "parallelizable", "steps", "mediaBindings", "promptInputs", "generation"],
+      "properties": {
+        "laneId": { "type": "string", "minLength": 1 },
+        "segmentId": { "type": "string", "minLength": 1 },
+        "sourceRange": {
+          "type": "object",
+          "required": ["startSec", "endSec"],
+          "properties": { "startSec": { "type": "number", "minimum": 0 }, "endSec": { "type": "number", "exclusiveMinimum": 0 } },
+          "additionalProperties": false
+        },
+        "dependencies": { "const": ["koc-preparation-barrier"] },
+        "parallelizable": { "const": true },
+        "steps": { "type": "array", "minItems": 6, "items": { "type": "string" } },
+        "mediaBindings": { "type": "array", "minItems": 2, "maxItems": 3 },
+        "promptInputs": { "type": "object" },
+        "generation": {
+          "type": "object",
+          "required": ["resolution", "assistantMaySubmitPaidGeneration", "requiresCurrentNodeReadbackAndExplicitApproval"],
+          "properties": {
+            "resolution": { "const": "480p" },
+            "assistantMaySubmitPaidGeneration": { "const": false },
+            "requiresCurrentNodeReadbackAndExplicitApproval": { "const": true }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "story-plan.schema.json",
+  "title": "Gate 2 Story And Shot Plan",
+  "type": "object",
+  "required": ["schemaVersion", "id", "projectId", "creativeBriefId", "targetDurationSec", "creativeDecision", "story", "characters", "script", "videoSegments", "shotPlanning", "assetPlan"],
+  "properties": {
+    "schemaVersion": { "enum": [1, 2] },
+    "id": { "$ref": "#/$defs/id" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "creativeBriefId": { "$ref": "#/$defs/id" },
+    "targetDurationSec": { "type": "number", "minimum": 1, "maximum": 3600 },
+    "finalExecutionDecision": {
+      "type": "object",
+      "required": ["segmentationStrategy", "segmentationRationale", "assetExecutionMode", "videoExecutionMode", "parallelPlan", "assetScopeBasis"],
+      "properties": {
+        "segmentationStrategy": { "enum": ["scene", "story_beat", "hybrid", "single_clip"] },
+        "segmentationRationale": { "type": "string", "minLength": 1 },
+        "assetExecutionMode": { "enum": ["parallel", "sequential", "mixed"] },
+        "videoExecutionMode": { "enum": ["parallel", "sequential", "mixed"] },
+        "videoGenerationProfile": { "enum": ["legacy_standard_15", "seedance_2_5_standard_30"] },
+        "parallelPlan": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "assetScopeBasis": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "creativeDecision": {
+      "type": "object",
+      "required": ["storyDirection", "successDefinition", "segmentationStrategy", "segmentationRationale", "executionMode", "assetExecutionMode", "videoExecutionMode", "parallelPlan", "estimatedAssetCombination"],
+      "properties": {
+        "visualControlMethod": { "enum": ["storyboard", "depth", "modeling"] },
+        "directorCreativeContract": { "$ref": "creative-brief.schema.json#/$defs/directorCreativeContract" },
+        "revisionImpact": { "$ref": "creative-brief.schema.json#/$defs/revisionImpact" },
+        "referenceWorkflow": {
+          "type": "object",
+          "required": ["referenceIntent", "sourceVideoIds"],
+          "properties": {
+            "referenceIntent": { "enum": ["idea_only", "inspiration_only", "faithful_remake", "source_modification"] },
+            "sourceVideoIds": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+            "sourceRole": { "enum": ["none", "inspiration", "authority"] },
+            "workflowRoute": { "enum": ["standard_creation", "source_fact"] },
+            "requiresSourceFactWorkflow": { "type": "boolean" },
+            "requiredStages": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+          },
+          "additionalProperties": false
+        }
+      }
+    },
+    "sourceFactContract": {
+      "type": "object",
+      "required": ["analysisMode", "sourceVideoIds", "sourceRange", "dialoguePolicy", "visualEvidence", "dialogueEvidence", "preserveFacts", "replaceFacts", "uncertainties", "actionLedger"],
+      "properties": {
+        "analysisMode": { "const": "adaptive_source_analysis" },
+        "sourceVideoIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "sourceRange": { "type": "object", "required": ["startSec", "endSec"], "properties": { "startSec": { "type": "number", "minimum": 0 }, "endSec": { "type": "number", "exclusiveMinimum": 0 } }, "additionalProperties": false },
+        "dialoguePolicy": { "enum": ["verbatim", "replace_locked_lines", "adapted", "none"] },
+        "visualEvidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "dialogueEvidence": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "preserveFacts": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+        "replaceFacts": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "uncertainties": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+        "actionLedger": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["startSec", "endSec", "observedAction", "emotionBeat", "spokenLine"],
+            "properties": {
+              "startSec": { "type": "number", "minimum": 0 },
+              "endSec": { "type": "number", "exclusiveMinimum": 0 },
+              "observedAction": { "type": "string", "minLength": 1 },
+              "emotionBeat": { "type": "string", "minLength": 1 },
+              "spokenLine": { "type": ["string", "null"] }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "story": {
+      "type": "object",
+      "required": ["logline", "storyPromise", "finalOutcome", "tone"],
+      "properties": {
+        "logline": { "type": "string", "minLength": 1 },
+        "storyPromise": { "type": "string", "minLength": 1 },
+        "initialCondition": { "type": "string", "minLength": 1 },
+        "objective": { "type": "string", "minLength": 1 },
+        "centralConflict": { "type": "string", "minLength": 1 },
+        "turn": { "type": "string", "minLength": 1 },
+        "climax": { "type": "string", "minLength": 1 },
+        "progression": { "type": "string", "minLength": 1 },
+        "finalOutcome": { "type": "string", "minLength": 1 },
+        "tone": { "type": "string", "minLength": 1 }
+      }
+    },
+    "characters": { "type": "array", "items": { "type": "object", "required": ["characterId", "tag", "role", "background", "personality", "stance", "objective", "obstacle", "appearance", "wardrobeLock", "relationshipMap", "arc"] } },
+    "script": { "type": "object", "required": ["scenes"] },
+    "videoSegments": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "properties": {
+          "continuityStrategy": { "enum": ["canonical_open", "editorial_cut", "continuous_proxy_handoff"] }
+        }
+      }
+    },
+    "shotPlanning": { "type": "object", "required": ["mode", "shots", "continuousTakePlan", "roughStoryboardPreview"] },
+    "assetPlan": { "type": "array", "minItems": 1 }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "creativeDecision": { "required": ["directorCreativeContract"] }
+        },
+        "required": ["creativeDecision"]
+      },
+      "then": { "required": ["finalExecutionDecision"] }
+    },
+    {
+      "if": {
+        "properties": { "creativeDecision": { "properties": { "directorCreativeContract": { "properties": { "structureMode": { "enum": ["narrative", "product_demo", "faithful_remake"] } }, "required": ["structureMode"] } }, "required": ["directorCreativeContract"] } },
+        "required": ["creativeDecision"]
+      },
+      "then": { "properties": { "story": { "required": ["initialCondition", "objective", "centralConflict", "turn", "climax"] } } },
+      "else": {
+        "if": { "properties": { "creativeDecision": { "required": ["directorCreativeContract"] } }, "required": ["creativeDecision"] },
+        "then": { "properties": { "story": { "required": ["progression"] } } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "creativeDecision": { "properties": { "directorCreativeContract": { "properties": { "characterMode": { "const": "character_driven" } }, "required": ["characterMode"] } }, "required": ["directorCreativeContract"] } },
+        "required": ["creativeDecision"]
+      },
+      "then": { "properties": { "characters": { "minItems": 1 } } }
+    },
+    {
+      "if": {
+        "properties": { "creativeDecision": { "properties": { "directorCreativeContract": { "properties": { "characterMode": { "const": "none" } }, "required": ["characterMode"] } }, "required": ["directorCreativeContract"] } },
+        "required": ["creativeDecision"]
+      },
+      "then": { "properties": { "characters": { "maxItems": 0 } } }
+    },
+    {
+      "if": { "properties": { "finalExecutionDecision": { "properties": { "segmentationStrategy": { "const": "single_clip" } }, "required": ["segmentationStrategy"] } }, "required": ["finalExecutionDecision"] },
+      "then": { "properties": { "videoSegments": { "maxItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "finalExecutionDecision": { "properties": { "videoExecutionMode": { "const": "parallel" } }, "required": ["videoExecutionMode"] } }, "required": ["finalExecutionDecision"] },
+      "then": { "properties": { "videoSegments": { "not": { "contains": { "type": "object", "properties": { "continuityStrategy": { "const": "continuous_proxy_handoff" } }, "required": ["continuityStrategy"] } } } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "creativeDecision": {
+            "properties": {
+              "referenceWorkflow": {
+                "properties": { "workflowRoute": { "const": "source_fact" } },
+                "required": ["workflowRoute"]
+              }
+            },
+            "required": ["referenceWorkflow"]
+          }
+        },
+        "required": ["creativeDecision"]
+      },
+      "then": { "required": ["sourceFactContract"] }
+    },
+    {
+      "if": { "properties": { "schemaVersion": { "const": 2 } }, "required": ["schemaVersion"] },
+      "then": {
+        "required": ["directorPlan"],
+        "properties": {
+          "videoSegments": {
+            "items": {
+              "required": ["continuityStrategy"]
+            }
+          },
+          "directorPlan": {
+            "type": "object",
+            "required": ["projectType", "directorialVoice", "audienceFeltIntent", "visualStrategy", "rhythmStrategy", "realismStrategy"],
+            "properties": {
+              "projectType": { "enum": ["narrative", "viral_remake", "product_demo", "interview", "montage", "other", "local_edit", "faithful_remake", "story_creation"] },
+              "transformMode": { "enum": ["local_edit", "faithful_remake", "story_creation"] },
+              "controlMode": { "enum": ["standard", "modeling_strong_control"] },
+              "fidelityTarget": { "enum": ["adapted", "faithful", "one_to_one"] },
+              "modelingInputMode": { "enum": ["keyframes_only", "animatic_video"] },
+              "directorialVoice": { "type": "string", "minLength": 1 },
+              "audienceFeltIntent": { "type": "string", "minLength": 1 },
+              "visualStrategy": { "type": "string", "minLength": 1 },
+              "rhythmStrategy": { "type": "string", "minLength": 1 },
+              "realismStrategy": { "type": "string", "minLength": 1 }
+            },
+            "additionalProperties": false
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" }
+  },
+  "additionalProperties": true
+}

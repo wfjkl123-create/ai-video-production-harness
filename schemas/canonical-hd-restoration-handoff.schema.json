@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "canonical-hd-restoration-handoff.schema.json",
+  "title": "Canonical HD restoration handoff",
+  "type": "object",
+  "required": [
+    "id", "type", "revision", "status", "path", "lockedByReviewId", "segmentId",
+    "observed", "handoffKind", "derivation", "sourceArtifactId", "sourceArtifactSha256", "sha256"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "type": { "const": "handoff" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "const": "locked" },
+    "path": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "lockedByReviewId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "segmentId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "observed": { "const": false },
+    "handoffKind": { "const": "canonical_hd_restoration" },
+    "derivation": { "enum": ["canonical_hd_reconstruction", "articulated_mannequin_replacement"] },
+    "sourceArtifactId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "sourceArtifactSha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" },
+    "sha256": { "type": "string", "pattern": "^[a-fA-F0-9]{64}$" }
+  },
+  "additionalProperties": true
+}

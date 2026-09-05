@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "voice-identity.schema.json",
+  "title": "Voice Identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "id", "projectId", "characterId", "sourceBasis", "sourceBindings", "vocalCore", "allowedStateDeltas", "responsibility", "mustNotControl"],
+  "properties": {
+    "kind": { "const": "voice_identity_v1" }, "version": { "const": 1 },
+    "id": { "$ref": "#/$defs/text" }, "projectId": { "$ref": "#/$defs/text" }, "characterId": { "$ref": "#/$defs/text" },
+    "sourceBasis": { "enum": ["recorded_reference", "casting_spec"] },
+    "sourceBindings": { "type": "array", "items": { "$ref": "#/$defs/binding" } },
+    "vocalCore": { "type": "object", "additionalProperties": false, "required": ["pitchRange", "timbre", "resonance", "baselinePace", "articulation", "breathPattern"], "properties": { "pitchRange": { "$ref": "#/$defs/text" }, "timbre": { "$ref": "#/$defs/text" }, "resonance": { "$ref": "#/$defs/text" }, "baselinePace": { "$ref": "#/$defs/text" }, "articulation": { "$ref": "#/$defs/text" }, "breathPattern": { "$ref": "#/$defs/text" } } },
+    "allowedStateDeltas": { "type": "array", "minItems": 1, "items": { "type": "object", "additionalProperties": false, "required": ["deltaId", "trigger", "allowedChange", "stableCore"], "properties": { "deltaId": { "$ref": "#/$defs/text" }, "trigger": { "$ref": "#/$defs/text" }, "allowedChange": { "$ref": "#/$defs/text" }, "stableCore": { "$ref": "#/$defs/text" } } } },
+    "responsibility": { "const": "stable speaker identity and the permitted state-dependent vocal range" },
+    "mustNotControl": { "$ref": "#/$defs/textList" }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "textList": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/text" } },
+    "binding": { "type": "object", "additionalProperties": false, "required": ["id", "revision", "sha256"], "properties": { "id": { "$ref": "#/$defs/text" }, "revision": { "type": "integer", "minimum": 1 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" } } }
+  }
+}

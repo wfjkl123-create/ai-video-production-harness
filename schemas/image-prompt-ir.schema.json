@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-prompt-ir.schema.json",
+  "title": "Zero-context Image Prompt Intermediate Representation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "id", "projectId", "segmentId", "assetId", "atomicAssetId", "assetType", "profileId",
+    "operation", "purpose", "responsibility", "mustNotControl", "templateSource", "skillsApplied",
+    "selfContainedContextVersion", "visualStyleContract", "inputBindings", "subjectContract", "compositionContract",
+    "photographyContract", "preserve", "constraints", "avoid", "acceptanceChecks", "outputSpec",
+    "executionProfile", "count", "autoRetry", "modelFallbackPlan"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "segmentId": { "oneOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+    "assetId": { "$ref": "#/$defs/id" },
+    "atomicAssetId": { "$ref": "#/$defs/id" },
+    "assetType": { "$ref": "#/$defs/id" },
+    "profileId": {
+      "enum": [
+        "character_identity_anchor_v1", "character_front_face_closeup_v1", "character_profile_face_closeup_v1",
+        "character_front_wardrobe_no_head_v1", "character_full_body_back_v1", "character_front_full_body_v2", "character_board_v1",
+        "wardrobe_board_v1", "expression_board_v1", "product_reference_v1", "story_prop_v1",
+        "scene_multiview_v1", "scene_overhead_v1", "initial_blocking_v1", "camera_blocking_v1",
+        "director_view_proxy_v1", "dialogue_axis_board_v1", "storyboard_sheet_15s_v1", "storyboard_panel_repair_v1", "storyboard_execution_panel_v1", "mannequin_grid_v1", "color_board_v1"
+      ]
+    },
+    "operation": { "enum": ["create", "edit", "compose", "extract"] },
+    "purpose": { "$ref": "#/$defs/text" },
+    "responsibility": { "$ref": "#/$defs/text" },
+    "mustNotControl": { "$ref": "#/$defs/textList" },
+    "templateSource": { "$ref": "#/$defs/text" },
+    "skillsApplied": { "$ref": "#/$defs/textList" },
+    "selfContainedContextVersion": { "$ref": "#/$defs/text" },
+    "visualStyleContract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "version", "description", "locks"],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "version": { "type": "integer", "minimum": 1 },
+        "description": { "$ref": "#/$defs/text" },
+        "locks": { "$ref": "#/$defs/textList" }
+      }
+    },
+    "inputBindings": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["tag", "artifactId", "path", "sha256", "primaryRole", "subjectSelector", "transfer", "ignore"],
+        "properties": {
+          "tag": { "type": "string", "pattern": "^Image[1-9][0-9]*$" },
+          "artifactId": { "$ref": "#/$defs/id" },
+          "path": { "$ref": "#/$defs/projectPath" },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+          "primaryRole": { "$ref": "#/$defs/text" },
+          "subjectSelector": { "$ref": "#/$defs/text" },
+          "transfer": { "$ref": "#/$defs/textList" },
+          "ignore": { "$ref": "#/$defs/textList" }
+        }
+      }
+    },
+    "subjectContract": { "type": "object", "minProperties": 1 },
+    "compositionContract": { "type": "object", "minProperties": 1 },
+    "photographyContract": { "type": "object", "minProperties": 1 },
+    "editScope": {
+      "type": "object", "additionalProperties": false,
+      "required": ["mode", "change", "continuityAfterChange"],
+      "properties": {
+        "mode": { "enum": ["surgical", "reference_derivation", "panel_repair", "texture_pass", "view_change"] },
+        "change": { "$ref": "#/$defs/text" },
+        "continuityAfterChange": { "$ref": "#/$defs/text" }
+      }
+    },
+    "viewChangeMap": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceView", "targetView", "anchors"],
+      "properties": {
+        "sourceView": { "$ref": "#/$defs/text" },
+        "targetView": { "$ref": "#/$defs/text" },
+        "anchors": {
+          "type": "array", "minItems": 1,
+          "items": {
+            "type": "object", "additionalProperties": false,
+            "required": ["anchorId", "sourcePosition", "targetPosition"],
+            "properties": {
+              "anchorId": { "$ref": "#/$defs/text" },
+              "sourcePosition": { "$ref": "#/$defs/text" },
+              "targetPosition": { "$ref": "#/$defs/text" }
+            }
+          }
+        }
+      }
+    },
+    "preserve": { "type": "array", "items": { "$ref": "#/$defs/text" }, "uniqueItems": true },
+    "constraints": { "$ref": "#/$defs/textList" },
+    "avoid": { "$ref": "#/$defs/textList" },
+    "acceptanceChecks": { "$ref": "#/$defs/textList" },
+    "outputSpec": { "type": "object", "minProperties": 1 },
+    "executionProfile": { "$ref": "#/$defs/text" },
+    "count": { "const": 1 },
+    "autoRetry": { "const": false },
+    "modelFallbackPlan": { "type": "array", "items": { "$ref": "#/$defs/text" }, "uniqueItems": true },
+    "dependencies": { "type": "array", "items": { "$ref": "#/$defs/text" }, "uniqueItems": true }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "operation": { "const": "edit" } } },
+      "then": { "required": ["editScope"] }
+    },
+    {
+      "if": { "required": ["viewChangeMap"] },
+      "then": { "required": ["editScope"], "properties": { "editScope": { "properties": { "mode": { "const": "view_change" } } } } }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "text": { "type": "string", "pattern": ".*\\S.*" },
+    "textList": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" }, "uniqueItems": true },
+    "projectPath": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).*\\S.*" }
+  }
+}

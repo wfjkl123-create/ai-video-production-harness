@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "color-board.schema.json",
+  "title": "Deterministic Seven Color Board",
+  "type": "object",
+  "required": ["id", "colors", "outputPath"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "title": { "type": "string" },
+    "colors": { "type": "array", "minItems": 7, "maxItems": 7 },
+    "outputPath": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": true
+}

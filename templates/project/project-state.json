@@ -1,0 +1,13 @@
+{
+  "projectId": "PROJECT_ID",
+  "workflowVersion": 2,
+  "realismContractsVersion": 2,
+  "realismContractsWriteMode": "enabled",
+  "ingressPolicyVersion": "ingress-route-v1",
+  "phase": "intake",
+  "activeSegmentId": null,
+  "blockedReason": null,
+  "executionMode": null,
+  "artifacts": [],
+  "updatedAt": "1970-01-01T00:00:00.000Z"
+}

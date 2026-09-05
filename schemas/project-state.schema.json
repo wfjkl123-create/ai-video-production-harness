@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "project-state.schema.json",
+  "title": "Project State",
+  "type": "object",
+  "required": [
+    "projectId",
+    "phase",
+    "activeSegmentId",
+    "blockedReason",
+    "artifacts",
+    "updatedAt"
+  ],
+  "properties": {
+    "projectId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "phase": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "activeSegmentId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "blockedReason": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "workflowVersion": {
+      "type": "integer",
+      "enum": [
+        1,
+        2
+      ]
+    },
+    "realismContractsVersion": {
+      "type": "integer",
+      "enum": [1, 2]
+    },
+    "realismContractsWriteMode": {
+      "enum": ["enabled", "read_only"]
+    },
+    "ingressPolicyVersion": {
+      "type": "string",
+      "const": "ingress-route-v1"
+    },
+    "routeDecision": {
+      "$ref": "ingress-route-decision.schema.json"
+    },
+    "videoGovernanceVersion": {
+      "type": "integer",
+      "const": 2
+    },
+    "directionRevision": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["id", "revision", "status", "routeFingerprint", "reason", "invalidatedArtifactIds", "updatedAt"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "status": { "enum": ["awaiting_answers", "confirmed"] },
+        "routeFingerprint": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "invalidatedArtifactIds": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "interviewInputFingerprint": { "type": "string", "minLength": 1 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "verifiedCapabilityManifestId": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "minLength": 1,
+      "pattern": ".*\\S.*"
+    },
+    "directorRoutingVersion": {
+      "type": "integer",
+      "const": 1
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "artifact.schema.json"
+      }
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "workflowProfile": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "selectedBy",
+        "reason",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "simple_remake",
+            "narrative",
+            "original"
+          ]
+        },
+        "selectedBy": {
+          "enum": [
+            "user",
+            "system_recommendation"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "remakeControlSelection": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["profileId", "selectedModes", "requiresReversePrompt", "promptPolicy", "updatedAt"],
+      "properties": {
+        "profileId": { "const": "simple_remake" },
+        "selectedModes": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "enum": ["storyboard_control", "depth_control", "native_source", "koc_remake"] }
+        },
+        "requiresReversePrompt": { "type": "boolean" },
+        "promptPolicy": { "enum": ["reverse_source_prompt_then_compile_with_asset_bindings", "native_source_replacement_instruction_only", "koc_source_bound_identity_replacement"] },
+        "firstFramePolicy": { "enum": ["none", "all_segments", "selected_segments"] },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "assetSelection": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "profileId",
+        "selected",
+        "estimatedPaidImageTasks",
+        "updatedAt"
+      ],
+      "properties": {
+        "profileId": {
+          "enum": [
+            "simple_remake",
+            "narrative",
+            "original"
+          ]
+        },
+        "selected": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "estimatedPaidImageTasks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "realismContractsVersion": { "const": 2 } }, "required": ["realismContractsVersion"] },
+      "then": { "required": ["realismContractsWriteMode"] }
+    },
+    {
+      "if": {
+        "required": [
+          "routeDecision"
+        ]
+      },
+      "then": {
+        "required": [
+          "ingressPolicyVersion"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": true
+}

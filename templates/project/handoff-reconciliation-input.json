@@ -1,0 +1,22 @@
+{
+  "id": "handoff-reconciliation-segment-001-to-002-v1",
+  "previousSegmentId": "segment-001",
+  "nextSegmentId": "segment-002",
+  "observedHandoffArtifactId": "REPLACE_WITH_CURRENT_LOCKED_OBSERVED_HANDOFF_ID",
+  "canonicalAuthorityArtifactIds": [
+    "REPLACE_WITH_CHARACTER_IDENTITY_OR_MASTER_ID",
+    "REPLACE_WITH_PRODUCT_OR_SCENE_AUTHORITY_ID"
+  ],
+  "spatialProxyArtifactId": "REPLACE_WITH_OPTIONAL_LOCKED_SPATIAL_PROXY_ID_OR_REMOVE_FIELD",
+  "dimensionAssessments": [
+    { "dimension": "people", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "distances", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "product", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "props", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "camera", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "open_motion", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "light", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "audio", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" },
+    { "dimension": "identity", "disposition": "consistent", "evidence": "REPLACE_WITH_THREE_WAY_EVIDENCE", "resolution": "REPLACE_WITH_RESOLUTION" }
+  ]
+}

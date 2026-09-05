@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "id": "spatial-control-segment-001-v1",
+  "projectId": "PROJECT_ID",
+  "segmentId": "segment-001",
+  "revision": 1,
+  "fidelityTarget": "one_to_one",
+  "modelingInputMode": "keyframes_only",
+  "sourceReference": {
+    "path": "brief/source/reference-video.mp4",
+    "sha256": "SOURCE_VIDEO_SHA256"
+  },
+  "blenderProject": {
+    "path": "preproduction/modeling/segment-001/control-model-v1.blend",
+    "sha256": "BLENDER_FILE_SHA256"
+  },
+  "animatic": {
+    "path": "preproduction/modeling/segment-001/control-animatic-v1.mp4",
+    "sha256": "ANIMATIC_SHA256",
+    "durationSec": 7,
+    "fps": 24,
+    "width": 540,
+    "height": 960
+  },
+  "cameraMatch": {
+    "aspectRatio": "9:16",
+    "lensMm": 35,
+    "cutTimesSec": [4.033],
+    "validationTimesSec": [0, 1, 2, 3, 4.033, 5.5, 7]
+  },
+  "subjects": [
+    { "subjectId": "CHAR-M01", "role": "male_lead", "proxyColor": "muted_blue" },
+    { "subjectId": "CHAR-F01", "role": "female_lead", "proxyColor": "muted_rose" }
+  ],
+  "authority": {
+    "controls": ["position", "pose", "contact", "occlusion", "camera", "camera_path", "action_timing", "shot_transitions"],
+    "mustNotControl": ["identity", "face", "wardrobe_appearance", "product_appearance", "texture", "color", "quality", "world_style"]
+  },
+  "derivedAssets": [
+    { "id": "segment-001-model-keyframe-start-v1", "type": "director_view_proxy", "path": "preproduction/modeling/segment-001/keyframe-start.png", "sha256": "START_FRAME_SHA256" },
+    { "id": "segment-001-model-keyframe-end-v1", "type": "director_view_proxy", "path": "preproduction/modeling/segment-001/keyframe-end.png", "sha256": "END_FRAME_SHA256" }
+  ],
+  "validation": {
+    "status": "PASS",
+    "comparisonId": "segment-001-source-model-comparison-v1",
+    "checks": [
+      "shot scale and screen position match",
+      "camera path and cut times match",
+      "character blocking and eyelines match",
+      "physical contact starts and ends at the intended frames",
+      "action endpoints and final hold match"
+    ]
+  }
+}

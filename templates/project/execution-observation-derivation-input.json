@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "kind": "execution_observation_derivation",
+  "sourceType": "execution_trace_timing",
+  "traceId": "trace-001"
+}

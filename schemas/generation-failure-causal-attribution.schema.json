@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "generation-failure-causal-attribution.schema.json",
+  "title": "Generation Failure Causal Attribution",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "rootCauseKey", "primary", "contributors", "counterEvidence", "unknowns", "nextMinimalCheck", "promptOnlyRetryAllowed", "controlRouteChangeRequired"],
+  "properties": {
+    "kind": { "const": "generation_failure_causal_attribution_v1" },
+    "version": { "const": 1 },
+    "rootCauseKey": { "$ref": "#/$defs/key" },
+    "primary": { "$ref": "#/$defs/hypothesis" },
+    "contributors": { "type": "array", "items": { "$ref": "#/$defs/hypothesis" } },
+    "counterEvidence": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+    "unknowns": { "type": "array", "items": { "$ref": "#/$defs/text" } },
+    "nextMinimalCheck": {
+      "type": "object", "additionalProperties": false,
+      "required": ["variable", "action", "expectedObservation", "changesOnePrimaryVariable", "costClass"],
+      "properties": {
+        "variable": { "$ref": "#/$defs/text" }, "action": { "$ref": "#/$defs/text" },
+        "expectedObservation": { "$ref": "#/$defs/text" }, "changesOnePrimaryVariable": { "const": true },
+        "costClass": { "enum": ["free", "paid_with_fresh_authorization"] }
+      }
+    },
+    "promptOnlyRetryAllowed": { "const": false },
+    "controlRouteChangeRequired": { "const": true }
+  },
+  "$defs": {
+    "text": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "key": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "hypothesis": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "stage", "hypothesis", "confidence", "evidence", "falsifier"],
+      "properties": {
+        "key": { "$ref": "#/$defs/key" }, "stage": { "$ref": "#/$defs/text" },
+        "hypothesis": { "$ref": "#/$defs/text" }, "confidence": { "enum": ["low", "medium", "high"] },
+        "evidence": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/text" } },
+        "falsifier": { "$ref": "#/$defs/text" }
+      }
+    }
+  }
+}

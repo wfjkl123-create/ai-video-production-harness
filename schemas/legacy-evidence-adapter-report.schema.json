@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "legacy-evidence-adapter-report.schema.json",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "projectId", "lineageStatus", "summary", "candidates", "unreadablePaths", "writebackEligible", "limitations"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "legacy_evidence_adapter_report" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "lineageStatus": { "enum": ["resolved", "unknown"] },
+    "summary": { "$ref": "#/$defs/summary" },
+    "candidates": { "type": "array", "items": { "$ref": "#/$defs/candidate" } },
+    "unreadablePaths": { "type": "array", "items": { "type": "string" } },
+    "writebackEligible": { "const": false },
+    "limitations": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "summary": {
+      "type": "object",
+      "required": ["candidateCount", "byStatus", "byType", "unreadableJsonCount"],
+      "properties": {
+        "candidateCount": { "type": "integer", "minimum": 0 },
+        "byStatus": { "type": "object" },
+        "byType": { "type": "object" },
+        "unreadableJsonCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "candidate": {
+      "type": "object",
+      "required": ["id", "normalizationType", "status", "reasonCodes", "sourcePath", "evidencePaths", "facts"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^legacy-" },
+        "normalizationType": { "enum": ["paid_approval", "generation_run_record", "provider_task", "generation_output", "machine_video_audit", "gate5_review", "final_edit", "final_delivery"] },
+        "status": { "enum": ["verified", "partial", "invalid"] },
+        "reasonCodes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "sourcePath": { "type": "string", "minLength": 1 },
+        "evidencePaths": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "facts": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

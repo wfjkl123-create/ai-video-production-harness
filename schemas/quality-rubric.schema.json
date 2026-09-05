@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "quality-rubric.schema.json",
+  "title": "Human Quality Rubric",
+  "type": "object",
+  "required": ["id", "version", "threshold", "dimensions", "vetoes"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "version": { "type": "integer", "minimum": 1 },
+    "threshold": { "type": "number", "minimum": 0, "maximum": 100 },
+    "dimensions": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "label", "weight", "minimum", "critical"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "weight": { "type": "number", "exclusiveMinimum": 0, "maximum": 100 },
+          "minimum": { "type": "number", "minimum": 0, "maximum": 100 },
+          "critical": { "type": "boolean" },
+          "observableRequirement": { "type": "string", "minLength": 1 },
+          "evidenceType": { "type": "string", "minLength": 1 },
+          "timeOrRegion": { "type": "string", "minLength": 1 },
+          "canonicalAnchorIds": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+          "canonicalAnchorSha256ById": {
+            "type": "object", "minProperties": 1,
+            "additionalProperties": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "vetoes": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["id", "label"],
+        "properties": { "id": { "type": "string", "minLength": 1 }, "label": { "type": "string", "minLength": 1 } },
+        "additionalProperties": false
+      }
+    }
+  },
+  "allOf": [{
+    "if": { "properties": { "version": { "minimum": 2 } }, "required": ["version"] },
+    "then": {
+      "properties": {
+        "dimensions": {
+          "items": {
+            "required": ["id", "label", "weight", "minimum", "critical", "observableRequirement", "evidenceType", "timeOrRegion", "canonicalAnchorIds", "canonicalAnchorSha256ById"]
+          }
+        }
+      }
+    }
+  }],
+  "additionalProperties": false
+}

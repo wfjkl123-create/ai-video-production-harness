@@ -1,0 +1,17 @@
+{
+  "id": "codex-image-gen-generic-v1",
+  "executionSurface": "codex-built-in-image_gen",
+  "supportedOperations": ["create", "edit"],
+  "supportedProfileIds": ["*"],
+  "supportedAspectRatios": [],
+  "qualityOptions": ["high"],
+  "maxInputImages": 5,
+  "ratioPolicy": "prompt_only",
+  "evidenceStatus": "verified",
+  "evidence": {
+    "source": "current local Codex image_gen tool contract",
+    "scope": "prompt plus local referenced image paths; harness-capped at five inputs",
+    "notes": "Aspect ratio and quality are semantic prompt constraints on this surface, not separate API parameters. This profile grants no paid retry or model fallback."
+  },
+  "updatedAt": "2026-07-30T00:00:00Z"
+}

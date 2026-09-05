@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ingress-route-decision.schema.json",
+  "title": "Deterministic Harness Ingress Route Decision",
+  "type": "object",
+  "required": [
+    "policyVersion",
+    "harnessRequired",
+    "reason",
+    "inputTypes",
+    "sourceVideoIds",
+    "referenceRoleStatus"
+  ],
+  "properties": {
+    "policyVersion": { "const": "ingress-route-v1" },
+    "harnessRequired": { "type": "boolean" },
+    "reason": {
+      "enum": [
+        "explicit_opt_out",
+        "informational_intent",
+        "video_input",
+        "video_input_and_creation_intent",
+        "video_creation_intent",
+        "non_video_request"
+      ]
+    },
+    "inputTypes": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["video", "image", "audio", "text", "binary"] }
+    },
+    "sourceVideoIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "assetInputIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "executionClass": {
+      "enum": ["bypass", "creative_production", "mechanical_asset_prompt"]
+    },
+    "referenceRoleStatus": {
+      "enum": [
+        "not_applicable",
+        "awaiting_reference_role",
+        "awaiting_source_video",
+        "inspiration",
+        "authority"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "harnessRequired": { "const": false } }, "required": ["harnessRequired"] },
+      "then": { "properties": { "referenceRoleStatus": { "const": "not_applicable" } } }
+    }
+  ],
+  "additionalProperties": false
+}

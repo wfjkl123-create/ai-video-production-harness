@@ -1,0 +1,29 @@
+{
+  "artifactId": "video-segment-001-v1",
+  "rubricId": "quality-rubric-v2",
+  "decision": "rejected",
+  "scores": {
+    "identity_and_product": 60
+  },
+  "evidenceByDimension": {
+    "identity_and_product": {
+      "observation": "00:08.2 人物脸型偏离锁定人物锚点，产品肩带结构仍一致",
+      "timestampsOrRegions": ["00:08.2 人物面部"],
+      "anchorIds": ["character-main-v1"],
+      "anchorSha256ById": {
+        "character-main-v1": "0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    }
+  },
+  "triggeredVetoIds": [],
+  "note": "人物身份在 00:08.2 明显漂移；产品结构未见同类问题",
+  "correction": "保留产品和剪辑，只回到人物资产绑定并重做受影响的生成单元",
+  "overrideReason": null,
+  "failureObservation": {
+    "category": "identity_drift",
+    "rootCauseKey": "gate5.identity.character-binding",
+    "responsibilityStage": "assets",
+    "returnStage": "assets",
+    "retryKind": "none"
+  }
+}

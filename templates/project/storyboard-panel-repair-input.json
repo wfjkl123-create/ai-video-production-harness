@@ -1,0 +1,22 @@
+{
+  "id": "segment-001-storyboard-repair-v2",
+  "kind": "storyboard_panel_repair_plan",
+  "source": {
+    "artifactId": "segment-001-storyboard-v1",
+    "path": "assets/segment-001/storyboard-v1.png",
+    "sha256": "替换为原整板SHA256",
+    "grid": { "rows": 3, "columns": 4, "width": 2400, "height": 1350 }
+  },
+  "replacements": [
+    {
+      "panelIndex": 5,
+      "assetId": "segment-001-storyboard-panel-05-repair-v2",
+      "revision": 2,
+      "path": "assets/segment-001/storyboard-panel-05-repair-v2.png",
+      "sha256": "替换为修复格SHA256",
+      "visualAuditId": "audit-segment-001-storyboard-panel-05-repair-v2"
+    }
+  ],
+  "outputPath": "assets/segment-001/storyboard-v2.png",
+  "renderer": "ffmpeg-lossless-storyboard-panel-repair-v1"
+}

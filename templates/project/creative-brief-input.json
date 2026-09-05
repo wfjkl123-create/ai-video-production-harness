@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 3,
+  "id": "creative-brief-v1",
+  "projectId": "project-001",
+  "targetDurationSec": 15,
+  "creativeDecision": {
+    "storyDirection": "面对质疑，主角停止解释，用一次清楚的现场行动让对方改变立场",
+    "successDefinition": "先产生质疑，再因为人物行动和可见结果转为愿意继续了解",
+    "directorCreativeContract": {
+      "structureMode": "product_demo",
+      "characterMode": "character_driven",
+      "projectIntent": {
+        "purpose": "用一条短剧情视频建立产品价值，而不是只完成一次功能展示",
+        "audience": "对夸张产品宣传保持怀疑、需要看到真实使用证据的潜在用户",
+        "desiredAudienceEffect": "先产生质疑，再因为人物行动和可见结果转为愿意继续了解",
+        "deliveryContext": "15 秒竖屏商业短视频，移动端观看",
+        "commercialIntent": true,
+        "productDramaticFunction": "产品是改变人物立场的证据，不是结尾突然出现的贴片"
+      },
+      "recommendedDirection": {
+        "directionId": "direction-visible-proof",
+        "logline": "面对质疑，主角停止解释，用一次清楚的现场行动让对方改变立场",
+        "coreMeaning": "可信度来自可见结果，而不是更响亮的承诺",
+        "extensionOfUserIdea": "把笼统的产品被质疑延伸为拒绝动作、现场证明和主动验证的完整因果链",
+        "openingDesign": {
+          "firstFrame": "对方把产品推回桌面，主角的手停在半空",
+          "trigger": "拒绝动作先于任何解释发生",
+          "audienceQuestion": "她还能怎样证明自己",
+          "storyBridge": "主角收回解释欲，直接进入现场演示",
+          "rationale": "用一个动作同时建立冲突、人物压力和后续证明任务"
+        },
+        "centralConflict": "口头解释无法改变对方，主角必须承担失败风险并现场证明",
+        "coreTurn": "对方亲手确认产品产生的结果，权力从质疑者转回主角",
+        "endingPayoff": "对方主动拿起产品查看，使用行为兑现开头的质疑",
+        "progressionLogic": "拒绝触发演示，演示产生证据，证据改变对方动作，结尾回答开头问题",
+        "recommendationRationale": {
+          "audienceEffect": "观众先站在质疑者一边，再与质疑者同步被证据说服",
+          "storyCausality": "每个关键动作都由前一动作触发，开头、转折和结尾形成闭环",
+          "productFunction": "产品直接承担冲突解决与立场变化功能",
+          "executionRisk": "单场景、少人物、一个关键操作，能把生成风险集中在可验证的产品交互上"
+        }
+      },
+      "alternativesConsidered": [],
+      "characters": [
+        {
+          "characterId": "character-a",
+          "importance": "lead",
+          "dramaticFunction": "承担从解释到行动证明的选择",
+          "emotionalBaseline": "克制、谨慎，被质疑时不立刻反击",
+          "audienceRelationship": "观众先观察她是否可信，随后通过她的行动建立认同",
+          "visibleBehavior": "先收住解释欲，短暂停顿后把产品拉回并开始演示",
+          "objective": "让对方相信产品确实有效",
+          "obstacle": "对方拒绝接受任何口头说明",
+          "tactic": "停止辩解，把判断权交给可见证据",
+          "arc": "从被动解释转为主动控制证明过程"
+        },
+        {
+          "characterId": "character-b",
+          "importance": "key_opponent",
+          "dramaticFunction": "代表观众的怀疑，并用最终动作证明立场真正改变",
+          "emotionalBaseline": "警惕、不耐烦，但不是脸谱化恶人",
+          "audienceRelationship": "让观众可以合理站在她的质疑立场上",
+          "visibleBehavior": "先把产品推回，看到结果后停止防御并主动拿起查看",
+          "objective": "避免被夸张承诺欺骗",
+          "obstacle": "她无法仅靠语言确认产品价值",
+          "tactic": "拒绝、观察并亲手验证",
+          "arc": "从拒绝接触转为主动验证"
+        }
+      ],
+      "storyOutline": [
+        "开头：对方把产品推回，公开表达不信任",
+        "转折：主角停止解释并完成一次不遮掩过程的现场演示",
+        "回报：对方亲手确认结果并主动拿起产品，关系和判断发生变化"
+      ],
+      "scenePriorities": [
+        "拒绝动作必须先于解释，让冲突在第一秒可见",
+        "演示过程必须看清接触、动作终点和结果",
+        "结尾重点是对方主动行为，不用口播代替立场变化"
+      ],
+      "emotionAndRhythm": {
+        "emotionCurve": "怀疑施压 → 主角克制停顿 → 行动集中 → 结果出现 → 对方防御松开",
+        "rhythmStrategy": "开头立即冲突，中段给完整动作因果，结果出现后保留短暂反应时间"
+      },
+      "audiovisualStrategy": {
+        "pointOfView": "主要跟随主角承受质疑，但用对方反应完成意义",
+        "cameraMotive": "只在证据即将出现时靠近，其他时刻保持克制观察",
+        "editingStrategy": "不用无动机快切；拒绝、证明、反应三个节拍各自完整，必要时用反应切镜完成价值变化",
+        "soundStrategy": "保留产品与桌面、材料接触的真实声音，情绪转折处减少无关声音干扰",
+        "specialTechniques": []
+      },
+      "creativeBoundaries": {
+        "mustKeep": ["产品结果必须可见", "对方的立场改变必须通过主动动作表现"],
+        "mustAvoid": ["不用夸张辱骂制造廉价反派", "不用无动机慢镜头或环绕运镜冒充电影感", "不用结尾突然插入口播代替剧情解决"]
+      },
+      "uncertaintyLedger": [
+        {
+          "variable": "精确分段与最终最小资产范围",
+          "disposition": "deferred_to_gate2",
+          "owner": "director",
+          "status": "deferred",
+          "resolution": "由 Gate 2 从锁定 Shotlist 反推，不影响当前创意方向",
+          "evidenceOrReason": "必须从完整剧本和确定性 Shotlist 反推，当前只做暂定建议",
+          "revisitAt": "Gate 2 故事与镜头规划"
+        }
+      ],
+      "decisionLedger": {
+        "confirmedFacts": ["项目目标是用可见剧情证明产品价值", "目标时长为 15 秒"],
+        "professionalRecommendations": ["采用一个推荐主方向；只有出现实质不同的观众承诺或戏剧逻辑时才附对照方向"],
+        "lockedVariables": ["观众体验", "核心冲突", "开头—转折—结尾闭环", "人物关系", "产品戏剧功能", "创意边界"],
+        "rejectedPatterns": [
+          {
+            "pattern": "用直接辱骂把质疑者塑造成纯粹恶人",
+            "reason": "会提高瞬时冲突，却削弱观众代入和产品证据的说服力",
+            "scope": "当前 creative brief 及其下游故事、镜头和提示词",
+            "reopenTrigger": "只有目标受众、传播目的或类型明确改为夸张讽刺喜剧时重新评估"
+          }
+        ]
+      },
+      "provisionalExecution": {
+        "segmentation": "provisional_until_gate2",
+        "assetScope": "provisional_until_gate2",
+        "parallelism": "provisional_until_gate2"
+      }
+    },
+    "revisionImpact": {
+      "previousCreativeBriefId": null,
+      "changeSummary": "Initial Gate 1 director creative master; no prior downstream work is invalidated",
+      "changedDecisionPaths": [],
+      "affectedStages": [],
+      "affectedArtifactIds": [],
+      "requiredRework": [],
+      "preservedDecisions": [],
+      "impactPolicy": "conservative_v1"
+    },
+    "segmentationStrategy": "hybrid",
+    "segmentationRationale": "这是 Gate 1 暂定建议；Gate 2 根据完整故事与 Shotlist 精确锁定",
+    "executionMode": "mixed",
+    "assetExecutionMode": "parallel",
+    "videoExecutionMode": "mixed",
+    "referenceWorkflow": {
+      "referenceIntent": "idea_only",
+      "sourceVideoIds": []
+    },
+    "parallelPlan": [
+      "人物图、场景图和独立道具图仅在 Gate 2 反推为必需时按统一视觉合同并行制作",
+      "没有首尾连续依赖的视频段可并行，必须继承上一段状态的段保持串行"
+    ],
+    "estimatedAssetCombination": ["character_board", "scene_multiview", "product_reference"]
+  },
+  "lockedConstraints": [
+    "Gate 0 文字讨论不新增审核门，创意只在 Gate 1 正式确认一次",
+    "Gate 1 只锁创意母版；精确分段、Shotlist 和最小资产范围在 Gate 2 锁定",
+    "完整导演审计不进入最终视频提示词，提示词只保留镜内可执行内容"
+  ]
+}

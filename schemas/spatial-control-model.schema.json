@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "spatial-control-model.schema.json",
+  "title": "Blender Spatial Control Model",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion", "id", "projectId", "segmentId", "revision", "fidelityTarget",
+    "modelingInputMode", "blenderProject", "animatic", "cameraMatch", "subjects",
+    "authority", "derivedAssets", "validation"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "segmentId": { "$ref": "#/$defs/id" },
+    "revision": { "type": "integer", "minimum": 1 },
+    "fidelityTarget": { "enum": ["adapted", "faithful", "one_to_one"] },
+    "modelingInputMode": { "enum": ["keyframes_only", "animatic_video"] },
+    "sourceReference": { "$ref": "#/$defs/file" },
+    "blenderProject": { "$ref": "#/$defs/file" },
+    "animatic": {
+      "allOf": [{ "$ref": "#/$defs/file" }],
+      "type": "object",
+      "required": ["path", "sha256", "durationSec", "fps", "width", "height"],
+      "properties": {
+        "path": { "$ref": "#/$defs/path" },
+        "sha256": { "$ref": "#/$defs/sha" },
+        "durationSec": { "type": "number", "exclusiveMinimum": 0, "maximum": 30 },
+        "fps": { "type": "number", "exclusiveMinimum": 0, "maximum": 120 },
+        "width": { "type": "integer", "minimum": 64 },
+        "height": { "type": "integer", "minimum": 64 }
+      }
+    },
+    "cameraMatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["aspectRatio", "cutTimesSec", "validationTimesSec"],
+      "properties": {
+        "aspectRatio": { "type": "string", "pattern": "^[1-9][0-9]*:[1-9][0-9]*$" },
+        "lensMm": { "type": "number", "exclusiveMinimum": 0 },
+        "cutTimesSec": { "type": "array", "items": { "type": "number", "minimum": 0 }, "uniqueItems": true },
+        "validationTimesSec": { "type": "array", "minItems": 2, "items": { "type": "number", "minimum": 0 }, "uniqueItems": true }
+      }
+    },
+    "subjects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["subjectId", "role", "proxyColor"],
+        "properties": {
+          "subjectId": { "$ref": "#/$defs/id" },
+          "role": { "type": "string", "minLength": 1 },
+          "proxyColor": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["controls", "mustNotControl"],
+      "properties": {
+        "controls": { "type": "array", "minItems": 1, "items": { "enum": ["position", "pose", "contact", "occlusion", "camera", "camera_path", "action_timing", "shot_transitions"] }, "uniqueItems": true },
+        "mustNotControl": { "type": "array", "minItems": 1, "items": { "enum": ["identity", "face", "wardrobe_appearance", "product_appearance", "texture", "color", "quality", "world_style"] }, "uniqueItems": true }
+      }
+    },
+    "derivedAssets": {
+      "type": "array",
+      "minItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "type", "path", "sha256"],
+        "properties": {
+          "id": { "$ref": "#/$defs/id" },
+          "type": { "enum": ["director_view_proxy", "spatial_control_animatic"] },
+          "path": { "$ref": "#/$defs/path" },
+          "sha256": { "$ref": "#/$defs/sha" }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "comparisonId", "checks"],
+      "properties": {
+        "status": { "const": "PASS" },
+        "comparisonId": { "$ref": "#/$defs/id" },
+        "checks": { "type": "array", "minItems": 5, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "path": { "type": "string", "minLength": 1 },
+    "sha": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "file": {
+      "type": "object",
+      "required": ["path", "sha256"],
+      "properties": { "path": { "$ref": "#/$defs/path" }, "sha256": { "$ref": "#/$defs/sha" } }
+    }
+  }
+}

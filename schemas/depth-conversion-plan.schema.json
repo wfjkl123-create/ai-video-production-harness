@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "depth-conversion-plan.schema.json",
+  "title": "Monocular Relative Depth Conversion Plan",
+  "type": "object",
+  "required": [
+    "schemaVersion", "id", "kind", "projectId", "mediaKind", "templateId", "templateSource",
+    "capabilitySource", "input", "instructionPath", "instructionSha256", "modelPolicy",
+    "depthContract", "output", "planFingerprint", "createdAt"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "kind": { "const": "monocular_depth_conversion_plan" },
+    "projectId": { "$ref": "#/$defs/text" },
+    "mediaKind": { "enum": ["image", "video"] },
+    "templateId": { "$ref": "#/$defs/id" },
+    "templateSource": { "$ref": "#/$defs/text" },
+    "capabilitySource": { "$ref": "#/$defs/text" },
+    "input": {
+      "type": "object",
+      "required": ["path", "sha256", "width", "height", "readOnly"],
+      "properties": {
+        "path": { "$ref": "#/$defs/text" },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "durationSec": { "type": "number", "exclusiveMinimum": 0 },
+        "frameRate": { "$ref": "#/$defs/text" },
+        "readOnly": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "instructionPath": { "$ref": "#/$defs/text" },
+    "instructionSha256": { "$ref": "#/$defs/sha256" },
+    "modelPolicy": {
+      "type": "object",
+      "required": ["task", "availability", "sameModelForAllFrames", "samePreprocessingForAllFrames", "grayscaleDesaturationIsNotDepth"],
+      "properties": {
+        "task": { "enum": ["monocular_image_depth_estimation", "monocular_video_depth_estimation"] },
+        "availability": { "const": "resolve_and_verify_at_execution" },
+        "sameModelForAllFrames": { "type": "boolean" },
+        "samePreprocessingForAllFrames": { "type": "boolean" },
+        "grayscaleDesaturationIsNotDepth": { "const": true }
+      },
+      "additionalProperties": false
+    },
+    "depthContract": {
+      "type": "object",
+      "required": ["near", "far", "intermediate", "preserveOcclusionAndContours", "normalizationScope", "normalizationMode", "perFrameContrastStretch", "temporalStabilization", "motionCompensated", "maxPreviousFrameWeight", "flickerControl", "burnedInOverlayPolicy"],
+      "properties": {
+        "near": { "const": "white" },
+        "far": { "const": "black" },
+        "intermediate": { "const": "continuous_grayscale" },
+        "preserveOcclusionAndContours": { "const": true },
+        "normalizationScope": { "enum": ["single_source_image", "entire_source_video"] },
+        "normalizationMode": { "enum": ["single_fixed_range", "single_fixed_robust_range_p2_p98"] },
+        "perFrameContrastStretch": { "const": false },
+        "temporalStabilization": { "enum": ["not_applicable", "moderate_edge_preserving"] },
+        "motionCompensated": { "type": "boolean" },
+        "maxPreviousFrameWeight": { "type": "number", "minimum": 0, "maximum": 0.25 },
+        "flickerControl": { "$ref": "#/$defs/text" },
+        "burnedInOverlayPolicy": { "$ref": "#/$defs/text" }
+      },
+      "additionalProperties": false
+    },
+    "output": {
+      "oneOf": [
+        { "$ref": "#/$defs/imageOutput" },
+        { "$ref": "#/$defs/videoOutput" }
+      ]
+    },
+    "planFingerprint": { "$ref": "#/$defs/sha256" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "mediaKind": { "const": "video" } }, "required": ["mediaKind"] },
+      "then": { "properties": { "input": { "required": ["durationSec", "frameRate"] }, "output": { "$ref": "#/$defs/videoOutput" } } }
+    },
+    {
+      "if": { "properties": { "mediaKind": { "const": "image" } }, "required": ["mediaKind"] },
+      "then": { "properties": { "output": { "$ref": "#/$defs/imageOutput" } } }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "text": { "type": "string", "pattern": ".*\\S.*" },
+    "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "segment": {
+      "type": "object",
+      "required": ["index", "startSec", "endSec", "durationSec", "outputPath"],
+      "properties": {
+        "index": { "type": "integer", "minimum": 1 },
+        "startSec": { "type": "number", "minimum": 0 },
+        "endSec": { "type": "number", "exclusiveMinimum": 0 },
+        "durationSec": { "type": "number", "exclusiveMinimum": 0, "maximum": 15 },
+        "outputPath": { "$ref": "#/$defs/text" }
+      },
+      "additionalProperties": false
+    },
+    "imageOutput": {
+      "type": "object",
+      "required": ["format", "colorMode", "width", "height", "preserveComposition", "outputPath", "overwrite"],
+      "properties": {
+        "format": { "const": "png" },
+        "colorMode": { "const": "pure_grayscale_depth_only" },
+        "width": { "type": "integer", "minimum": 1 },
+        "height": { "type": "integer", "minimum": 1 },
+        "preserveComposition": { "const": true },
+        "outputPath": { "$ref": "#/$defs/text" },
+        "overwrite": { "const": false }
+      },
+      "additionalProperties": false
+    },
+    "videoOutput": {
+      "type": "object",
+      "required": ["container", "videoCodec", "pixelFormat", "resolutionPolicy", "frameRate", "durationSec", "frameOrder", "audio", "maxSegmentDurationSec", "segments", "overwrite"],
+      "properties": {
+        "container": { "const": "mp4" },
+        "videoCodec": { "const": "h264" },
+        "pixelFormat": { "const": "yuv420p" },
+        "resolutionPolicy": {
+          "enum": [
+            "720p_short_edge_720_preserve_aspect_even_dimensions_no_crop_no_pad",
+            "source_exact_dimensions_no_crop_no_pad"
+          ]
+        },
+        "frameRate": {
+          "type": "object",
+          "required": ["mode", "value"],
+          "properties": { "mode": { "const": "preserve_exact" }, "value": { "$ref": "#/$defs/text" } },
+          "additionalProperties": false
+        },
+        "durationSec": { "type": "number", "exclusiveMinimum": 0 },
+        "frameOrder": { "const": "preserve_exactly_once" },
+        "audio": { "const": false },
+        "maxSegmentDurationSec": { "const": 15 },
+        "segments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/segment" } },
+        "overwrite": { "const": false }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

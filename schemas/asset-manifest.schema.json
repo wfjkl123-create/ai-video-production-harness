@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "asset-manifest.schema.json",
+  "title": "Asset Manifest",
+  "type": "object",
+  "required": ["id", "segmentId", "status", "sourceArtifactIds", "observedHandoffId", "canonicalHdRestorationHandoffId", "handoffReconciliationId", "items"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "status": { "enum": ["awaiting_review", "locked", "rejected", "rework", "blocked"] },
+    "sourceArtifactIds": {
+      "type": "object",
+      "required": ["script", "shotlist"],
+      "properties": {
+        "script": { "type": "string", "minLength": 1 },
+        "shotlist": { "type": "string", "minLength": 1 },
+        "segmentation": { "type": "string", "minLength": 1 },
+        "capabilityManifest": { "type": "string", "minLength": 1 },
+        "spatialControlModel": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": false
+    },
+    "observedHandoffId": { "type": ["string", "null"] },
+    "canonicalHdRestorationHandoffId": { "type": ["string", "null"] },
+    "handoffReconciliationId": { "type": ["string", "null"] },
+    "items": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "type", "scope", "status", "responsibility", "mustNotControl"],
+        "properties": {
+          "id": { "type": "string", "minLength": 1 },
+          "type": { "enum": ["character_board", "character_identity_single_view", "product_reference", "scene_multiview", "scene_overhead", "story_prop", "initial_blocking", "handoff_blocking", "camera_blocking", "director_view_proxy", "spatial_control_animatic", "dialogue_axis_board", "storyboard", "mannequin_grid", "character_product_state", "expression_board", "wardrobe_board", "color_board", "dialogue_audio_reference", "timing_audio_reference"] },
+          "scope": { "enum": ["project", "segment"] },
+          "status": { "enum": ["awaiting_review", "locked", "rejected", "rework", "blocked"] },
+          "mediaKind": { "enum": ["image", "video", "audio"] },
+          "responsibility": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+          "mustNotControl": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

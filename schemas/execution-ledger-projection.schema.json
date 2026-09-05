@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-ledger-projection.schema.json",
+  "title": "Execution Ledger Projection",
+  "type": "object",
+  "required": ["schemaVersion", "kind", "projectId", "lastSequence", "lastEventId", "updatedAt", "stage", "bySegment", "gate5", "failureGovernance", "delivery", "counts"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "execution_ledger_projection" },
+    "projectId": { "type": "string", "minLength": 1 },
+    "lastSequence": { "type": "integer", "minimum": 0 },
+    "lastEventId": { "type": ["string", "null"] },
+    "updatedAt": { "type": ["string", "null"], "format": "date-time" },
+    "stage": { "type": "string", "minLength": 1 },
+    "bySegment": { "type": "object", "additionalProperties": { "type": "object" } },
+    "gate5": { "type": "object" },
+    "failureGovernance": { "type": "object" },
+    "delivery": { "type": "object" },
+    "counts": {
+      "type": "object",
+      "required": ["events", "paidClaims", "successes", "failures", "uncertainSubmissions", "qualityAccepted", "qualityRejected", "outputFailures", "remediations", "deliveries"],
+      "properties": {
+        "events": { "type": "integer", "minimum": 0 },
+        "paidClaims": { "type": "integer", "minimum": 0 },
+        "successes": { "type": "integer", "minimum": 0 },
+        "failures": { "type": "integer", "minimum": 0 },
+        "uncertainSubmissions": { "type": "integer", "minimum": 0 },
+        "qualityAccepted": { "type": "integer", "minimum": 0 },
+        "qualityRejected": { "type": "integer", "minimum": 0 },
+        "outputFailures": { "type": "integer", "minimum": 0 },
+        "remediations": { "type": "integer", "minimum": 0 },
+        "deliveries": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

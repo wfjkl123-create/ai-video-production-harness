@@ -1,0 +1,18 @@
+{
+  "id": "batch-generation-approval-001",
+  "kind": "batch_generation_approval",
+  "actor": "human",
+  "decision": "approved",
+  "projectId": "replace-with-project-id",
+  "executor": "libtv",
+  "libtvProjectUuid": "replace-with-32-character-canvas-uuid",
+  "externalAuditModel": "claude-ocx-anthropic--claude-opus-4-8",
+  "segments": [
+    { "segmentId": "segment-001", "strategy": "editorial_cut", "maxPaidAttempts": 1 }
+  ],
+  "budget": { "unit": "tasks", "limit": 1 },
+  "externalAuditBudget": { "unit": "USD", "perCallLimit": 0.4, "totalLimit": 0.8 },
+  "maxPaidSubmissions": 1,
+  "stopVetoes": ["blur", "body_or_object_artifact", "garment_intersection", "wrong_speaker", "identity_or_blocking_drift", "product_scale_error", "audio_visual_desync", "story_deviation"],
+  "approvedAt": "2026-07-26T00:00:00.000Z"
+}

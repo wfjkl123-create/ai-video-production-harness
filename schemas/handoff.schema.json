@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "handoff.schema.json",
+  "title": "Observed segment handoff",
+  "type": "object",
+  "required": [
+    "id", "segmentId", "status", "observed", "lockedByReviewId", "evidenceTimestamps",
+    "people", "distances", "productState", "props", "camera", "openMotion", "unknowns"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "realismContractsVersion": { "enum": [1, 2] },
+    "segmentId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "status": { "const": "locked" },
+    "observed": { "const": true },
+    "lockedByReviewId": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "evidenceTimestamps": { "$ref": "#/$defs/timestamps" },
+    "people": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/person" } } } }] },
+    "distances": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "type": "array", "items": { "$ref": "#/$defs/distance" } } } }] },
+    "productState": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/productState" } } }] },
+    "props": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "type": "array", "items": { "$ref": "#/$defs/prop" } } } }] },
+    "camera": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/camera" } } }] },
+    "openMotion": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/stringArray" } } }] },
+    "unknowns": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/stringArray" } } }] },
+    "light": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/descriptionState" } } }] },
+    "audio": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "$ref": "#/$defs/descriptionState" } } }] },
+    "identity": { "allOf": [{ "$ref": "#/$defs/evidencedField" }, { "properties": { "value": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/identityObservation" } } } }] }
+  },
+  "$defs": {
+    "timestamps": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "number", "minimum": 0 } },
+    "evidencedField": {
+      "type": "object", "required": ["value", "basis", "timestamps"],
+      "properties": {
+        "value": {},
+        "basis": { "enum": ["observed", "multi_frame_inference"] },
+        "timestamps": { "$ref": "#/$defs/timestamps" }
+      },
+      "additionalProperties": false
+    },
+    "person": {
+      "type": "object", "required": ["personId", "leftRight", "depth", "bodyDirection", "faceDirection", "gaze"],
+      "properties": {
+        "personId": { "type": "string", "minLength": 1 },
+        "leftRight": { "enum": ["left", "center", "right", "unknown"] },
+        "depth": { "enum": ["foreground", "midground", "background", "unknown"] },
+        "bodyDirection": { "type": "string", "minLength": 1 },
+        "faceDirection": { "type": "string", "minLength": 1 },
+        "gaze": { "type": "string", "minLength": 1 }
+      }, "additionalProperties": false
+    },
+    "distance": {
+      "type": "object", "required": ["from", "to", "distance"],
+      "properties": { "from": { "type": "string", "minLength": 1 }, "to": { "type": "string", "minLength": 1 }, "distance": { "type": "string", "minLength": 1 } },
+      "additionalProperties": false
+    },
+    "productState": { "type": "object", "required": ["description"], "properties": { "description": { "type": "string", "minLength": 1 } }, "additionalProperties": false },
+    "prop": {
+      "type": "object", "required": ["propId", "state"],
+      "properties": { "propId": { "type": "string", "minLength": 1 }, "state": { "type": "string", "minLength": 1 }, "holder": { "type": ["string", "null"], "minLength": 1 } },
+      "additionalProperties": false
+    },
+    "camera": {
+      "type": "object", "required": ["position", "direction", "shotSize"],
+      "properties": { "position": { "type": "string", "minLength": 1 }, "direction": { "type": "string", "minLength": 1 }, "shotSize": { "type": "string", "minLength": 1 } },
+      "additionalProperties": false
+    },
+    "descriptionState": { "type": "object", "required": ["description"], "properties": { "description": { "type": "string", "minLength": 1 } }, "additionalProperties": false },
+    "identityObservation": { "type": "object", "required": ["personId", "observedContinuity"], "properties": { "personId": { "type": "string", "minLength": 1 }, "observedContinuity": { "type": "string", "minLength": 1 } }, "additionalProperties": false },
+    "stringArray": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "realismContractsVersion": { "const": 2 } }, "required": ["realismContractsVersion"] },
+      "then": { "required": ["light", "audio", "identity"] }
+    }
+  ],
+  "additionalProperties": true
+}

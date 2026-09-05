@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "External Non-GPT Audit Attestation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "kind", "segmentId", "auditStage", "provider", "model", "providerTaskId", "auditRunId", "cleanZeroContext", "decision", "fingerprintSha256", "reportSha256", "reviewedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": ".*\\S.*" },
+    "kind": { "const": "external_audit_attestation" },
+    "segmentId": { "type": "string", "pattern": ".*\\S.*" },
+    "auditStage": { "enum": ["pre_generation", "post_generation"] },
+    "provider": { "enum": ["anthropic", "kimi", "qwen"] },
+    "model": { "type": "string", "pattern": "^(?!.*(?:[Gg][Pp][Tt]|[Oo]pen[Aa][Ii])).*\\S.*" },
+    "providerTaskId": { "type": "string", "pattern": ".*\\S.*" },
+    "auditRunId": { "type": "string", "pattern": ".*\\S.*" },
+    "cleanZeroContext": { "const": true },
+    "decision": { "enum": ["PASS", "FAIL"] },
+    "fingerprintSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "reportSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "reviewedAt": { "type": "string", "format": "date-time" }
+  }
+}

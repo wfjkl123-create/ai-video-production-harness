@@ -1,0 +1,14 @@
+{
+  "id": "project-001-color-board-v1",
+  "title": "project-001 七色色板",
+  "colors": [
+    { "role": "primary", "hex": "#4A514D", "usage": "背景和最大面积环境" },
+    { "role": "secondary", "hex": "#8B8177", "usage": "服装、家具和中等面积材质" },
+    { "role": "shadow", "hex": "#1D2422", "usage": "阴影、边缘和空间纵深" },
+    { "role": "highlight", "hex": "#D9D2C4", "usage": "光源、受光面和材质高光" },
+    { "role": "skin", "hex": "#B9826F", "usage": "自然人物肤色区间" },
+    { "role": "reflection", "hex": "#667775", "usage": "墙地反光和空气环境偏色" },
+    { "role": "accent", "hex": "#B28A43", "usage": "小面积道具和视觉焦点" }
+  ],
+  "outputPath": "assets/project/project-001-color-board-v1.svg"
+}

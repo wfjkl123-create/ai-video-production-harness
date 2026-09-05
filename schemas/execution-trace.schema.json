@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "execution-trace.schema.json",
+  "title": "Execution Trace",
+  "type": "object",
+  "required": ["schemaVersion", "id", "kind", "projectId", "startedAt", "endedAt", "status", "metadata", "spans"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "kind": { "const": "execution_trace" },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "endedAt": { "type": ["string", "null"], "format": "date-time" },
+    "status": { "enum": ["running", "succeeded", "failed", "cancelled"] },
+    "metadata": { "type": "object" },
+    "spans": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/span" }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$"
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$"
+    },
+    "nonNegative": {
+      "type": "number",
+      "minimum": 0
+    },
+    "span": {
+      "type": "object",
+      "required": [
+        "id", "kind", "name", "parentSpanId", "startedAt", "endedAt", "durationMs", "status",
+        "queueMs", "activeComputeMs", "externalWaitMs", "humanWaitMs", "retryWaitMs",
+        "ttftMs", "cacheHit", "errorClass", "criticalPath"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/id" },
+        "kind": { "enum": ["project", "gate", "segment", "task", "external_call"] },
+        "name": { "type": "string", "pattern": ".*\\S.*" },
+        "parentSpanId": {
+          "oneOf": [
+            { "$ref": "#/$defs/id" },
+            { "type": "null" }
+          ]
+        },
+        "startedAt": { "type": "string", "format": "date-time" },
+        "endedAt": { "type": ["string", "null"], "format": "date-time" },
+        "durationMs": {
+          "oneOf": [
+            { "$ref": "#/$defs/nonNegative" },
+            { "type": "null" }
+          ]
+        },
+        "status": { "enum": ["running", "succeeded", "failed", "cancelled"] },
+        "queueMs": { "$ref": "#/$defs/nonNegative" },
+        "activeComputeMs": { "$ref": "#/$defs/nonNegative" },
+        "externalWaitMs": { "$ref": "#/$defs/nonNegative" },
+        "humanWaitMs": { "$ref": "#/$defs/nonNegative" },
+        "retryWaitMs": { "$ref": "#/$defs/nonNegative" },
+        "ttftMs": {
+          "oneOf": [
+            { "$ref": "#/$defs/nonNegative" },
+            { "type": "null" }
+          ]
+        },
+        "cacheHit": { "type": ["boolean", "null"] },
+        "errorClass": {
+          "oneOf": [
+            { "type": "string", "pattern": ".*\\S.*" },
+            { "type": "null" }
+          ]
+        },
+        "criticalPath": { "type": "boolean" },
+        "attributes": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

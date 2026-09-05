@@ -1,0 +1,44 @@
+{
+  "id": "project-001-image-plan-v1",
+  "projectId": "project-001",
+  "capabilityManifestId": "capability-story-plan-v1-v1",
+  "segmentIds": ["segment-001"],
+  "executionMode": "parallel",
+  "maxConcurrency": 8,
+  "visualStyleContract": {
+    "id": "project-001-visual-style-v1",
+    "version": 1,
+    "description": "真实生活摄影质感，人物与场景处于同一自然光线和低饱和色彩系统中",
+    "locks": [
+      "自然真人皮肤与真实物理材质",
+      "统一低饱和中性色彩",
+      "同一场景保持光线方向和空间结构一致"
+    ]
+  },
+  "characterBoards": [
+    {
+      "projectId": "project-001",
+      "assetId": "character-a-board-v1",
+      "characterId": "character-a",
+      "tag": "Character A",
+      "purpose": "建立主要人物 A 的稳定身份、服装和身形资产，供后续视频镜头绑定",
+      "identityDefinition": "30 至 35 岁原创中国女性角色，椭圆脸，黑色齐肩直发，五官比例和年龄感固定",
+      "wardrobe": "米白色圆领上衣，结构、颜色、材质和穿着状态固定",
+      "bodyProportions": "自然成年人比例，身高感、肩宽、腰臀比例和四肢长度保持一致",
+      "inputBindings": [],
+      "atomicOutputSpec": {
+        "aspectRatio": "4:3",
+        "quality": "high",
+        "background": "neutral gray"
+      },
+      "modelFallbackPlan": []
+    }
+  ],
+  "storyboardSheets": [],
+  "storyboardRepairs": [],
+  "sceneMultiviews": [],
+  "storyProps": [],
+  "directorViewProxies": [],
+  "mannequinSequences": [],
+  "promptIrs": []
+}

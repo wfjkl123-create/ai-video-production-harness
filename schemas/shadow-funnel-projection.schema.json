@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "shadow-funnel-projection.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "generatedAt", "scope", "stages", "projects", "exclusions", "writebackEligible", "limitations"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "kind": { "const": "shadow_funnel_projection" },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "scope": { "type": "object" },
+    "stages": { "type": "array", "items": { "$ref": "#/$defs/stage" } },
+    "projects": { "type": "array", "items": { "type": "object" } },
+    "exclusions": { "type": "array", "items": { "type": "object" } },
+    "writebackEligible": { "const": false },
+    "limitations": { "type": "array", "items": { "type": "string" }, "uniqueItems": true }
+  },
+  "$defs": {
+    "stage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "count", "denominator", "conversionRate"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "label": { "type": "string", "minLength": 1 },
+        "count": { "type": "integer", "minimum": 0 },
+        "denominator": { "oneOf": [{ "type": "null" }, { "type": "object" }] },
+        "conversionRate": { "oneOf": [{ "type": "null" }, { "type": "number", "minimum": 0, "maximum": 1 }] }
+      }
+    }
+  }
+}

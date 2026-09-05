@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 2,
+  "id": "story-plan-v1",
+  "projectId": "project-001",
+  "creativeBriefId": "creative-brief-v1",
+  "finalExecutionDecision": {
+    "segmentationStrategy": "single_clip",
+    "segmentationRationale": "根据完整故事和 Shotlist，当前冲突闭环可在一个生成单元内完成",
+    "assetExecutionMode": "parallel",
+    "videoExecutionMode": "sequential",
+    "parallelPlan": ["只并行制作由已锁定镜头反推的独立资产；连续状态依赖的视频段保持串行"],
+    "assetScopeBasis": "最终资产范围完全来自本故事计划的 shotPlanning、风险和 assetPlan，不继承 Gate 1 的预估数量"
+  },
+  "directorPlan": {
+    "projectType": "narrative",
+    "transformMode": "story_creation",
+    "controlMode": "standard",
+    "fidelityTarget": "adapted",
+    "directorialVoice": "克制写实，以人物真实反应和有动机的机位变化表达关系，不使用样板动作",
+    "audienceFeltIntent": "观众先感到人物之间的距离，再从视线和动作变化中看见关系发生转折",
+    "visualStrategy": "每个镜头只有一个视觉重点，构图、调度与表演共同服务同一个叙事意图",
+    "rhythmStrategy": "动作前保留自然停顿，转折后留出反应时间，不让所有人物同时做大动作",
+    "realismStrategy": "人物持续呼吸、眨眼和细微重心变化；禁止无动机挥手、标准笑容、呆滞凝视和机械重复"
+  },
+  "story": {
+    "logline": "一句话说明谁为了什么，在什么阻碍下必须做什么",
+    "storyPromise": "观众看完后得到的核心体验或答案",
+    "initialCondition": "故事开始时的人物和世界状态",
+    "objective": "主人公本片中可观察的目标",
+    "centralConflict": "目标与阻碍怎样正面冲突",
+    "turn": "故事中最重要的价值变化",
+    "climax": "冲突最高点以及人物必须作出的行动",
+    "finalOutcome": "结尾时已经发生并能被镜头看见的状态",
+    "tone": "克制、写实、喜剧、紧张或其他明确表演基调"
+  },
+  "characters": [
+    {
+      "characterId": "character-a",
+      "tag": "Character A",
+      "role": "主人公",
+      "background": "人物的生活背景和形成现在性格的关键经历",
+      "personality": "稳定性格以及压力下会暴露出的另一面",
+      "stance": "人物对当前事件和其他人物的明确立场",
+      "objective": "人物真正想得到什么",
+      "obstacle": "阻止人物得到目标的人、环境或自身弱点",
+      "appearance": "年龄感、脸型、发型、身形和识别点",
+      "wardrobeLock": "本片固定服装、材质、颜色和配饰",
+      "relationshipMap": "与其他人物的关系、权力和冲突",
+      "arc": "人物从开头到结尾发生的可观察变化"
+    }
+  ],
+  "script": {
+    "scenes": [
+      {
+        "sceneId": "scene-001",
+        "location": "场景地点",
+        "timeOfDay": "时间",
+        "sceneFunction": "这一场负责建立、加深、转折还是兑现",
+        "pov": "观众主要站在谁的体验里",
+        "powerShift": "权力从谁转移到谁",
+        "subtext": "人物没有说出口但通过动作表现的真实意图",
+        "beats": ["按顺序写清可观察的情节动作与结果"],
+        "dialogue": []
+      }
+    ]
+  },
+  "videoSegments": [
+    {
+      "segmentId": "segment-001",
+      "startSec": 0,
+      "endSec": 15,
+      "sceneIds": ["scene-001"],
+      "storyBeat": "这一段唯一的叙事工作和完成终点",
+      "splitReason": "为什么在这里结束并切到下一段",
+      "continuityStrategy": "canonical_open"
+    }
+  ],
+  "shotPlanning": {
+    "mode": "shotlist",
+    "shots": [
+      {
+        "shotId": "S01_SH01",
+        "segmentId": "segment-001",
+        "sceneId": "scene-001",
+        "characterIds": ["character-a"],
+        "durationSec": 15,
+        "purpose": "建立、揭示、证明、转折或收束",
+        "subjectAction": "人物或产品执行一个可观察动作并达到明确终点",
+        "shotContract": "景别、角度、机位、镜头稳定方式和有动机的运镜",
+        "blocking": "人物站位、路径、视线、前后景、遮挡和接触关系",
+        "startState": "本镜开始时的确定状态",
+        "endState": "本镜结束时可交给下一镜的确定状态",
+        "continuityAnchors": ["人物身份", "服装", "产品", "屏幕方向", "光线方向", "场景结构"],
+        "audio": "对白、环境声、同步音效或明确静音",
+        "risks": ["脸", "手", "产品结构", "复杂接触", "连续性"],
+        "directorIntent": {
+          "narrativeFunction": "这一镜负责建立、加压、转折、证明或兑现中的一项明确工作",
+          "valueTurn": "人物关系从回避交流转向主动回应，变化必须能从视线和动作中看见",
+          "povCharacter": "Character A",
+          "powerShift": "这一镜前后权力从谁转向谁，若不变化说明原因",
+          "subtext": "人物没有说出口但通过动作、视线或停顿表现的真实意图",
+          "feltIntent": "观众在这一镜结束时应该具体感到什么",
+          "whyThisShot": "为什么必须使用当前景别、机位和运动，而不是任意其他镜头",
+          "audienceAttention": "观众先看哪里，随后发现什么",
+          "expressiveDetail": "负责传达意义的环境、道具、反应或未完成动作细节",
+          "intentCarriers": [
+            { "channel": "camera", "instruction": "明确景别、机位、运动速度和终点", "visibleEvidence": "画面终点准确落在本镜叙事变化上" },
+            { "channel": "performance", "instruction": "人物动作由触发和目标驱动", "visibleEvidence": "起始行为与结束行为产生可见差异" }
+          ],
+          "signals": {
+            "hasDialogue": false,
+            "emotionalTurn": true,
+            "relationshipBeat": false,
+            "closePerformance": true,
+            "requiresMutualEyeLine": false,
+            "complexBlocking": false,
+            "complexPhysicalAction": false,
+            "viralRemake": false,
+            "productInteraction": "none"
+          }
+        }
+      }
+    ],
+    "continuousTakePlan": null,
+    "roughStoryboardPreview": null
+  },
+  "assetPlan": [
+    { "assetType": "character_board", "decision": "required", "reason": "主要人物身份会跨镜头复用" },
+    { "assetType": "scene_multiview", "decision": "required", "reason": "多个机位需要保持同一空间结构" },
+    { "assetType": "product_reference", "decision": "conditional", "reason": "只有产品结构必须准确时启用" },
+    { "assetType": "story_prop", "decision": "conditional", "reason": "只有会被拿取、使用或推动剧情的道具才制作" },
+    { "assetType": "storyboard", "decision": "conditional", "reason": "多镜头或故事走向不易只靠表格理解时启用" },
+    { "assetType": "initial_blocking", "decision": "conditional", "reason": "多人空间关系复杂时启用" },
+    { "assetType": "camera_blocking", "decision": "conditional", "reason": "人物和摄影机都有复杂路径时启用" },
+    { "assetType": "mannequin_grid", "decision": "conditional", "reason": "爆款复刻或复杂调度需要逐格动作证据时启用" },
+    { "assetType": "color_board", "decision": "skipped", "reason": "单场景已有明确视觉合同，不额外制作" }
+  ]
+}

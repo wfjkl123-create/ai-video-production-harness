@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "image-model-profile.schema.json",
+  "title": "Verified Image Model Capability Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id", "executionSurface", "supportedOperations", "supportedProfileIds", "supportedAspectRatios",
+    "qualityOptions", "maxInputImages", "ratioPolicy", "evidenceStatus", "evidence", "updatedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": ".*\\S.*" },
+    "executionSurface": { "type": "string", "pattern": ".*\\S.*" },
+    "supportedOperations": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "enum": ["create", "edit", "compose", "extract"] } },
+    "supportedProfileIds": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": ".*\\S.*" } },
+    "supportedAspectRatios": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": "^[1-9][0-9]*:[1-9][0-9]*$" } },
+    "qualityOptions": { "type": "array", "uniqueItems": true, "items": { "type": "string", "pattern": ".*\\S.*" } },
+    "maxInputImages": { "type": "integer", "minimum": 0 },
+    "ratioPolicy": { "enum": ["native", "prompt_only", "verify_before_use"] },
+    "evidenceStatus": { "enum": ["verified", "unverified"] },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source", "scope", "notes"],
+      "properties": {
+        "source": { "type": "string", "pattern": ".*\\S.*" },
+        "scope": { "type": "string", "pattern": ".*\\S.*" },
+        "notes": { "type": "string", "pattern": ".*\\S.*" }
+      }
+    },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}

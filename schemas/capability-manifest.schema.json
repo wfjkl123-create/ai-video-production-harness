@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "capability-manifest.schema.json",
+  "title": "Director Capability Manifest",
+  "type": "object",
+  "required": ["schemaVersion", "id", "kind", "routeVersion", "routePrecision", "storyPlanSchemaVersion", "projectId", "storyPlanId", "storyPlanSha256", "projectType", "directorialVoice", "shots", "projectRequiredAssets", "requiredAssetsBySegment", "requiredArtifactsBySegment", "createdAt"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "$ref": "#/$defs/id" },
+    "kind": { "const": "capability_manifest" },
+    "routeVersion": { "enum": ["director-route-v1", "director-route-v2", "director-route-v3"] },
+    "routePrecision": { "const": "explicit_v2" },
+    "storyPlanSchemaVersion": { "const": 2 },
+    "projectId": { "$ref": "#/$defs/projectId" },
+    "storyPlanId": { "$ref": "#/$defs/id" },
+    "storyPlanSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "projectType": { "enum": ["narrative", "viral_remake", "product_demo", "interview", "montage", "other", "local_edit", "faithful_remake", "story_creation"] },
+    "transformMode": { "enum": ["local_edit", "faithful_remake", "story_creation"] },
+    "controlMode": { "enum": ["standard", "modeling_strong_control"] },
+    "fidelityTarget": { "enum": ["adapted", "faithful", "one_to_one"] },
+    "modelingInputMode": { "type": ["string", "null"], "enum": ["keyframes_only", "animatic_video", null] },
+    "executability": { "type": "object" },
+    "directorialVoice": { "$ref": "#/$defs/text" },
+    "shots": { "type": "array", "minItems": 1 },
+    "projectRequiredAssets": { "type": "array", "items": { "$ref": "#/$defs/id" }, "uniqueItems": true },
+    "requiredAssetsBySegment": { "type": "object" },
+    "requiredArtifactsBySegment": { "type": "object" },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,191}$" },
+    "projectId": { "type": "string", "pattern": "^[\\p{L}\\p{N}][\\p{L}\\p{N}._-]{0,95}$" },
+    "text": { "type": "string", "pattern": ".*\\S.*" }
+  },
+  "additionalProperties": true
+}

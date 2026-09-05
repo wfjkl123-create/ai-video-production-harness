@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "rule.schema.json",
+  "title": "Verified Production Rule",
+  "type": "object",
+  "required": [
+    "id", "status", "trigger", "symptom", "evidence", "reason", "correction", "forbidden",
+    "sourceProject", "sourceSegment", "applications", "verificationReviewId", "revision",
+    "createdAt", "updatedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "status": { "enum": ["candidate", "hard"] },
+    "trigger": {
+      "type": "object",
+      "required": ["product", "assetType", "shotType", "motionType", "peopleCountRange", "spaceComplexity"],
+      "properties": {
+        "product": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+        "assetType": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+        "shotType": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+        "motionType": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+        "spaceComplexity": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+        "peopleCountRange": {
+          "type": "object",
+          "required": ["min", "max"],
+          "properties": { "min": { "type": "integer", "minimum": 0 }, "max": { "type": "integer", "minimum": 0 } },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "symptom": { "$ref": "#/$defs/nonEmptyString" },
+    "evidence": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+    "reason": { "$ref": "#/$defs/nonEmptyString" },
+    "correction": { "$ref": "#/$defs/nonEmptyString" },
+    "forbidden": { "$ref": "#/$defs/nonEmptyUniqueStrings" },
+    "sourceProject": { "$ref": "#/$defs/nonEmptyString" },
+    "sourceSegment": { "$ref": "#/$defs/nonEmptyString" },
+    "applications": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["runId", "revision", "appliedAt"],
+        "properties": {
+          "runId": { "$ref": "#/$defs/nonEmptyString" },
+          "revision": { "type": "integer", "minimum": 1 },
+          "appliedAt": { "type": "string", "format": "date-time" },
+          "reviewId": { "$ref": "#/$defs/nonEmptyString" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "verificationReviewId": { "anyOf": [{ "$ref": "#/$defs/nonEmptyString" }, { "type": "null" }] },
+    "revision": { "type": "integer", "minimum": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "nonEmptyString": { "type": "string", "minLength": 1, "pattern": ".*\\S.*" },
+    "nonEmptyUniqueStrings": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "$ref": "#/$defs/nonEmptyString" } }
+  },
+  "additionalProperties": false
+}

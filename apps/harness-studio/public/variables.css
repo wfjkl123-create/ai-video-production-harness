@@ -1,0 +1,31 @@
+:root {
+  --canvas: #f5f5f7;
+  --surface: #ffffff;
+  --surface-soft: rgba(255, 255, 255, .72);
+  --ink: #1d1d1f;
+  --body: #424245;
+  --muted: #6e6e73;
+  --faint: #86868b;
+  --hairline: rgba(29, 29, 31, .09);
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --success: #297a3a;
+  --attention: #9a6700;
+  --danger: #c72f2f;
+  --info: #175cd3;
+  --font-sans: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Geist Sans', 'PingFang SC', 'Helvetica Neue', sans-serif;
+  --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --radius: 18px;
+  --radius-lg: 28px;
+  --radius-sm: 10px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --shadow-ring: 0 0 0 1px rgba(29, 29, 31, .06), 0 18px 60px rgba(29, 29, 31, .07);
+  --shadow-float: 0 28px 90px rgba(29, 29, 31, .14);
+  --gradient-dark: linear-gradient(145deg, #101011 0%, #27272a 58%, #171719 100%);
+  --gradient-cool: radial-gradient(circle at 28% 24%, rgba(119, 176, 255, .95), transparent 30%), radial-gradient(circle at 76% 64%, rgba(178, 126, 255, .88), transparent 35%), linear-gradient(145deg, #e7f1ff, #f7f1ff 58%, #eaf5ff);
+}

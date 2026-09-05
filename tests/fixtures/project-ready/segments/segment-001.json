@@ -1,0 +1,15 @@
+{
+  "segments": [
+    {
+      "id": "segment-001",
+      "duration": 12,
+      "status": "locked",
+      "lockedByReviewId": "review-segment-001",
+      "previousSegmentId": null,
+      "nextSegmentId": null,
+      "projectAssetIds": ["character-001"],
+      "segmentAssetRequirements": ["camera_blocking", "storyboard"],
+      "shotIds": ["shot-002"]
+    }
+  ]
+}

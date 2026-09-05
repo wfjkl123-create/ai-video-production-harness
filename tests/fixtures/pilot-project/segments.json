@@ -1,0 +1,16 @@
+{
+  "segments": [
+    {
+      "id": "segment-001", "duration": 12, "narrativeTask": "穿前到穿着完成", "startState": {}, "actionNodes": [4, 8], "endState": {},
+      "projectAssetIds": ["character-main", "product-shapewear", "scene-live", "scene-live-overhead", "prop-chair"],
+      "segmentAssetRequirements": ["initial_blocking", "camera_blocking", "storyboard"],
+      "previousSegmentId": null, "nextSegmentId": "segment-002", "status": "awaiting_review"
+    },
+    {
+      "id": "segment-002", "duration": 12, "narrativeTask": "穿后效果与产品细节", "startState": {}, "actionNodes": [5, 9], "endState": {},
+      "projectAssetIds": ["character-main", "product-shapewear", "scene-live", "scene-live-overhead", "prop-chair"],
+      "segmentAssetRequirements": ["handoff_blocking", "camera_blocking"],
+      "previousSegmentId": "segment-001", "nextSegmentId": null, "status": "awaiting_review"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "segment-contract.schema.json",
+  "title": "Segment Production Contract",
+  "type": "object",
+  "required": ["id", "segmentId", "revision", "status", "segmentation", "narrativeTask", "immutableConstraints", "expectedStartState", "expectedEndState", "actionNodes", "segmentAssetRequirements", "assetResponsibilities", "lockedInputs", "requiredBindings", "rubric", "allowedStrategies", "attemptPolicy", "completionEvidence"],
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "segmentId": { "type": "string", "minLength": 1 },
+    "revision": { "type": "integer", "minimum": 1 },
+    "status": { "const": "awaiting_review" },
+    "segmentation": {
+      "type": "object",
+      "required": ["id", "revision", "sha256"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "revision": { "type": "integer", "minimum": 1 },
+        "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      },
+      "additionalProperties": false
+    },
+    "narrativeTask": { "type": "string", "minLength": 1 },
+    "immutableConstraints": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } },
+    "expectedStartState": {},
+    "expectedEndState": {},
+    "actionNodes": { "type": "array" },
+    "segmentAssetRequirements": { "type": "array", "items": { "type": "string" } },
+    "assetResponsibilities": { "type": "object", "additionalProperties": { "type": "string", "minLength": 1 } },
+    "lockedInputs": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "required": ["id", "type", "revision", "sha256"],
+        "properties": {
+          "id": { "type": "string" }, "type": { "type": "string" }, "revision": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }, "additionalProperties": false
+      }
+    },
+    "requiredBindings": { "$ref": "required-bindings.schema.json" },
+    "audioExecutionPlan": { "$ref": "audio-execution-plan.schema.json" },
+    "rubric": {
+      "type": "object", "required": ["id", "version", "threshold", "sha256"],
+      "properties": {
+        "id": { "type": "string" }, "version": { "type": "integer", "minimum": 1 },
+        "threshold": { "type": "number", "minimum": 0, "maximum": 100 }, "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+      }, "additionalProperties": false
+    },
+    "executionControl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "plannedShotCount", "generatedUnitShotCount", "executionUnitStrategy", "requiresIndependentShotControl", "platformCapability"],
+      "properties": {
+        "version": { "const": 1 },
+        "plannedShotCount": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "generatedUnitShotCount": { "type": "integer", "minimum": 1, "maximum": 40 },
+        "executionUnitStrategy": { "enum": ["single_take", "platform_multi_shot", "segmented_editorial"] },
+        "requiresIndependentShotControl": { "type": "boolean" },
+        "platformCapability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["surface", "profileId", "parameter", "exposed", "enabled", "evidence"],
+          "properties": {
+            "surface": { "type": "string", "minLength": 1 },
+            "profileId": { "type": "string", "minLength": 1 },
+            "parameter": { "type": "string", "minLength": 1 },
+            "exposed": { "type": "boolean" },
+            "enabled": { "type": "boolean" },
+            "evidence": { "type": "string", "minLength": 1 },
+            "verificationMode": { "enum": ["libtv_canvas_node_readback"] }
+          }
+        }
+      }
+    },
+    "allowedStrategies": { "type": "array", "minItems": 1, "items": { "enum": ["refine", "pivot", "escalate"] }, "uniqueItems": true },
+    "attemptPolicy": {
+      "type": "object", "required": ["automaticPaidRetries", "maxPaidAttempts", "maxAssetAttempts"],
+      "properties": {
+        "automaticPaidRetries": { "const": false },
+        "maxPaidAttempts": { "type": ["integer", "null"], "minimum": 1 },
+        "maxAssetAttempts": { "type": ["integer", "null"], "minimum": 1 }
+      }, "additionalProperties": false
+    },
+    "completionEvidence": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+  },
+  "additionalProperties": false
+}
