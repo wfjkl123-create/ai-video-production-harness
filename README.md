@@ -24,7 +24,7 @@ npm run studio
 
 `npm test` 使用仓库内的合成 Prompt Skill 夹具。`doctor:environment` 会实际检查 Node、FFmpeg 功能、LibTV 登录、OpenCodex、Skill 文件和可选 RunningHub 配置，但不会输出任何密钥或账号资料。第一次运行预期会因尚未安装的生产组件而失败；请按 [生产启动手册](docs/PRODUCTION-BOOTSTRAP.md) 完成配置。
 
-实际项目默认使用随仓库提供、已锁定 SHA 的公开融合版 `seedance2-prompt-fusion`；它保留导演、提示词、连续性、审查和失败诊断方法，但已去除原项目、产品和本机证据。MIT 的 Seedance 2.0 v6.7 baseline 同时随仓库提供，供融合 Skill 追溯上游方法。首次配置后通过 `npm run harness --` 启动 CLI，确保本地
+实际项目默认使用随仓库提供、已锁定 SHA 的公开融合版 `seedance2-prompt-fusion`；它保留导演、提示词、连续性、审查和失败诊断方法，但已去除原项目、产品和本机证据。融合 Skill 内保留其实际按需读取的 MIT Seedance 2.0 v6.7 参考层及许可证；不再发布一个重复、未被 Harness 选作作者入口的独立 baseline Skill。首次配置后通过 `npm run harness --` 启动 CLI，确保本地
 `.env.local` 被加载：
 
 ```bash

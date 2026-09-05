@@ -11,8 +11,6 @@ Apache-2.0. This does not alter the licenses below.
 - `seedance-camera`, `seedance-characters`, `seedance-antislop`, and
   `seedance-sequence` are bundled from `Emily2040/seedance-2.0` v6.7.0 under
   MIT. The upstream license is retained in each Skill directory.
-- `seedance2-prompt` is the complete MIT-licensed `Emily2040/seedance-2.0`
-  v6.7.0 baseline and retains its upstream license and notices.
 - `seedance2-prompt-fusion` is an author-authorized public fusion layer. It
   retains the MIT notices for the embedded Seedance v6.7.0 snapshot; local
   paths, project evidence, product appendices, data samples and private backups
