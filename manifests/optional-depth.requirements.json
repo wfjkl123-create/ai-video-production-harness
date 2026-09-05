@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "scope": "optional offline monocular depth-video route",
+  "releaseBoundary": "Packages and a local-model verification contract are supplied; model weights, model directories, provider accounts, source media and project outputs are never bundled.",
+  "referenceEnvironment": {
+    "platform": "macOS arm64",
+    "pythonMinimum": "3.11",
+    "validatedPackages": [
+      { "distribution": "opencv-python", "version": "5.0.0.93" },
+      { "distribution": "numpy", "version": "2.0.2" },
+      { "distribution": "torch", "version": "2.8.0" },
+      { "distribution": "transformers", "version": "4.57.6" }
+    ]
+  },
+  "localModelContract": {
+    "network": "offline_only",
+    "runner": "tools/monocular_depth_video_runner.py",
+    "argument": "--model-path",
+    "requiredFiles": [
+      "config.json",
+      "one of preprocessor_config.json or processor_config.json",
+      "one of model.safetensors, model.safetensors.index.json, pytorch_model.bin or pytorch_model.bin.index.json"
+    ],
+    "verification": "The runner records a SHA-256 manifest and a stable fingerprint of every local model file before and after conversion; a changed model directory fails the run.",
+    "operatorResponsibilities": [
+      "Obtain and retain the model licence and commercial-use evidence outside this repository.",
+      "Keep the model directory local and out of Git.",
+      "Record the produced model fingerprint with the project execution evidence."
+    ]
+  },
+  "compatibilityNote": "These are observed reference versions, not a cross-platform binary lock. Re-run the optional route's local preflight after changing Python, hardware or package versions."
+}

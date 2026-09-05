@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "installationRoot": ".agents/skills",
   "policy": {
-    "publicRelease": "All bundled Skills are hash-locked and have passed the repository de-identification scan.",
+    "publicRelease": "All bundled Skills are hash-locked against distributable files and have passed the repository de-identification scan.",
     "externalBoundary": "Provider executables, hosted services, accounts, credentials and model weights are not bundled."
   },
   "skills": [
     {"id":"agent-reach","status":"bundled","path":".agents/skills/agent-reach","license":"Apache-2.0 (author-authorized)","treeSha256":"fa8959ac14737fea9faa9532b87b7e6dc328254e46470728432f67d8adbf88fb","requiredFiles":["SKILL.md"],"purpose":"bounded web research"},
-    {"id":"aihot","status":"bundled","path":".agents/skills/aihot","license":"MIT","treeSha256":"d6d3b411aa81f2ed526d2aa2a93a29d00c83220e919767821da8dfd188d43d54","requiredFiles":["SKILL.md","LICENSE"],"purpose":"AI news routing"},
+    {"id":"aihot","status":"bundled","path":".agents/skills/aihot","license":"MIT","treeSha256":"6c136b1118de51ef119cc6797640837fb53b1f52590c4d8ac97745ee7679b560","digestExcludes":[".aihot-actor-disabled"],"requiredFiles":["SKILL.md","LICENSE"],"purpose":"AI news routing"},
     {"id":"blogger-distiller","status":"bundled","path":".agents/skills/blogger-distiller","license":"MIT","treeSha256":"f36f65b7602fc008f85370693528b4bc75f6c1cd6b86171ea4cdaf94066ae4b7","requiredFiles":["SKILL.md","LICENSE"],"purpose":"public-content distillation without bundled source data"},
     {"id":"browser-act","status":"bundled","path":".agents/skills/browser-act","license":"Apache-2.0 (author-authorized)","treeSha256":"ebc0e478d65bfa6cad2994c78e06042c19c1c0022e771d160e6f3089f517efd8","requiredFiles":["SKILL.md"],"purpose":"browser automation methodology"},
     {"id":"cangjie","status":"bundled","path":".agents/skills/cangjie","license":"MIT","treeSha256":"4cfcc368ab8156002d95031ee811868292e7ab41d95e6a87c3fc148a541f20a8","requiredFiles":["SKILL.md","LICENSE"],"purpose":"long-form distillation"},

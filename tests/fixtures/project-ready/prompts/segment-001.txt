@@ -1,0 +1,6 @@
+Animate the locked segment references while preserving their isolated responsibilities.
+@素材[segment-001-storyboard] controls only the shot sequence and composition; it must not control identity, product structure, scene identity, or text.
+@素材[segment-001-camera-blocking] controls only camera position and movement; it must not control identity, product structure, scene identity, or text.
+@素材[character-001] controls only character identity; it must not control pose, camera, scene, product, or text.
+@素材[scene-001] controls only scene identity and spatial layout; it must not control character identity, product structure, camera movement, or text.
+@素材[product-001] controls only product geometry, material, and colour; it must not control character identity, scene, camera movement, or text.

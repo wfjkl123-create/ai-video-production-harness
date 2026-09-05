@@ -1,0 +1,8 @@
+{
+  "id": "review-product-001",
+  "artifactId": "product-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture product approved",
+  "artifactSha256": "4e35c3547fb6383751fcced7ca8dab184fb2340623102bd8b83a17d7083529fb"
+}

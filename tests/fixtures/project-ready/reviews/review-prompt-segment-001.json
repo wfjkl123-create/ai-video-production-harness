@@ -1,0 +1,8 @@
+{
+  "id": "review-prompt-segment-001",
+  "artifactId": "prompt-segment-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture prompt approved",
+  "artifactSha256": "2602c55431602318c6a014368dccf58f1aa191c14bdfdf2a3fd8cbcb76d05136"
+}

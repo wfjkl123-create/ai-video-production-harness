@@ -1,0 +1,8 @@
+{
+  "id": "review-character-001",
+  "artifactId": "character-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture character approved",
+  "artifactSha256": "aa76c3c15f1641daa7c52b364da91c033603341409221cc32114f937684c7849"
+}

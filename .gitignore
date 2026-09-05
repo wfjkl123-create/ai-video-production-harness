@@ -36,6 +36,8 @@
 !LICENSE
 !NOTICE
 !.gitattributes
+!.github/
+!.github/**
 
 # Never publish local configuration, project state, evidence, media, or editor/runtime state.
 .env.local
@@ -48,6 +50,16 @@ deliverables/
 deliveries/
 prompts/
 reviews/
+# The public regression fixture is synthetic source, not a user project.  These
+# explicit exceptions must come after the broad project-output exclusions above.
+!tests/fixtures/project-ready/assets/
+!tests/fixtures/project-ready/assets/**
+!tests/fixtures/project-ready/outputs/
+!tests/fixtures/project-ready/outputs/**
+!tests/fixtures/project-ready/prompts/
+!tests/fixtures/project-ready/prompts/**
+!tests/fixtures/project-ready/reviews/
+!tests/fixtures/project-ready/reviews/**
 work/
 workbench/
 tools/*

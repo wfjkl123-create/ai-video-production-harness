@@ -16,7 +16,11 @@
     "libtv": { "requiredForDefaultProduction": true, "requires": ["official CLI", "interactive account login", "usable workspace/project", "available quota"] },
     "opencodex": { "requiredForDirectorAndIndependentAudit": true, "requires": ["ocx", "separately authenticated model route", "per-task budget"] },
     "runninghub": { "required": false, "requires": ["RUNNINGHUB_API_KEY", "account entitlement"] },
-    "depth": { "required": false, "requires": ["opencv-python", "numpy", "torch", "transformers", "commercially permitted local model weights"] }
+    "depth": {
+      "required": false,
+      "requirementsManifest": "manifests/optional-depth.requirements.json",
+      "requires": ["opencv-python", "numpy", "torch", "transformers", "commercially permitted local model weights"]
+    }
   },
   "credentials": {
     "policy": "Never copy credentials, browser profiles, Keychain entries, account sessions, quota, provider routing, project UUIDs, media, or historical runs into a public release."

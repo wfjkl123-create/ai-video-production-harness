@@ -18,11 +18,12 @@
 npm run configure-template -- --write-env
 npm test
 npm run check
+npm run doctor:source
 npm run doctor:environment
 npm run studio
 ```
 
-`npm test` 使用仓库内的合成 Prompt Skill 夹具。`doctor:environment` 会实际检查 Node、FFmpeg 功能、LibTV 登录、OpenCodex、Skill 文件和可选 RunningHub 配置，但不会输出任何密钥或账号资料。第一次运行预期会因尚未安装的生产组件而失败；请按 [生产启动手册](docs/PRODUCTION-BOOTSTRAP.md) 完成配置。
+`npm test` 使用仓库内的合成夹具。`doctor:source` 是干净克隆的发布自检：只验证 Node、`node:sqlite`、公开文件和已随仓库分发的 Skill 锁，不要求账号、外部 CLI 或模型权重。`doctor:environment` 才会实际检查 FFmpeg 功能、LibTV 登录、OpenCodex、Skill 文件和可选 RunningHub 配置，但不会输出任何密钥或账号资料。第一次生产环境检查预期会因尚未安装的生产组件而失败；请按 [生产启动手册](docs/PRODUCTION-BOOTSTRAP.md) 完成配置。
 
 实际项目默认使用随仓库提供、已锁定 SHA 的公开融合版 `seedance2-prompt-fusion`；它保留导演、提示词、连续性、审查和失败诊断方法，但已去除原项目、产品和本机证据。融合 Skill 内保留其实际按需读取的 MIT Seedance 2.0 v6.7 参考层及许可证；不再发布一个重复、未被 Harness 选作作者入口的独立 baseline Skill。首次配置后通过 `npm run harness --` 启动 CLI，确保本地
 `.env.local` 被加载：
@@ -45,7 +46,7 @@ npm run harness -- intake-video --project <project-dir> \
 
 完整命令和 Gate 契约见 [操作手册](docs/operator-runbook.md)。
 
-深度视频是可选的离线路线：`tools/monocular_depth_video_runner.py` 只接受本机模型目录、强制离线运行且不下载权重。使用它还需要 Python、OpenCV、NumPy、PyTorch、Transformers 和你已获许可的本地模型权重；这些权重不随仓库分发。完整的当前 Skill 闭包、可再分发状态与未解决旧 Skill ID 见 [skills.lock.json](manifests/skills.lock.json)。
+深度视频是可选的离线路线：`tools/monocular_depth_video_runner.py` 只接受本机模型目录、强制离线运行且不下载权重。使用它还需要 Python、OpenCV、NumPy、PyTorch、Transformers 和你已获许可的本地模型权重；这些权重不随仓库分发。可复核的参考版本和本地权重指纹合同见 [optional-depth.requirements.json](manifests/optional-depth.requirements.json)。完整的当前 Skill 闭包、可再分发状态与未解决旧 Skill ID 见 [skills.lock.json](manifests/skills.lock.json)。
 
 ## 安全与验收边界
 

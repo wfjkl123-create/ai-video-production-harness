@@ -1,0 +1,10 @@
+{
+  "id": "review-segment-001-assets",
+  "artifactId": "segment-001-asset-manifest",
+  "artifactKind": "asset_manifest",
+  "segmentId": "segment-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture manifest approved",
+  "manifestSha256": "fe9eab591d50ebe85cf898d49a6b1dc1becaed174f0ef6af872a3db47c1dce13"
+}

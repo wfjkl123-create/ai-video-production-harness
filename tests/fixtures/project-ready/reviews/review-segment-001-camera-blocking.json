@@ -1,0 +1,8 @@
+{
+  "id": "review-segment-001-camera-blocking",
+  "artifactId": "segment-001-camera-blocking",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture camera blocking approved",
+  "artifactSha256": "6b9d1304ae9b80cb4a1946a8848f525a108bf2d5ea08a99cc21e1f951ad9bba8"
+}

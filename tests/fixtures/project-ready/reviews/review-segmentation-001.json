@@ -1,0 +1,8 @@
+{
+  "id": "review-segmentation-001",
+  "artifactId": "segmentation-001",
+  "decision": "approved",
+  "actor": "human",
+  "note": "fixture segmentation approved",
+  "artifactSha256": "fd128a68aef1325c30612e133c8e68d2307b6bc2ba64b62f60f99bd5c4f3c47f"
+}
