@@ -1,0 +1,181 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.invalid/seedance/spatial-optics-contract-v1.schema.json",
+  "title": "Seedance spatial-optics feasibility contract",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contractVersion",
+    "surface",
+    "modelVersion",
+    "shotJob",
+    "readabilityTarget",
+    "worldMap",
+    "firstFrame",
+    "changeClass",
+    "approvedIntent",
+    "language",
+    "promptBody",
+    "claims",
+    "sourceMediaTags",
+    "outputMediaTags"
+  ],
+  "properties": {
+    "contractVersion": {"const": "spatial-optics-v1"},
+    "surface": {"enum": ["harness", "higgsfield", "seedance", "jimeng", "other"]},
+    "modelVersion": {"type": "string", "minLength": 1},
+    "shotJob": {
+      "enum": ["geography", "relationship", "microacting", "product_detail", "action_impact", "reveal", "camera_device", "atmosphere", "suspense", "transformation", "hook", "custom"]
+    },
+    "customShotJob": {"type": "string", "minLength": 1},
+    "readabilityTarget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["primaryEvidence", "visibleFeatures", "occlusion", "motionBlur"],
+      "properties": {
+        "primaryEvidence": {"type": "string", "minLength": 1},
+        "visibleFeatures": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "occlusion": {"enum": ["none", "partial", "heavy"]},
+        "motionBlur": {"enum": ["low", "medium", "high"]},
+        "faceFrameHeightRatio": {"type": "number", "exclusiveMinimum": 0, "maximum": 1},
+        "faceHeightPx": {"type": "number", "exclusiveMinimum": 0},
+        "outputHeightPx": {"type": "number", "exclusiveMinimum": 0},
+        "measurementSource": {"enum": ["storyboard", "reference_frame", "planned_composition", "measured_output"]}
+      }
+    },
+    "worldMap": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["controlledObjects", "cameraZone", "actionAxis", "occlusions", "exits"],
+      "properties": {
+        "controlledObjects": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "cameraZone": {"type": "string", "minLength": 1},
+        "actionAxis": {"type": "string", "minLength": 1},
+        "occlusions": {"type": "array", "items": {"type": "string"}},
+        "exits": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "framing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "shotSize": {"enum": ["extreme_wide", "very_wide", "wide", "full", "medium", "medium_close", "close", "extreme_close"]},
+        "subjectFrameShare": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "optics": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "diagonalFovDeg": {"type": "number", "exclusiveMinimum": 0, "exclusiveMaximum": 180},
+        "focalLengthMm": {"type": "number", "exclusiveMinimum": 0, "maximum": 2000},
+        "cameraDistanceM": {"type": "number", "exclusiveMinimum": 0, "maximum": 1000},
+        "rollDeg": {"type": "number", "minimum": -180, "maximum": 180},
+        "sensorDiagonalMm": {"type": "number", "exclusiveMinimum": 0, "maximum": 100},
+        "projection": {"enum": ["rectilinear", "fisheye", "equirectangular"]},
+        "evidenceTier": {"enum": ["official_documented_syntax", "source_reported_test", "official_parameter_contract", "current_runtime_verified", "user_supplied", "cinematography_heuristic", "unsupported_claim"]},
+        "evidence": {"type": "object"}
+      }
+    },
+    "riskFlags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"enum": ["strong_angle", "confined_space", "moving_camera", "complex_blocking"]}
+    },
+    "cameraPose": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "height": {"type": "string", "minLength": 1},
+        "side": {"type": "string", "minLength": 1},
+        "distanceOrClearance": {"type": "string", "minLength": 1},
+        "aimPoint": {"type": "string", "minLength": 1},
+        "rollDirection": {"type": "string", "minLength": 1}
+      }
+    },
+    "space": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"enum": ["static", "moving"]},
+        "cameraEnvelopeM": {"type": "number", "minimum": 0},
+        "safetyMarginM": {"type": "number", "minimum": 0},
+        "availableClearanceM": {"type": "number", "minimum": 0},
+        "rigEnvelopeM": {"type": "number", "minimum": 0},
+        "dynamicIntrusionMarginM": {"type": "number", "minimum": 0},
+        "pathMinClearanceM": {"type": "number", "minimum": 0},
+        "startClearanceM": {"type": "number", "minimum": 0},
+        "endClearanceM": {"type": "number", "minimum": 0}
+      }
+    },
+    "firstFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "dramaticTask", "postRevealState"],
+      "properties": {
+        "mode": {"enum": ["subject_visible", "intentional_empty", "entrance", "reveal", "pov_recovery", "device_setup"]},
+        "dramaticTask": {"type": "string", "minLength": 1},
+        "revealTrigger": {"type": "string", "minLength": 1},
+        "firstVisiblePosition": {"type": "string", "minLength": 1},
+        "postRevealState": {"type": "string", "minLength": 1},
+        "requireAllSubjectsVisible": {"type": "boolean"}
+      }
+    },
+    "devices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "dominant", "intensity", "simultaneous", "setup", "trigger", "cameraBehavior", "subjectBehavior", "peak", "recovery"],
+        "properties": {
+          "name": {"type": "string", "minLength": 1},
+          "dominant": {"type": "boolean"},
+          "intensity": {"enum": ["low", "medium", "strong"]},
+          "simultaneous": {"type": "boolean"},
+          "setup": {"type": "string", "minLength": 1},
+          "trigger": {"type": "string", "minLength": 1},
+          "cameraBehavior": {"type": "string", "minLength": 1},
+          "subjectBehavior": {"type": "string", "minLength": 1},
+          "peak": {"type": "string", "minLength": 1},
+          "recovery": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "changeClass": {"enum": ["none", "lossless_normalization", "parameter_degradation", "material_creative_change"]},
+    "approvedIntent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "lockedFields", "sourcePayload"],
+      "properties": {
+        "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "lockedFields": {"type": "object", "minProperties": 1},
+        "sourcePayload": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approvalId", "lockedFields"],
+          "properties": {
+            "approvalId": {"type": "string", "minLength": 1},
+            "lockedFields": {"type": "object", "minProperties": 1}
+          }
+        }
+      }
+    },
+    "adjustments": {"type": "array", "items": {"type": "object"}},
+    "language": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bodyLanguage", "dialogueLanguage", "userRequestedEnglish", "dialogueTranslatedToEnglish"],
+      "properties": {
+        "bodyLanguage": {"type": "string", "minLength": 1},
+        "dialogueLanguage": {"type": "string", "minLength": 1},
+        "userRequestedEnglish": {"type": "boolean"},
+        "dialogueTranslatedToEnglish": {"type": "boolean"}
+      }
+    },
+    "motion": {"type": "object"},
+    "promptBody": {"type": "string", "minLength": 1},
+    "claims": {"type": "array", "items": {"type": "string"}},
+    "sourceMediaTags": {"type": "array", "items": {"type": "string"}},
+    "outputMediaTags": {"type": "array", "items": {"type": "string"}}
+  }
+}

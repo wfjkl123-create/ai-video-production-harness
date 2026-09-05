@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>cmux 多智能体速查</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>body{max-width:860px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.card{border:1px solid var(--border);border-radius:8px;padding:1rem;background:#fff}.card h3{margin-top:0;color:var(--accent)}@media(max-width:650px){.grid{grid-template-columns:1fr}}</style>
+</head>
+<body>
+  <header><div class="course-label">Reference</div><h1>cmux 多智能体速查</h1><div class="lesson-meta">布局 ≠ 会话 ≠ 协同</div></header>
+  <div class="grid">
+    <div class="card"><h3>一个工作区</h3><p>一个项目或一个大目标。相关 pane 放在一起。</p></div>
+    <div class="card"><h3>多个工作区</h3><p>不同项目、不同权限边界或不同 Git worktree。</p></div>
+    <div class="card"><h3>手动多个 pane</h3><p>独立会话；人类负责派工、同步、整合。</p></div>
+    <div class="card"><h3>Teams 多个 pane</h3><p>Lead 负责协调；cmux 显示、路由和通知。</p></div>
+  </div>
+  <h2>开工口令</h2>
+  <pre><code>目标：一句话结果
+成功标准：可验证条件
+Lead：唯一派工与汇总者
+Builder：只实现，不自行扩展范围
+Verifier：独立测试并做对抗性审查
+共享事实：文件、Git diff、测试输出</code></pre>
+  <h2>红线</h2>
+  <ul><li>不要让多个智能体在同一 checkout 同时改同一文件。</li><li>不要假设多个会话共享聊天上下文。</li><li>不要把“进程停止”当作“任务完成”。</li><li>没有测试证据，不进入整合。</li></ul>
+  <p><a href="../lessons/h011-cmux-multi-agent-mental-model.html">打开完整课程 →</a> · <a href="cmux-quick-keys.html">快捷键与命令速查 →</a></p>
+</body>
+</html>

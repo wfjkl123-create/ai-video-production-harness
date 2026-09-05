@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "policy": "online_primary_word_crosscheck",
+  "online": {
+    "url": "https://bytedance.larkoffice.com/wiki/RXh5ww6EqighMdkVTMccm2d4n7e",
+    "snapshotDate": "2026-08-07",
+    "outlineItems": 33,
+    "officialLeafRecords": 1338,
+    "staticImageTokens": 220,
+    "videoNodes": 142,
+    "promptCodeCases": 72,
+    "authority": ["current feature definition", "operation", "parameters", "UI", "dynamic video", "audio", "case context"],
+    "baselineFiles": {
+      "officialBlocks": {"sha256": "c37b1ffc8540643fc3e3a69c7128ad75b1ed4ffff7f19dfdd31c545b1e5a43d4", "records": 1338},
+      "outline": {"sha256": "311c119d0a2c5b16bba07631b5d9821cb516e5ab93f3032cb1d857d75a7fd170", "records": 33},
+      "promptCatalog": {"sha256": "197d904664ece46305e946725fc8e70faa0f205b3e72628ba4fdaead65cfab6d", "records": 72},
+      "imageCatalog": {"sha256": "16fda4773c7d39f0c5dc929223a0d6cba8c4e470e90230e052ef1e084c2ce5bd", "records": 220},
+      "videoCatalog": {"sha256": "756744137a523d80ffc5e574cc2d0c7bccdf4b52d54fb4a549ae4e2e2cfe630c", "records": 142}
+    }
+  },
+  "word": {
+    "filename": "【即梦】Seedance 2.5 使用手册.docx",
+    "sha256": "76b500ff1212d8a5ba5c6899c081b851a751dd153a20aade62cce90138b9c665",
+    "bytes": 373317682,
+    "renderedPages": 97,
+    "realMediaParts": 198,
+    "imageReferences": 220,
+    "embeddedVideoAudioOle": 0,
+    "authority": ["OOXML text", "tables", "static images", "export crosscheck"],
+    "baselineFiles": {
+      "auditReport": {"sha256": "4aab1072a73cf88d41b2ab12971c348c70a7bfcc5b0e6ff74f2793d995d09b64"},
+      "fullText": {"sha256": "37019afbbd569ed2311a084ed3d550961f88e4764767a053fec00b0cc3686064"},
+      "sourceOrder": {"sha256": "ae8e59e00330a75815aa8d41ca2032e358331580e755a4ff7b0b387536207b30", "dataRows": 246},
+      "tables": {"sha256": "1e8d1317feb7951439534ba785df36912fa33f99117d3bed4916c0301507590c", "dataRows": 73}
+    },
+    "limitations": [
+      "No embedded video, audio, OLE or playable media",
+      "MP4 and MP3 names are plain text, not media relationships",
+      "LibreOffice rendering has systematic CJK missing-glyph limitations",
+      "Cannot prove motion, transition, speech, timbre, lip sync or BGM separation"
+    ]
+  },
+  "statuses": ["CORROBORATED", "PARTIAL", "NOT_FOUND", "CONFLICT", "NOT_APPLICABLE", "NOT_PROVABLE_FROM_WORD"],
+  "finalStatuses": ["VERIFIED_PASS", "VERIFIED_FAIL", "MACHINE_PASS_HUMAN_PENDING"],
+  "operations": {
+    "standard30": {"contract": "STANDARD30", "outlineIds": ["Y2q4dEGEhoxbf5xXmnGc1CS4n0d", "Pj4zdZT8woN7bVx2pQGcs45sn9g"], "wordTerms": ["30秒长视频", "时间戳"], "caseTerms": ["30 秒", "长时叙事"]},
+    "ultra": {"contract": "ULTRA", "outlineIds": ["UrjUd4f5DoA2IYxf6kec16y6nCD", "RS5wdJrtDoZsJYx6wSSc5xCbn9b"], "wordTerms": ["超长视频", "180秒"], "caseTerms": ["超长", "长时叙事"]},
+    "extend": {"contract": "EXTEND", "outlineIds": ["LZqmdUyxiooBQwxhV9scZAkbn5b", "MBECdiuETojiYrxudwzcQHbmn2g"], "wordTerms": ["视频延长", "向后延长"], "caseTerms": ["视频延长", "延长"]},
+    "edit": {"contract": "EDIT", "outlineIds": ["ZBnDdijdloaQyPxtWeHcc7MTnGg", "WtPYdb5MvoRNpLxxakdcmmgWn8a"], "wordTerms": ["智能编辑", "视频编辑"], "caseTerms": ["视频编辑", "编辑"]},
+    "mark_edit": {"contract": "MARK_EDIT", "outlineIds": ["FFzHd6KPhohAEdxn4PMctdv8nUf"], "wordTerms": ["圈选", "定位点"], "caseTerms": ["局部", "编辑"]},
+    "bgm": {"contract": "BGM", "outlineIds": ["VxBFdcBJgoq3XGxz04icmvgenXf"], "wordTerms": ["背景音乐", "BGM"], "caseTerms": ["BGM", "背景音乐"], "wordDynamicStatus": "NOT_PROVABLE_FROM_WORD"},
+    "creative": {"contract": "CREATIVE", "outlineIds": ["FUiGdsgH6ohT8fxLGFQcoOSQn8f"], "wordTerms": ["迁移创意"], "caseTerms": ["创意迁移", "迁移创意"]},
+    "local_edit": {"contract": "LOCAL_EDIT", "outlineIds": ["XFM8dEowko643ExuUJlckohhnYe"], "wordTerms": ["局部消除", "局部编辑"], "caseTerms": ["局部", "消除"]},
+    "view": {"contract": "VIEW", "outlineIds": ["UMNZd5FKQoO7SGxisApcJKXin8c"], "wordTerms": ["空间视角", "视角修改"], "caseTerms": ["视角", "空间"]},
+    "voice": {"contract": "VOICE", "outlineIds": ["V06TdeANpoawgNxVKAqcPPnvnwd"], "wordTerms": ["音色参考", "音色"], "caseTerms": ["音色", "对白"], "wordDynamicStatus": "NOT_PROVABLE_FROM_WORD"},
+    "multi": {"contract": "MULTI", "outlineIds": ["NIRadyJPFoRhK8x8K3wc0wcNntf"], "wordTerms": ["多人参考", "多主体"], "caseTerms": ["多人", "多主体"]},
+    "green": {"contract": "GREEN", "outlineIds": ["Hge5du5MdoBuitxBiCxcOhz6n2b"], "wordTerms": ["绿幕编辑", "绿幕"], "caseTerms": ["绿幕"]},
+    "white_model": {"contract": "WHITE_MODEL", "outlineIds": ["LBsudhf9ZoRjNQx8UN0cX3pBn3P", "YvxXdyNdcoMuPlxbyLCcv5Ttnob"], "wordTerms": ["白模", "Maya", "Blender"], "caseTerms": ["白模"]},
+    "seamless": {"contract": "SEAMLESS", "outlineIds": ["NDnGdQ7uEowoNtxfkgJcjQh7nFh"], "wordTerms": ["无缝转场", "无缝衔接"], "caseTerms": ["无缝转场", "补间"]},
+    "storyboard": {"contract": "STORYBOARD", "outlineIds": ["VioXdWsYCoBdztxSyyecXsZ2nYg"], "wordTerms": ["多宫格分镜", "分镜"], "caseTerms": ["多宫格", "分镜"]},
+    "multilingual": {"contract": "MULTILINGUAL", "outlineIds": ["IOCpdFX8Ro3vvJxgalMcnFJHnHh"], "wordTerms": ["语言边界", "多语言"], "caseTerms": ["跨语言", "多语言"], "wordDynamicStatus": "NOT_PROVABLE_FROM_WORD"},
+    "clean_audio": {"contract": "CLEAN_AUDIO", "outlineIds": ["JECcdEPa9oIMSyxvI3ecyYldnVf"], "wordTerms": ["去除无关字幕", "BGM"], "caseTerms": ["字幕", "BGM"], "wordDynamicStatus": "NOT_PROVABLE_FROM_WORD"}
+  }
+}

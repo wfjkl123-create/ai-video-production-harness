@@ -1,0 +1,6 @@
+interface:
+  display_name: "千川素材研究"
+  short_description: "每周素材方向研究与证据链校验流程"
+  default_prompt: "Use $qianchuan-material-research to turn weekly Chanmama-visible evidence and saved videos into a Qianchuan material direction report."
+policy:
+  allow_implicit_invocation: true

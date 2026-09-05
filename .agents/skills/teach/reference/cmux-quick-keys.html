@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>cmux 快捷键与命令速查</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    body{max-width:860px}
+    table{width:100%;border-collapse:collapse;margin:.8rem 0 1.6rem;font:.9rem/1.5 system-ui,sans-serif}
+    th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--border)}
+    th{color:var(--muted);font-size:.76rem;letter-spacing:.04em}
+    kbd{font-family:var(--font-mono);background:var(--code-bg);border:1px solid var(--border);border-bottom-width:2px;border-radius:5px;padding:.05rem .45rem;white-space:nowrap}
+    h2{margin-top:1.6rem}
+    .core td:first-child{width:9rem}
+    .hot{background:#edf6ed}
+  </style>
+</head>
+<body>
+  <header><div class="course-label">Reference</div><h1>cmux 快捷键与命令速查</h1><div class="lesson-meta">绿色底 = 每天都在用的核心循环键 · 来源：manaflow-ai/cmux 官方 README</div></header>
+
+  <h2>核心循环（先背这些）</h2>
+  <table class="core">
+    <tbody>
+      <tr class="hot"><td><kbd>⌘⇧U</kbd></td><td>跳到最新未读通知（灯亮就按它）</td></tr>
+      <tr class="hot"><td><kbd>⌘I</kbd></td><td>通知面板，总览所有在等你的智能体</td></tr>
+      <tr class="hot"><td><kbd>⌘1–8</kbd></td><td>跳到第 1–8 个工作区；<kbd>⌘9</kbd> 跳最后一个</td></tr>
+      <tr class="hot"><td><kbd>⌘D</kbd> / <kbd>⌘⇧D</kbd></td><td>向右 / 向下分栏</td></tr>
+      <tr class="hot"><td><kbd>⌥⌘←→↑↓</kbd></td><td>按方向在分栏间移动焦点</td></tr>
+    </tbody>
+  </table>
+
+  <h2>工作区（workspace）</h2>
+  <table>
+    <tbody>
+      <tr><td><kbd>⌘N</kbd></td><td>新建工作区</td></tr>
+      <tr><td><kbd>⌃⌘]</kbd> / <kbd>⌃⌘[</kbd></td><td>下一个 / 上一个工作区</td></tr>
+      <tr><td><kbd>⌘⇧W</kbd></td><td>关闭工作区</td></tr>
+      <tr><td><kbd>⌘⇧R</kbd></td><td>重命名工作区（起个人话名字，别留 zsh）</td></tr>
+      <tr><td><kbd>⌘B</kbd></td><td>收起 / 展开侧边栏</td></tr>
+    </tbody>
+  </table>
+
+  <h2>surface（同一栏里的标签页）与其他</h2>
+  <table>
+    <tbody>
+      <tr><td><kbd>⌘T</kbd></td><td>当前栏里新开一个 surface（标签页）</td></tr>
+      <tr><td><kbd>⌃Tab</kbd> / <kbd>⌃⇧Tab</kbd></td><td>下一个 / 上一个 surface</td></tr>
+      <tr><td><kbd>⌘W</kbd></td><td>关闭当前 surface</td></tr>
+      <tr><td><kbd>⌘⇧L</kbd></td><td>分栏打开内置浏览器（智能体可操作它）</td></tr>
+      <tr><td><kbd>⌘⇧O</kbd></td><td>恢复上一次会话（布局 + 智能体对话进度）</td></tr>
+      <tr><td><kbd>⌘⇧P</kbd></td><td>命令面板（找不到功能时搜这里）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>常用命令（在 cmux 终端里输入）</h2>
+  <table>
+    <tbody>
+      <tr><td><code>cmux hooks setup</code></td><td>自动给检测到的所有智能体装通知/恢复钩子（Claude Code 在 Settings 里开开关）</td></tr>
+      <tr><td><code>cmux claude-teams</code></td><td>启动 Claude Code 队友模式，每个队友自动成为原生分栏</td></tr>
+      <tr><td><code>cmux notify "文字"</code></td><td>手动发一条通知（可接到脚本末尾提醒自己）</td></tr>
+      <tr><td><code>cmux ssh user@remote</code></td><td>给远程机器开一个工作区（远程 localhost 也能在浏览器分栏直接打开）</td></tr>
+      <tr><td><code>cmux restore-session</code></td><td>手动重放上次保存的布局快照</td></tr>
+    </tbody>
+  </table>
+
+  <p><a href="../lessons/h012-cmux-notification-driven-workflow.html">打开完整课程 →</a> · <a href="cmux-multi-agent-cheatsheet.html">多智能体编队速查 →</a></p>
+</body>
+</html>

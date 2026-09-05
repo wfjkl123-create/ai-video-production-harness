@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H10：验收 firstmate 的交付</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/quiz.js" defer></script>
+  <style>
+    .traffic {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .traffic-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      background: white;
+      font-family: sans-serif;
+    }
+    .traffic-card strong {
+      display: block;
+      margin-bottom: 0.4rem;
+    }
+    .green strong { color: #226622; }
+    .yellow strong { color: #8a6a00; }
+    .red strong { color: #8a1f11; }
+    .review-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.9rem;
+    }
+    .review-table th,
+    .review-table td {
+      border: 1px solid var(--border);
+      padding: 0.7rem;
+      vertical-align: top;
+    }
+    .review-table th {
+      background: var(--code-bg);
+      text-align: left;
+    }
+    .ritual {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+    }
+    .ritual h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="course-label">Harness Engineering · Firstmate</div>
+  <h1>验收 firstmate 的交付</h1>
+  <div class="lesson-meta">H10 · 预计 15 分钟 · 目标：知道什么时候追问、什么时候返工、什么时候批准合并</div>
+</header>
+
+<section>
+  <h2>先说结论</h2>
+  <p>firstmate 完成任务，不等于你应该马上合并。你的工作不是读懂每一行代码，而是确认交付有没有满足你一开始设定的边界和验收标准。</p>
+
+  <div class="callout">
+    <div class="callout-label">验收原则</div>
+    <p>没有文件清单、没有验证记录、没有风险说明，就不要批准合并。</p>
+  </div>
+</section>
+
+<section>
+  <h2>五问验收法</h2>
+  <p>每次 firstmate 说完成后，你先发这段：</p>
+  <pre><code>请按验收清单汇报：
+1. 完成了什么
+2. 改了哪些文件
+3. 跑了哪些验证
+4. 剩余风险是什么
+5. 需要我批准什么</code></pre>
+
+  <p>这五问会逼它把结果从“我做完了”变成“你能判断是否接受”。</p>
+</section>
+
+<section>
+  <h2>绿灯、黄灯、红灯</h2>
+
+  <div class="traffic">
+    <div class="traffic-card green">
+      <strong>绿灯：可以批准</strong>
+      任务范围清楚；只改了相关文件；验证通过；风险低且说清楚；没有隐藏待办。
+    </div>
+    <div class="traffic-card yellow">
+      <strong>黄灯：先追问</strong>
+      有测试没跑、风险描述太粗、改动范围比预期大、报告里有“不确定”“可能”“未验证”。
+    </div>
+    <div class="traffic-card red">
+      <strong>红灯：不要合并</strong>
+      没有验证；改了无关文件；需求没完成；出现安全/数据/权限相关风险；firstmate 说需要你决定但你还没决定。
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>你该怎么回复</h2>
+
+  <table class="review-table">
+    <thead>
+      <tr>
+        <th>看到什么</th>
+        <th>你怎么说</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>报告太笼统</td>
+        <td><code>请用验收清单重新汇报，不要只给总结。</code></td>
+      </tr>
+      <tr>
+        <td>没跑测试</td>
+        <td><code>先不要合并。请说明为什么没跑测试，以及最小可跑验证是什么。</code></td>
+      </tr>
+      <tr>
+        <td>改了无关文件</td>
+        <td><code>请解释每个无关改动的必要性；不必要的改动撤掉后再汇报。</code></td>
+      </tr>
+      <tr>
+        <td>风险说不清</td>
+        <td><code>请把剩余风险按高/中/低分级，并说明我需要决定什么。</code></td>
+      </tr>
+      <tr>
+        <td>全部清楚</td>
+        <td><code>我批准合并这个 PR。</code></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>批准合并的正确说法</h2>
+  <p>firstmate 有一条硬规则：不要在没有你明确批准时合并 PR。所以你要说得具体。</p>
+
+  <div class="ritual">
+    <h3>批准一个明确 PR</h3>
+    <pre><code>我批准合并这个 PR：&lt;PR 链接&gt;。
+按项目默认合并方式执行。
+合并后告诉我结果和是否已完成清理。</code></pre>
+  </div>
+
+  <div class="ritual">
+    <h3>不批准，只让它继续验证</h3>
+    <pre><code>先不要合并。
+请补跑最小验证，并重新按验收清单汇报。</code></pre>
+  </div>
+
+  <div class="ritual">
+    <h3>发现方向错了</h3>
+    <pre><code>暂停这个 ship。
+请总结当前改动、问题在哪里、是否应该改成 scout 重新评估。</code></pre>
+  </div>
+</section>
+
+<section>
+  <h2>小白验收底线</h2>
+  <p>如果你只记一句话，就记这个：</p>
+  <pre><code>先给我文件、验证、风险、待批准事项；不完整就不要 merge。</code></pre>
+</section>
+
+<section class="quiz" aria-label="小测验">
+  <div class="quiz-title">快速自检</div>
+  <div class="quiz-question">firstmate 说“完成了”，但没有说明跑过哪些验证。你应该怎么做？</div>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">直接批准</button>
+    <button class="quiz-option" data-correct="true">先追问验证</button>
+    <button class="quiz-option" data-correct="false">忽略风险</button>
+  </div>
+  <div class="quiz-feedback" data-correct="对。没有验证记录，先追问。" data-wrong="不稳。没有验证记录不要合并。"></div>
+</section>
+
+<section>
+  <h2>今天的练习</h2>
+  <p>下次 firstmate 汇报完成后，不要马上说“好”。先复制这段：</p>
+  <pre><code>请按验收清单汇报：
+1. 完成了什么
+2. 改了哪些文件
+3. 跑了哪些验证
+4. 剩余风险是什么
+5. 需要我批准什么</code></pre>
+</section>
+
+</body>
+</html>

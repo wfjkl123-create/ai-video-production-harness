@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H8：第一次使用 firstmate</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="../assets/quiz.js" defer></script>
+  <style>
+    .map {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+    }
+    .map-row {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      background: white;
+    }
+    .map-row strong {
+      display: block;
+      margin-bottom: 0.25rem;
+      color: var(--accent);
+    }
+    .prompt-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.2rem;
+      margin: 1rem 0;
+      background: #fff;
+    }
+    .prompt-card h3 {
+      margin-top: 0;
+    }
+    .decision-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.9rem;
+    }
+    .decision-table th,
+    .decision-table td {
+      border: 1px solid var(--border);
+      padding: 0.7rem;
+      vertical-align: top;
+    }
+    .decision-table th {
+      background: var(--code-bg);
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="course-label">Harness Engineering · Fleet Orchestration</div>
+  <h1>第一次使用 firstmate</h1>
+  <div class="lesson-meta">H8 · 预计 12 分钟 · 目标：知道怎么发任务、怎么验收、什么时候放手</div>
+</header>
+
+<section>
+  <h2>先纠正一个误解</h2>
+  <p>firstmate 不是一个更聪明的单 Agent。它更像一个项目总管：你只和一个主 Agent 对话，它把任务拆给多个执行 Agent，跟进它们，最后把结果交回给你。</p>
+
+  <div class="map">
+    <div class="map-row">
+      <strong>你</strong>
+      说清楚目标、边界、验收标准，批准关键动作。
+    </div>
+    <div class="map-row">
+      <strong>firstmate</strong>
+      拆任务、派执行者、监督进度、汇总结果。
+    </div>
+    <div class="map-row">
+      <strong>crewmate</strong>
+      在独立工作区里调查、改代码、跑测试、交付报告或 PR。
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">小白规则</div>
+    <p>你不要试图管理每个执行 Agent。你只管理 firstmate：给目标、看汇报、决定是否继续。</p>
+  </div>
+</section>
+
+<section>
+  <h2>两种任务：scout 和 ship</h2>
+  <table class="decision-table">
+    <thead>
+      <tr>
+        <th>你想要什么</th>
+        <th>该怎么说</th>
+        <th>结果是什么</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>先了解、评估、找风险</td>
+        <td>“先 scout，不要改代码。”</td>
+        <td>一份报告、复现步骤、风险清单或方案。</td>
+      </tr>
+      <tr>
+        <td>修 bug、加功能、改文档</td>
+        <td>“这是 ship 任务，完成后给我 PR。”</td>
+        <td>代码变更、测试结果、PR 或本地待合并结果。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>刚开始使用时，优先用 scout。它能让模糊问题变清楚，也能降低误改代码的风险。</p>
+</section>
+
+<section>
+  <h2>三条可直接复制的指令</h2>
+
+  <div class="prompt-card">
+    <h3>1. 第一次认识项目</h3>
+    <pre><code>看一下我的 GitHub 项目 &lt;项目名&gt;。
+先 scout，不要改代码。
+告诉我项目结构、启动方式、测试方式、主要风险点。
+用小白能看懂的方式汇报。</code></pre>
+  </div>
+
+  <div class="prompt-card">
+    <h3>2. 修一个小问题</h3>
+    <pre><code>在 &lt;项目名&gt; 里修复 &lt;具体问题&gt;。
+这是 ship 任务。
+要求：不改无关文件，跑相关测试，完成后给我 PR。
+不要合并，等我确认。</code></pre>
+  </div>
+
+  <div class="prompt-card">
+    <h3>3. 并行做几件事</h3>
+    <pre><code>同时做三件事：
+1. scout 登录流程有没有风险
+2. scout dark mode 改造范围
+3. ship 修复 README 的启动说明
+能并行就并行，最后统一汇总给我。</code></pre>
+  </div>
+</section>
+
+<section>
+  <h2>验收时只看四件事</h2>
+  <p>你不需要读懂所有实现细节。先问 firstmate 四个问题：</p>
+  <pre><code>改了哪些文件？
+跑了哪些测试？
+还有什么风险？
+需要我批准什么？</code></pre>
+  <p>如果这四个问题答不清楚，就不要说“merge it”。</p>
+</section>
+
+<section>
+  <h2>在 Codex 里怎么用 afk</h2>
+  <p>如果你的 Codex 没有发现 firstmate 的内置技能，不要执着于 <code>$afk</code>。直接用自然语言：</p>
+  <pre><code>我离开一会，进入 afk。
+期间只在需要我决策时提醒我。</code></pre>
+  <p>firstmate 的核心不是命令符号，而是它读懂你的意图并按自己的操作规则执行。</p>
+</section>
+
+<section class="quiz" aria-label="小测验">
+  <div class="quiz-title">快速自检</div>
+  <div class="quiz-question">你不确定一个项目能不能安全改，第一步应该让 firstmate 做什么？</div>
+  <div class="quiz-options">
+    <button class="quiz-option" data-correct="false">直接 ship</button>
+    <button class="quiz-option" data-correct="true">先做 scout</button>
+    <button class="quiz-option" data-correct="false">马上合并</button>
+  </div>
+  <div class="quiz-feedback" data-correct="对。先 scout，把未知变成报告。" data-wrong="不稳。未知多的时候先 scout。"></div>
+</section>
+
+<section>
+  <h2>今天的练习</h2>
+  <p>打开 firstmate 后，发这一句：</p>
+  <pre><code>请先帮我 scout 当前 firstmate 工作区。
+不要改文件。
+告诉我它是怎么运行的、我应该怎样给它发任务、有哪些新手风险。</code></pre>
+  <p>如果看不懂报告，直接追问：“用更小白的话解释，并给我三个例子。”</p>
+</section>
+
+<section>
+  <h2>推荐阅读</h2>
+  <p>主资料：本机 firstmate 的 <code>README.md</code> 和 <code>docs/architecture.md</code>。先读 README 的 What it is、Quick Start、Built-in skills 三段就够。</p>
+</section>
+
+</body>
+</html>

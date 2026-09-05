@@ -1,0 +1,4 @@
+interface:
+  display_name: "蝉妈妈素材发飞书"
+  short_description: "按条件采集蝉妈妈短视频素材，筛选后发布到指定飞书群聊"
+  default_prompt: "Use $chanmama-feishu-material-publisher to collect Chanmama material links by category or keyword and send filtered results to a Feishu group."

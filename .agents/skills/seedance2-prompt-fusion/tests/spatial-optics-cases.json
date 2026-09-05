@@ -1,0 +1,429 @@
+{
+  "baseContract": {
+    "contractVersion": "spatial-optics-v1",
+    "surface": "harness",
+    "modelVersion": "seedance-2.5",
+    "shotJob": "microacting",
+    "readabilityTarget": {
+      "primaryEvidence": "眼睑、呼吸与下颌的连续变化",
+      "visibleFeatures": ["eyes", "eyelids", "jaw", "breathing"],
+      "occlusion": "none",
+      "motionBlur": "low",
+      "faceFrameHeightRatio": 0.35,
+      "measurementSource": "planned_composition"
+    },
+    "worldMap": {
+      "controlledObjects": ["character-001", "phone-001"],
+      "cameraZone": "动作轴右侧、人物眼线附近",
+      "actionAxis": "人物与手机之间的视线轴",
+      "occlusions": [],
+      "exits": ["画面右后方过道"]
+    },
+    "framing": {"shotSize": "close", "subjectFrameShare": 0.55},
+    "optics": {
+      "focalLengthMm": 50,
+      "evidenceTier": "user_supplied",
+      "evidence": {
+        "id": "user-request-sha-001",
+        "surface": "harness",
+        "modelVersion": "seedance-2.5",
+        "verifiedAt": "2026-08-24"
+      }
+    },
+    "riskFlags": ["strong_angle"],
+    "cameraPose": {
+      "height": "人物眼线高度",
+      "side": "动作轴右侧",
+      "distanceOrClearance": "相机与人物保持近景工作距离",
+      "aimPoint": "双眼与下颌之间"
+    },
+    "firstFrame": {
+      "mode": "subject_visible",
+      "dramaticTask": "人物已在处理手机信息",
+      "postRevealState": "人物视线停在手机，拇指仍压住边缘",
+      "requireAllSubjectsVisible": true
+    },
+    "devices": [],
+    "changeClass": "none",
+    "approvedIntent": {
+      "sha256": "814bf63b2734a41f7bba217ad2230bb71d5341310aaa683b98aceac4518b1b43",
+      "lockedFields": {"framing.shotSize": "close"},
+      "sourcePayload": {"approvalId": "gate-2-001", "lockedFields": {"framing.shotSize": "close"}}
+    },
+    "adjustments": [],
+    "language": {
+      "bodyLanguage": "zh-CN",
+      "dialogueLanguage": "zh-CN",
+      "userRequestedEnglish": false,
+      "dialogueTranslatedToEnglish": false
+    },
+    "motion": {},
+    "promptBody": "@素材[character-001]只负责人物身份，不迁移背景。近景从动作轴右侧观察她看完手机后的呼吸、眼睑和下颌变化，人物仍握住手机，最后视线停在屏幕上。",
+    "claims": [],
+    "sourceMediaTags": ["@素材[character-001]"],
+    "outputMediaTags": ["@素材[character-001]"]
+  },
+  "cases": [
+    {
+      "name": "complete_contract_passes_but_execution_remains_unverified",
+      "expectedStatus": "PASS",
+      "expectedCodes": []
+    },
+    {
+      "name": "empty_contract_fails_closed",
+      "replaceContract": {},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_REQUIRED_FIELD"]
+    },
+    {
+      "name": "source_reported_fov_is_not_verified_control",
+      "patch": {"optics": {"diagonalFovDeg": 84, "evidenceTier": "source_reported_test"}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNVERIFIED_OPTICS_PRECISION"]
+    },
+    {
+      "name": "out_of_range_fov_fails_even_with_runtime_claim",
+      "patch": {
+        "optics": {
+          "diagonalFovDeg": 999,
+          "evidenceTier": "current_runtime_verified",
+          "evidence": {
+            "id": "run-123",
+            "surface": "harness",
+            "modelVersion": "seedance-2.5",
+            "verifiedAt": "2026-08-24",
+            "parameterRanges": {"diagonalFovDeg": [20, 120], "focalLengthMm": [16, 135]}
+          }
+        }
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["OPTICS_VALUE_OUT_OF_RANGE", "VALUE_OUTSIDE_EVIDENCE_RANGE"]
+    },
+    {
+      "name": "fov_and_focal_length_must_be_physically_consistent",
+      "patch": {"optics": {"diagonalFovDeg": 107, "focalLengthMm": 50, "sensorDiagonalMm": 43.3, "projection": "rectilinear"}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["FOV_FOCAL_INCONSISTENCY"]
+    },
+    {
+      "name": "consistent_rectilinear_fov_and_focal_length_pass",
+      "patch": {"optics": {"diagonalFovDeg": 46.8, "focalLengthMm": 50, "sensorDiagonalMm": 43.3, "projection": "rectilinear"}},
+      "expectedStatus": "PASS",
+      "expectedCodes": []
+    },
+    {
+      "name": "dual_exact_optics_requires_sensor_and_projection",
+      "patch": {"optics": {"diagonalFovDeg": 46.8, "focalLengthMm": 50}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_OPTICAL_GEOMETRY"]
+    },
+    {
+      "name": "microacting_without_scale_evidence_fails",
+      "patch": {
+        "readabilityTarget": {
+          "faceFrameHeightRatio": {"$delete": true},
+          "measurementSource": {"$delete": true}
+        }
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_MICROACTING_SCALE_EVIDENCE"]
+    },
+    {
+      "name": "microacting_too_small_fails",
+      "patch": {"readabilityTarget": {"faceFrameHeightRatio": 0.08}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["READABILITY_CONFLICT"]
+    },
+    {
+      "name": "camera_pose_missing_under_strong_angle_fails",
+      "patch": {"cameraPose": {"$delete": true}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_REQUIRED_FIELD"]
+    },
+    {
+      "name": "camera_pose_placeholders_fail",
+      "patch": {"cameraPose": {"height": "TBD", "side": "somewhere", "distanceOrClearance": "maybe", "aimPoint": "待定"}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["PLACEHOLDER_VALUE"]
+    },
+    {
+      "name": "protected_reveal_requires_executable_fields",
+      "patch": {
+        "shotJob": "reveal",
+        "firstFrame": {
+          "mode": "reveal",
+          "dramaticTask": "延迟产品出现",
+          "postRevealState": "产品完整进入画面",
+          "requireAllSubjectsVisible": false,
+          "revealTrigger": {"$delete": true},
+          "firstVisiblePosition": {"$delete": true}
+        }
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["INCOMPLETE_FIRST_FRAME_EXCEPTION"]
+    },
+    {
+      "name": "pov_recovery_is_normalized_and_protected",
+      "patch": {
+        "shotJob": "reveal",
+        "firstFrame": {
+          "mode": "POV_recovery",
+          "dramaticTask": "主观曝光恢复",
+          "revealTrigger": "白闪退去",
+          "firstVisiblePosition": "人物在中央逐渐显现",
+          "postRevealState": "人物轮廓和环境恢复",
+          "requireAllSubjectsVisible": true
+        }
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["INTENTIONAL_REVEAL_OVERRIDDEN"]
+    },
+    {
+      "name": "dolly_zoom_missing_device_chain_fails",
+      "patch": {
+        "shotJob": "camera_device",
+        "riskFlags": ["moving_camera"],
+        "devices": [{"name": "dolly_zoom", "dominant": true}],
+        "space": {"mode": "moving"}
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_REQUIRED_FIELD", "MISSING_MOVING_CLEARANCE"]
+    },
+    {
+      "name": "simultaneous_strong_devices_fail",
+      "patch": {
+        "shotJob": "camera_device",
+        "devices": [
+          {"name": "dutch_angle", "dominant": true, "intensity": "strong", "simultaneous": true, "setup": "门框建立垂直参照", "trigger": "人物听见门响", "cameraBehavior": "画面向右滚转", "subjectBehavior": "人物继续压住门把", "peak": "门框倾斜最明显", "recovery": "保持倾斜进入末态"},
+          {"name": "crash_zoom", "dominant": false, "intensity": "strong", "simultaneous": true, "setup": "人物脸在画面中央", "trigger": "同一声门响", "cameraBehavior": "快速收紧画框", "subjectBehavior": "人物抬眼", "peak": "眼神占满画面", "recovery": "近景稳定"}
+        ],
+        "cameraPose": {"height": "眼线高度", "side": "动作轴右侧", "distanceOrClearance": "近景工作距离", "aimPoint": "人物双眼", "rollDirection": "画面右侧下沉"}
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["SIMULTANEOUS_STRONG_DEVICES"]
+    },
+    {
+      "name": "moving_camera_path_clearance_fails",
+      "patch": {
+        "shotJob": "camera_device",
+        "riskFlags": ["moving_camera"],
+        "devices": [
+          {"name": "dolly_zoom", "dominant": true, "intensity": "strong", "simultaneous": false, "setup": "主体与远背景同框", "trigger": "人物意识到危险", "cameraBehavior": "相机后移同时收窄视野", "subjectBehavior": "人物保持原位并短暂停息", "peak": "主体大小稳定而背景压缩", "recovery": "画面在新距离稳定"}
+        ],
+        "space": {"mode": "moving", "rigEnvelopeM": 0.8, "dynamicIntrusionMarginM": 0.4, "pathMinClearanceM": 1.0, "startClearanceM": 1.5, "endClearanceM": 1.1}
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MOVING_CLEARANCE_CONFLICT"]
+    },
+    {
+      "name": "hidden_locked_field_change_fails_without_self_report",
+      "patch": {"framing": {"shotSize": "wide"}, "changeClass": "lossless_normalization", "adjustments": []},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["HIDDEN_MATERIAL_CHANGE", "INVALID_CHANGE_CLASS"]
+    },
+    {
+      "name": "unsupported_guarantee_in_prompt_body_fails",
+      "patch": {"promptBody": "@素材[character-001]保证100%匹配参考人物，实现像素级复刻。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNSUPPORTED_GUARANTEE"]
+    },
+    {
+      "name": "fullwidth_unicode_guarantee_fails",
+      "patch": {"promptBody": "@素材[character-001]保证１００％匹配参考人物。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNSUPPORTED_GUARANTEE"]
+    },
+    {
+      "name": "internal_contract_labels_in_prompt_body_fail",
+      "patch": {"promptBody": "@素材[character-001]。world map 与 feasibility veto 已通过，shotJob为微表演。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["INTERNAL_LABEL_IN_PROMPT_BODY"]
+    },
+    {
+      "name": "hyphenated_internal_labels_fail",
+      "patch": {"promptBody": "@素材[character-001]。world-map、feasibility-veto与camera-pose均已通过。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["INTERNAL_LABEL_IN_PROMPT_BODY"]
+    },
+    {
+      "name": "undeclared_exact_fov_in_prompt_body_fails",
+      "patch": {"optics": {"$delete": true}, "promptBody": "@素材[character-001]只负责人物身份。FOV 84°广角拍摄人物。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_EXACT_OPTICS"]
+    },
+    {
+      "name": "number_before_lens_keyword_fails_without_optics",
+      "patch": {"optics": {"$delete": true}, "promptBody": "@素材[character-001]只负责人物身份。使用50mm镜头保持人物近景。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_EXACT_OPTICS"]
+    },
+    {
+      "name": "spaced_mm_prime_lens_fails_without_optics",
+      "patch": {"optics": {"$delete": true}, "promptBody": "@素材[character-001]只负责人物身份。采用50 mm 定焦拍摄人物。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_EXACT_OPTICS"]
+    },
+    {
+      "name": "natural_camera_distance_phrase_fails_without_optics",
+      "patch": {"optics": {"$delete": true}, "promptBody": "@素材[character-001]只负责人物身份。相机离人物1.5m，保持近景观察。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_EXACT_OPTICS"]
+    },
+    {
+      "name": "each_optics_type_requires_its_own_contract_field",
+      "patch": {"promptBody": "@素材[character-001]只负责人物身份。相机离人物9.5m，保持近景观察。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_EXACT_OPTICS"]
+    },
+    {
+      "name": "prompt_optics_value_must_match_contract",
+      "patch": {"promptBody": "@素材[character-001]只负责人物身份。采用85mm镜头拍摄人物。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["PROMPT_OPTICS_VALUE_MISMATCH"]
+    },
+    {
+      "name": "camera_device_in_body_requires_structured_contract",
+      "patch": {"promptBody": "@素材[character-001]只负责人物身份。人物听见门响时执行dolly zoom，最后保持原位。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_CAMERA_DEVICE"]
+    },
+    {
+      "name": "prompt_device_name_must_match_structured_device",
+      "patch": {
+        "shotJob": "camera_device",
+        "riskFlags": ["moving_camera"],
+        "devices": [
+          {"name": "dolly_zoom", "dominant": true, "intensity": "strong", "simultaneous": false, "setup": "主体与远背景同框", "trigger": "人物意识到危险", "cameraBehavior": "相机后移同时收窄视野", "subjectBehavior": "人物保持原位并短暂停息", "peak": "主体大小稳定而背景压缩", "recovery": "画面在新距离稳定"}
+        ],
+        "space": {"mode": "moving", "rigEnvelopeM": 0.5, "dynamicIntrusionMarginM": 0.2, "pathMinClearanceM": 1.2, "startClearanceM": 1.5, "endClearanceM": 1.3},
+        "promptBody": "@素材[character-001]只负责人物身份。人物听见门响时执行crash zoom，随后近景稳定。"
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_CAMERA_DEVICE"]
+    },
+    {
+      "name": "confined_space_synonyms_require_risk_contract",
+      "patch": {"promptBody": "@素材[character-001]只负责人物身份。逼仄的电梯轿厢内，相机紧贴后壁观察人物。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNDECLARED_SPATIAL_RISK"]
+    },
+    {
+      "name": "unverified_shutter_control_in_prompt_body_fails",
+      "patch": {"promptBody": "@素材[character-001]只负责人物身份。使用180-degree shutter拍摄自然动作。"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNVERIFIED_SHUTTER_CONTROL"]
+    },
+    {
+      "name": "unrequested_english_locale_fails",
+      "patch": {
+        "language": {"bodyLanguage": "en-US", "userRequestedEnglish": false},
+        "promptBody": "@素材[character-001] A close cinematic portrait follows the woman as she reads the message, holds her breath, lowers her jaw, keeps the phone steady, and remains in the same position while the camera observes her reaction without adding any new action or narration."
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["UNREQUESTED_LANGUAGE_DRIFT"]
+    },
+    {
+      "name": "short_english_body_declared_chinese_fails",
+      "patch": {"promptBody": "@素材[character-001] Close portrait follows her silent reaction."},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["PROMPT_BODY_LANGUAGE_MISMATCH"]
+    },
+    {
+      "name": "very_short_english_body_declared_chinese_fails",
+      "patch": {"promptBody": "@素材[character-001] Close portrait. Slow dolly in."},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["PROMPT_BODY_LANGUAGE_MISMATCH"]
+    },
+    {
+      "name": "claims_wrong_type_fails",
+      "patch": {"claims": "100%匹配参考图"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["SCHEMA_TYPE_ERROR"]
+    },
+    {
+      "name": "schema_executes_device_types_and_enums",
+      "patch": {
+        "shotJob": "camera_device",
+        "devices": [{"name": "crash_zoom", "dominant": "true", "intensity": "high", "simultaneous": "true", "setup": "人物在中央", "trigger": "门响", "cameraBehavior": "快速收紧", "subjectBehavior": "人物抬眼", "peak": "眼神占满画面", "recovery": "画面稳定"}]
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["SCHEMA_VALIDATION_ERROR"]
+    },
+    {
+      "name": "schema_rejects_negative_clearance",
+      "patch": {
+        "riskFlags": ["confined_space"],
+        "space": {"mode": "static", "cameraEnvelopeM": -5, "safetyMarginM": -5, "availableClearanceM": -1}
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["SCHEMA_VALIDATION_ERROR"]
+    },
+    {
+      "name": "approved_intent_sha_is_recomputed",
+      "patch": {"approvedIntent": {"sha256": "0000000000000000000000000000000000000000000000000000000000000000"}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["APPROVED_INTENT_SHA_MISMATCH"]
+    },
+    {
+      "name": "unsafe_harness_exact_id_fails",
+      "patch": {
+        "promptBody": "@素材[../secret]只负责人物身份。",
+        "sourceMediaTags": ["@素材[../secret]"],
+        "outputMediaTags": ["@素材[../secret]"]
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["HARNESS_TAG_CONFLICT"]
+    },
+    {
+      "name": "free_alias_hidden_in_prompt_body_fails",
+      "patch": {
+        "promptBody": "@图1负责人物身份。",
+        "sourceMediaTags": [],
+        "outputMediaTags": []
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["HARNESS_TAG_CONFLICT"]
+    },
+    {
+      "name": "higgsfield_tags_are_compared_not_self_reported",
+      "patch": {
+        "surface": "higgsfield",
+        "optics": {"$delete": true},
+        "promptBody": "@Image2只负责人物身份，保持中文动作因果。",
+        "sourceMediaTags": ["@Image1"],
+        "outputMediaTags": ["@Image2"]
+      },
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["HIGGSFIELD_TAG_RENUMBERED"]
+    },
+    {
+      "name": "custom_shot_job_requires_definition",
+      "patch": {"shotJob": "custom"},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["MISSING_CUSTOM_SHOT_JOB"]
+    },
+    {
+      "name": "approved_intent_must_lock_at_least_one_field",
+      "patch": {"approvedIntent": {"lockedFields": {"$replace": {}}}},
+      "expectedStatus": "FAIL",
+      "expectedCodes": ["INVALID_APPROVED_INTENT_BINDING"]
+    },
+    {
+      "name": "atmosphere_is_a_valid_extensible_shot_job",
+      "patch": {
+        "shotJob": "atmosphere",
+        "readabilityTarget": {
+          "primaryEvidence": "雨水、路灯反射和空旷街道共同形成等待感",
+          "visibleFeatures": ["rain", "streetlight_reflection", "empty_street"],
+          "occlusion": "none",
+          "motionBlur": "low",
+          "faceFrameHeightRatio": {"$delete": true},
+          "measurementSource": {"$delete": true}
+        },
+        "promptBody": "@素材[character-001]只负责远处人物身份。雨水落在空旷街道，路灯反射沿地面延伸，人物仍在远处等待。"
+      },
+      "expectedStatus": "PASS",
+      "expectedCodes": []
+    }
+  ]
+}

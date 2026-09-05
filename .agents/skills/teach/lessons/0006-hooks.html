@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 6 课：Hooks（钩子）— Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .event-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1.2rem 0;
+    }
+    .event-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.9rem 1.1rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+    .event-card .event-name {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 0.35rem;
+    }
+    .event-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    .flow-diagram {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .flow-box {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.8rem;
+      text-align: center;
+      line-height: 1.4;
+    }
+    .flow-box.hook-box {
+      background: var(--accent-light);
+      border-color: var(--accent);
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .flow-arrow {
+      color: var(--muted);
+      font-size: 1.1rem;
+      padding: 0 0.2rem;
+    }
+
+    .exit-code-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+    .exit-code-table th {
+      background: #f4f4f0;
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .exit-code-table td {
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+    }
+    .exit-code-table tr:nth-child(even) td { background: #fafaf6; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 60%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 6</div>
+  <h1>Hooks：给 Claude 装上自动反应</h1>
+  <div class="lesson-meta">第 6 课，共 10 模块 · 预计 15 分钟</div>
+</header>
+
+<section>
+  <h2>Claude 做事，Hook 在旁边守着</h2>
+
+  <p>
+    想象你雇了一个助手（Claude），但你希望它每次改完代码都自动跑一遍测试，
+    每次写文件都自动格式化，遇到危险命令就先停下来问你。
+    你不可能每次都盯着它手动做这些事——这就是 <strong>Hooks（钩子）</strong> 存在的意义。
+  </p>
+
+  <p>
+    Hook 是挂在 Claude 动作上的<strong>自动脚本</strong>：
+    Claude 一做某件事，对应的 Hook 脚本就自动跑起来。
+  </p>
+</section>
+
+<section>
+  <h2>Hook 的触发时机</h2>
+
+  <p>Claude Code 提供四个可以挂钩子的事件节点：</p>
+
+  <div class="event-grid">
+    <div class="event-card">
+      <div class="event-name">PreToolUse</div>
+      <p>Claude 调用某个工具<strong>之前</strong>触发。可以用来检查、拦截危险操作。</p>
+    </div>
+    <div class="event-card">
+      <div class="event-name">PostToolUse</div>
+      <p>Claude 调用某个工具<strong>之后</strong>触发。可以用来自动运行测试、格式化代码。</p>
+    </div>
+    <div class="event-card">
+      <div class="event-name">Notification</div>
+      <p>Claude 需要<strong>通知用户</strong>时触发。可以用来发桌面通知、发钉钉消息。</p>
+    </div>
+    <div class="event-card">
+      <div class="event-name">Stop</div>
+      <p>Claude <strong>完成一轮任务</strong>时触发。可以用来生成报告、记录日志。</p>
+    </div>
+  </div>
+
+  <p>以 <strong>PostToolUse</strong> 为例，完整的执行流程是：</p>
+
+  <div class="flow-diagram">
+    <div class="flow-box">你发出指令</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">Claude 修改文件</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box hook-box">PostToolUse Hook 触发</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">自动跑 npm test</div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-box">结果反馈给 Claude</div>
+  </div>
+</section>
+
+<section>
+  <h2>Hook 配置在哪里</h2>
+
+  <p>
+    Hooks 不是放在某个目录下的文件，而是配置在 <code>settings.json</code> 里：
+  </p>
+
+  <pre><code>~/.claude/settings.json      ← 全局 Hook（所有项目）
+.claude/settings.json        ← 项目 Hook（只在此项目）</code></pre>
+
+  <p>配置格式如下：</p>
+
+  <pre><code>{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npm test"
+          }
+        ]
+      }
+    ]
+  }
+}</code></pre>
+
+  <p>
+    这段配置的意思：每当 Claude 使用 <strong>Write 工具</strong>（写文件）之后，
+    自动执行 <code>npm test</code>。
+  </p>
+
+  <div class="callout">
+    <div class="callout-label">matcher 是过滤器</div>
+    <code>matcher</code> 决定哪些工具操作会触发 Hook。常用值有：
+    <code>"Write"</code>（写文件）、<code>"Bash"</code>（执行命令）、<code>"Edit"</code>（编辑文件）。
+    留空则对所有工具都触发。
+  </div>
+</section>
+
+<section>
+  <h2>Hook 脚本的返回值</h2>
+
+  <p>
+    Hook 脚本的退出码（exit code）决定了 Claude 接下来怎么做——这是 Hooks 最关键的机制：
+  </p>
+
+  <table class="exit-code-table">
+    <thead>
+      <tr>
+        <th>退出码</th>
+        <th>含义</th>
+        <th>Claude 的反应</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>0</code></td>
+        <td>成功</td>
+        <td>继续执行。如果脚本有输出，Claude 会读取并参考</td>
+      </tr>
+      <tr>
+        <td><code>2</code></td>
+        <td>阻断</td>
+        <td><strong>停止当前操作</strong>，把脚本的输出作为错误原因告知 Claude</td>
+      </tr>
+      <tr>
+        <td>其他</td>
+        <td>非致命错误</td>
+        <td>记录错误但继续执行</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>利用退出码 <code>2</code>，你可以写一个"守门人" Hook：</p>
+
+  <pre><code>#!/bin/bash
+# PreToolUse Hook：阻止 Claude 删除重要文件
+
+TOOL_INPUT=$(cat)  # 读取 Claude 想执行的操作
+
+if echo "$TOOL_INPUT" | grep -q "rm -rf"; then
+  echo "⚠️ 禁止执行 rm -rf 命令，请人工确认"
+  exit 2            # 阻断操作
+fi
+
+exit 0              # 放行</code></pre>
+</section>
+
+<section>
+  <h2>三个实用 Hook 场景</h2>
+
+  <p><strong>1. 代码写完自动格式化</strong></p>
+  <pre><code>"PostToolUse": [{ "matcher": "Write", "hooks": [
+  { "type": "command", "command": "prettier --write ." }
+]}]</code></pre>
+
+  <p><strong>2. 任务完成时发桌面通知</strong></p>
+  <pre><code>"Stop": [{ "hooks": [
+  { "type": "command", "command": "notify-send 'Claude 完成了'" }
+]}]</code></pre>
+
+  <p><strong>3. 阻止写入 .env 文件（防止泄露密钥）</strong></p>
+  <pre><code>#!/bin/bash
+# PreToolUse Hook
+if echo "$CLAUDE_TOOL_INPUT" | grep -q '".env"'; then
+  echo "禁止修改 .env 文件"
+  exit 2
+fi</code></pre>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">你想让 Claude 每次修改 Python 文件后自动跑 pytest。应该用哪个 Hook 事件？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">PreToolUse（工具调用之前）</button></li>
+      <li><button class="quiz-option" data-correct="true">PostToolUse（工具调用之后）</button></li>
+      <li><button class="quiz-option" data-correct="false">Notification（通知时）</button></li>
+      <li><button class="quiz-option" data-correct="false">Stop（任务完成时）</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！修改文件"之后"自动跑测试，用 PostToolUse。"
+      data-wrong="想想时序：是要在 Claude 改文件"之前"还是"之后"触发？">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">一个 PreToolUse Hook 脚本退出码为 2，Claude 会怎么做？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">忽略脚本，继续执行原来的操作</button></li>
+      <li><button class="quiz-option" data-correct="false">退出 Claude Code 进程</button></li>
+      <li><button class="quiz-option" data-correct="true">停止当前操作，把脚本输出作为错误原因</button></li>
+      <li><button class="quiz-option" data-correct="false">重新执行脚本，直到退出码为 0</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！退出码 2 是「阻断」信号，Claude 会停下来并读取脚本输出作为原因。"
+      data-wrong="退出码 2 是 Hook 系统的「否决权」——它能让 Claude 停止正在做的事。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">Hooks 的配置写在哪里？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">~/.claude/skills/ 目录下</button></li>
+      <li><button class="quiz-option" data-correct="false">CLAUDE.md 文件里</button></li>
+      <li><button class="quiz-option" data-correct="true">settings.json 文件里</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/hooks/ 目录下</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！Hooks 是在 settings.json 里配置的，而不是放在某个文件夹里。"
+      data-wrong="和 Skills/Commands 不同，Hooks 不是用文件目录管理的，而是在 settings.json 里配置。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    下一课：<strong>MCP 协议</strong>——让 Claude 连接外部工具和 API。
+    用 MCP，Claude 可以查数据库、发邮件、操控浏览器，把能力延伸到对话框之外。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 6 — Hooks</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含可直接复制的常用 Hook 脚本库。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"怎么让 Hook 读取 Claude 具体要写什么内容"、"能不能用 Hook 发微信通知"——直接问就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0005-skills.html">← 上一课：Skills</a>
+  <a href="0007-mcp.html">下一课：MCP 协议 →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

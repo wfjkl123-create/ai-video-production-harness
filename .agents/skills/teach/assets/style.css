@@ -1,0 +1,259 @@
+/* Claude How-To Course — Shared Stylesheet */
+/* Typography inspired by Tufte CSS */
+
+:root {
+  --text: #1a1a1a;
+  --bg: #fffff8;
+  --accent: #c05b34;
+  --accent-light: #f5e6e0;
+  --muted: #666;
+  --border: #ddd;
+  --code-bg: #f4f4f0;
+  --success: #2d7a2d;
+  --success-bg: #e8f5e8;
+  --error: #a0201a;
+  --error-bg: #fde8e8;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: 'Courier New', Courier, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-serif);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 18px;
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+/* Header */
+header {
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.course-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-family: sans-serif;
+  margin-bottom: 0.5rem;
+}
+
+h1 {
+  font-size: 2rem;
+  line-height: 1.2;
+  font-weight: normal;
+  color: var(--text);
+}
+
+.lesson-meta {
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+/* Body text */
+h2 {
+  font-size: 1.35rem;
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: normal;
+  border-left: 3px solid var(--accent);
+  padding-left: 0.75rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--muted);
+  font-family: sans-serif;
+}
+
+p { margin-bottom: 1.2rem; }
+
+a { color: var(--accent); }
+a:hover { text-decoration: none; }
+
+strong { font-weight: bold; }
+
+/* Code */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--code-bg);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+  color: #333;
+}
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1.2rem 1.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+pre code { background: none; padding: 0; }
+
+/* Callout boxes */
+.callout {
+  border-left: 4px solid var(--accent);
+  background: var(--accent-light);
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.95rem;
+}
+
+.callout-label {
+  font-family: sans-serif;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+  font-weight: bold;
+}
+
+/* Quiz widget */
+.quiz {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.quiz-title {
+  font-family: sans-serif;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.quiz-question {
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+}
+
+.quiz-options {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.quiz-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-family: sans-serif;
+  background: white;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+}
+
+.quiz-option:hover { border-color: var(--accent); background: var(--accent-light); }
+.quiz-option.correct { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.quiz-option.wrong { border-color: var(--error); background: var(--error-bg); color: var(--error); }
+.quiz-option:disabled { cursor: default; }
+
+.quiz-feedback {
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  display: none;
+}
+
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: var(--success-bg); color: var(--success); }
+.quiz-feedback.wrong { background: var(--error-bg); color: var(--error); }
+
+/* Navigation */
+nav.lesson-nav {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+nav.lesson-nav a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+/* Ask me section */
+.ask-me {
+  background: #f0f4ff;
+  border: 1px solid #c0c8f0;
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-top: 2.5rem;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+  color: #334;
+}
+
+.ask-me strong { display: block; margin-bottom: 0.3rem; color: #223; }
+
+/* Progress bar */
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+
+/* Primary source */
+.primary-source {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+  font-family: sans-serif;
+  font-size: 0.9rem;
+}
+
+.primary-source-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 0.4rem;
+}

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H5 课：Skills 体系设计 — Harness Engineering</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .phase-banner {
+      background: #1a1a2e;
+      color: #e8e0ff;
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .phase-banner strong { color: white; }
+
+    .token-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .tc-card {
+      border-radius: 10px;
+      padding: 1.2rem;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .tc-card.always { background: #fff8e8; border: 1.5px solid #cc9; }
+    .tc-card.ondemand { background: #e8f0ff; border: 1.5px solid #99b; }
+    .tc-card h3 { margin: 0 0 0.6rem; font-size: 0.95rem; padding: 0; border: none; }
+    .tc-card.always h3 { color: #775500; }
+    .tc-card.ondemand h3 { color: #224499; }
+    .tc-card .token-count {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+    .tc-card.always .token-count { color: #cc7700; }
+    .tc-card.ondemand .token-count { color: #2244aa; }
+    .tc-card ul { margin: 0.5rem 0 0; padding-left: 1.1rem; line-height: 2.1; color: var(--muted); font-size: 0.82rem; }
+
+    .skill-frontmatter {
+      background: #1e1e2e;
+      color: #cdd6f4;
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.8;
+      margin: 1.2rem 0;
+    }
+    .sf-key     { color: #89b4fa; }
+    .sf-str     { color: #a6e3a1; }
+    .sf-comment { color: #6c7086; font-style: italic; }
+    .sf-trigger { color: #fab387; }
+
+    .decision-tree {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .dt-question {
+      background: var(--accent-light);
+      border: 1.5px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.75rem 1.1rem;
+      color: var(--accent);
+      font-weight: bold;
+      margin-bottom: 0.8rem;
+      text-align: center;
+    }
+    .dt-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+    .dt-option {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+    }
+    .dt-option .dt-cond { font-weight: bold; font-size: 0.82rem; margin-bottom: 0.3rem; }
+    .dt-option .dt-result {
+      font-size: 0.8rem;
+      color: white;
+      background: var(--accent);
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      display: inline-block;
+      margin-bottom: 0.3rem;
+    }
+    .dt-option .dt-result.green { background: #2d7a2d; }
+    .dt-option .dt-desc { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+
+    .real-skills {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .rs-row {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 2fr;
+      border-bottom: 1px solid var(--border);
+      font-family: sans-serif;
+      font-size: 0.83rem;
+    }
+    .rs-row:last-child { border-bottom: none; }
+    .rs-row.header { background: #f4f4f0; font-weight: bold; }
+    .rs-cell {
+      padding: 0.6rem 0.9rem;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+    }
+    .rs-cell:last-child { border-right: none; color: var(--muted); }
+    .rs-cell code { font-size: 0.85em; }
+
+    .skill-anatomy {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+    }
+    .sa-section {
+      border-bottom: 1px solid var(--border);
+      padding: 0.85rem 1.2rem;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .sa-section:last-child { border-bottom: none; }
+    .sa-label { font-weight: bold; color: var(--accent); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; }
+    .sa-desc { color: var(--muted); line-height: 1.5; }
+    .sa-required { font-size: 0.72rem; background: var(--accent); color: white; padding: 0.1em 0.5em; border-radius: 3px; margin-left: 0.4rem; }
+    .sa-optional { font-size: 0.72rem; background: var(--muted); color: white; padding: 0.1em 0.5em; border-radius: 3px; margin-left: 0.4rem; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 71%"></div>
+</div>
+
+<div class="phase-banner">
+  <div>🏗️</div>
+  <div><strong>Harness Engineering · 第 5 课</strong> — 共 7 课</div>
+</div>
+
+<header>
+  <div class="course-label">Harness Engineering · 支柱 4</div>
+  <h1>Skills 体系设计：打造你的专属工具箱</h1>
+  <div class="lesson-meta">第 5 课，共 7 课 · 预计 15 分钟</div>
+</header>
+
+<section>
+  <h2>你已经有 6 个 Skills 了</h2>
+
+  <p>
+    看看你的 <code>~/.claude/skills/</code> 目录：
+  </p>
+
+  <div class="real-skills">
+    <div class="rs-row header">
+      <div class="rs-cell">Skill 名称</div>
+      <div class="rs-cell">触发方式</div>
+      <div class="rs-cell">做什么</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>storage-analyzer</code></div>
+      <div class="rs-cell">自动（关键词）</div>
+      <div class="rs-cell">磁盘占用分析，生成交互式 HTML 报告</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>teach</code></div>
+      <div class="rs-cell"><code>/teach</code></div>
+      <div class="rs-cell">多会话教学系统（你现在用的这个）</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>aihot</code></div>
+      <div class="rs-cell">自动（关键词）</div>
+      <div class="rs-cell">AI 圈日报资讯查询</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>hv-analysis</code></div>
+      <div class="rs-cell">自动（关键词）</div>
+      <div class="rs-cell">横纵分析法深度研究，输出 PDF 报告</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>khazix-writer</code></div>
+      <div class="rs-cell">自动（关键词）</div>
+      <div class="rs-cell">公众号长文写作</div>
+    </div>
+    <div class="rs-row">
+      <div class="rs-cell"><code>neat-freak</code></div>
+      <div class="rs-cell">自动（关键词）</div>
+      <div class="rs-cell">会话结束后文档和记忆同步整理</div>
+    </div>
+  </div>
+
+  <p>
+    这 6 个 Skill 已经形成了一套有机的工具库。本课教你理解它们的设计逻辑，
+    以及如何设计你自己的 Skill。
+  </p>
+</section>
+
+<section>
+  <h2>Skills vs CLAUDE.md：核心分工</h2>
+
+  <p>
+    最重要的设计决策：<strong>某个内容应该放进 CLAUDE.md 还是做成 Skill？</strong>
+    答案取决于两件事——使用频率和 token 消耗。
+  </p>
+
+  <div class="token-compare">
+    <div class="tc-card always">
+      <h3>📄 CLAUDE.md（常驻）</h3>
+      <div class="token-count">~500–2000 tokens</div>
+      <p style="font-size:0.82rem; color: var(--muted);">每次会话都加载，无论你做什么</p>
+      <ul>
+        <li>每次都需要的规则</li>
+        <li>项目基本上下文</li>
+        <li>语言偏好、编码规范</li>
+        <li>关键命令和禁止事项</li>
+      </ul>
+    </div>
+    <div class="tc-card ondemand">
+      <h3>🧩 Skill（按需）</h3>
+      <div class="token-count">~0 tokens（未触发时）</div>
+      <p style="font-size:0.82rem; color: var(--muted);">只在需要时才加载，平时不占 token</p>
+      <ul>
+        <li>偶尔才用的专业流程</li>
+        <li>有完整步骤的复杂工作流</li>
+        <li>需要专属参考文档的任务</li>
+        <li>特定场景的规则集</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">Token 效率原则</div>
+    如果你有 10 个专业工作流都塞进 CLAUDE.md，每次对话都浪费 5000+ tokens 加载你永远用不到的内容。
+    把它们做成 Skills——只有被触发时才消耗 token。
+  </div>
+</section>
+
+<section>
+  <h2>什么时候该做成 Skill</h2>
+
+  <div class="decision-tree">
+    <div class="dt-question">这个内容应该放哪里？</div>
+    <div class="dt-row">
+      <div class="dt-option">
+        <div class="dt-cond">每次对话都需要？</div>
+        <div class="dt-result green">→ CLAUDE.md</div>
+        <div class="dt-desc">比如"用中文回复"、"不加注释"——每次都生效的规则。</div>
+      </div>
+      <div class="dt-option">
+        <div class="dt-cond">特定任务才需要？</div>
+        <div class="dt-result">→ Skill</div>
+        <div class="dt-desc">比如"代码审查流程"、"部署步骤"——只在做这件事时才需要。</div>
+      </div>
+    </div>
+  </div>
+
+  <p>判断清单：</p>
+  <ul style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2.5;">
+    <li>这个工作流有多于 5 个步骤 → <strong>做 Skill</strong></li>
+    <li>需要专属的参考文档 → <strong>做 Skill</strong></li>
+    <li>一周用不到 3 次 → <strong>做 Skill</strong></li>
+    <li>需要执行脚本文件 → <strong>做 Skill</strong></li>
+    <li>每次对话都会用到 → <strong>放 CLAUDE.md</strong></li>
+  </ul>
+</section>
+
+<section>
+  <h2>一个好 SKILL.md 的解剖</h2>
+
+  <p>以你的 <code>storage-analyzer</code> 为例，它的 frontmatter 触发描述是：</p>
+
+  <div class="skill-frontmatter">
+    ---<br>
+    <span class="sf-key">name</span>: storage-analyzer<br>
+    <span class="sf-key">description</span>: &gt;<br>
+    &nbsp;&nbsp;<span class="sf-trigger">macOS / Windows 只读存储分析助手... 务必在以下场景使用：<br>
+    &nbsp;&nbsp;用户说"存储分析""磁盘满了""C盘满了"...</span><br>
+    ---
+  </div>
+
+  <p>
+    <code>description</code> 字段是触发的关键——Claude 读它来判断"当前场景是否应该激活这个 Skill"。
+    写得越具体，自动触发越准确。
+  </p>
+
+  <div class="skill-anatomy">
+    <div class="sa-section">
+      <div class="sa-label">Frontmatter <span class="sa-required">必须</span></div>
+      <div class="sa-desc"><code>name</code>（Skill 名）+ <code>description</code>（触发条件，这是最重要的字段）</div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">铁律 / 核心规则 <span class="sa-required">推荐</span></div>
+      <div class="sa-desc">这个 Skill 的绝对约束。比如 storage-analyzer 的"全程只读，禁止 rm"。</div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">执行流程 <span class="sa-required">必须</span></div>
+      <div class="sa-desc">具体的步骤，Claude 按这个顺序工作。越详细越稳定。</div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">references/ 目录 <span class="sa-optional">可选</span></div>
+      <div class="sa-desc">支撑文档。比如 khazix-writer 的写作方法论、风格样例。</div>
+    </div>
+    <div class="sa-section">
+      <div class="sa-label">scripts/ 目录 <span class="sa-optional">可选</span></div>
+      <div class="sa-desc">可执行脚本。比如 storage-analyzer 的 scan.py、hv-analysis 的 md_to_pdf.py。</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>动手：设计你的第一个自定义 Skill</h2>
+
+  <p>思考你日常工作中有哪些重复的、有多个步骤的任务。以下是一些起点想法：</p>
+
+  <pre><code>~/.claude/skills/
+├── code-review/       ← 代码审查固定流程
+│   └── SKILL.md
+├── daily-summary/     ← 每日工作总结生成
+│   └── SKILL.md
+├── bug-report/        ← 格式化 bug 报告
+│   └── SKILL.md
+└── release-notes/     ← 从 git log 生成发布说明
+    └── SKILL.md</code></pre>
+
+  <p>一个最简单的 Skill（写完放到 <code>~/.claude/skills/code-review/SKILL.md</code>）：</p>
+
+  <pre><code>---
+name: code-review
+description: >
+  代码审查专家。当用户说"帮我审查代码"、"review 一下"、
+  "看看这段代码有没有问题"、"/code-review" 时触发。
+---
+
+# 代码审查
+
+## 审查维度（按优先级）
+1. 潜在 Bug：逻辑错误、边界情况、空指针
+2. 安全风险：注入、硬编码密钥、权限漏洞
+3. 性能：不必要的循环、重复计算、内存泄漏
+4. 可读性：命名、函数长度、重复代码
+
+## 输出格式
+每个问题：[严重级别] 文件:行号 — 问题描述 → 建议修改
+
+## 规则
+- 只指出有把握的问题，不猜测
+- 先说最严重的
+- 给出具体的修改建议，不只是指出问题</code></pre>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">你有一个"每次对话都要告诉 Claude 不要加代码注释"的规则，应该放在哪里？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">做成一个 Skill</button></li>
+      <li><button class="quiz-option" data-correct="true">写进 ~/.claude/CLAUDE.md</button></li>
+      <li><button class="quiz-option" data-correct="false">做成一个斜杠命令每次手动触发</button></li>
+      <li><button class="quiz-option" data-correct="false">写进 settings.json 的 permissions 里</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！每次对话都需要的规则放 CLAUDE.md，Skill 是按需加载的，不适合常驻规则。"
+      data-wrong="判断依据：「每次都需要」→ CLAUDE.md；「特定任务才需要」→ Skill。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">SKILL.md 里的 <code>description</code> 字段最重要的作用是什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">告诉用户这个 Skill 的功能，供他们阅读</button></li>
+      <li><button class="quiz-option" data-correct="true">让 Claude 判断当前场景是否应该自动激活这个 Skill</button></li>
+      <li><button class="quiz-option" data-correct="false">设置 Skill 显示在斜杠命令列表里的名字</button></li>
+      <li><button class="quiz-option" data-correct="false">定义 Skill 使用的 AI 模型版本</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！description 是自动触发的依据——Claude 读它来决定是否激活这个 Skill。写得越精准，触发越准确。"
+      data-wrong="description 是触发条件的描述，Claude 用它来判断「当前对话是否应该激活这个 Skill」。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">以下哪种情况最适合做成 Skill，而不是放进 CLAUDE.md？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">每次都需要的语言偏好设置</button></li>
+      <li><button class="quiz-option" data-correct="false">项目的技术栈说明</button></li>
+      <li><button class="quiz-option" data-correct="true">一个有 8 个步骤的部署流程，每月用 2 次</button></li>
+      <li><button class="quiz-option" data-correct="false">禁止修改某个重要文件的规则</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！步骤多（8步）+ 使用频率低（月用2次）= 典型的 Skill 场景。"
+      data-wrong="Skill 适合：步骤多、使用频率低、需要专属文档的工作流。常驻、简单的规则放 CLAUDE.md。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>下一课</h2>
+  <p>
+    <strong>Custom Commands 专属命令</strong>——把高频操作变成一键斜杠命令，
+    然后在最后一课（H7）把所有五个支柱整合成你完整的第一个 Harness。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://restato.github.io/blog/harness-engineering-guide-claude-code/" target="_blank">📖 Harness Engineering Guide — Skills 章节</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含部署、测试、文档生成等现成 Skill 模板。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"帮我设计一个适合我的 Skill"、"storage-analyzer 的 description 写得好在哪里"——直接说就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="h004-hooks-deep.html">← 上一课：Hooks 深度实践</a>
+  <a href="h006-commands.html">下一课：Custom Commands →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

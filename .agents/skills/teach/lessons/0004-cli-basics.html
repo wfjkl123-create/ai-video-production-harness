@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 4 课：CLI 基础 — Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .shortcut-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+    .shortcut-table th {
+      background: #f4f4f0;
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+      font-weight: 600;
+    }
+    .shortcut-table td {
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      line-height: 1.5;
+    }
+    .shortcut-table tr:nth-child(even) td { background: #fafaf6; }
+    .shortcut-table code {
+      background: #e8e8e4;
+      padding: 0.1em 0.4em;
+      border-radius: 3px;
+      font-size: 0.9em;
+    }
+    .mode-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .mode-card h3 {
+      margin-top: 0;
+      color: var(--text);
+      font-family: sans-serif;
+      font-size: 0.95rem;
+      border: none;
+      padding: 0;
+    }
+    .mode-card .cmd {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: var(--code-bg);
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
+      display: inline-block;
+      margin: 0.4rem 0;
+    }
+    .mode-card p { margin-bottom: 0; font-size: 0.9rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 40%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 4</div>
+  <h1>CLI 基础：驾驭命令行</h1>
+  <div class="lesson-meta">第 4 课，共 10 模块 · 预计 12 分钟</div>
+</header>
+
+<section>
+  <h2>Claude Code 的三种启动方式</h2>
+
+  <p>
+    你目前用的是<strong>交互模式</strong>——打开终端，和 Claude 来回对话。
+    但 Claude Code 还支持另外两种模式，在不同场景下非常有用。
+  </p>
+
+  <div class="mode-card">
+    <h3>🗨️ 交互模式（你现在用的）</h3>
+    <div class="cmd">claude</div>
+    <p>打开对话界面，可以来回多轮交流。适合需要探索、调试、或复杂任务。</p>
+  </div>
+
+  <div class="mode-card">
+    <h3>⚡ 单次模式（One-shot）</h3>
+    <div class="cmd">claude "帮我解释一下这段代码"</div>
+    <p>直接把问题写在命令后面，Claude 回答完就退出。适合快速的单次任务。</p>
+  </div>
+
+  <div class="mode-card">
+    <h3>🔁 管道模式（Pipeline）</h3>
+    <div class="cmd">cat error.log | claude -p "总结这些错误"</div>
+    <p>把文件或命令的输出通过管道传给 Claude，结果打印到终端。适合脚本和自动化。</p>
+  </div>
+</section>
+
+<section>
+  <h2>最常用的启动参数</h2>
+
+  <table class="shortcut-table">
+    <thead>
+      <tr>
+        <th>命令</th>
+        <th>作用</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>claude</code></td>
+        <td>启动交互模式（开新对话）</td>
+      </tr>
+      <tr>
+        <td><code>claude -c</code></td>
+        <td>继续上一次的对话（continue）</td>
+      </tr>
+      <tr>
+        <td><code>claude -r</code></td>
+        <td>从历史会话列表中选一个恢复（resume）</td>
+      </tr>
+      <tr>
+        <td><code>claude -p "问题"</code></td>
+        <td>非交互模式，直接打印结果后退出（print）</td>
+      </tr>
+      <tr>
+        <td><code>claude --model sonnet</code></td>
+        <td>指定使用的模型</td>
+      </tr>
+      <tr>
+        <td><code>claude --help</code></td>
+        <td>查看所有可用参数</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">最实用的一个</div>
+    <code>claude -c</code> 是日常最高频的参数。关掉终端再重新打开，用 <code>-c</code> 就能无缝接上昨天的对话，不用从头解释背景。
+  </div>
+</section>
+
+<section>
+  <h2>对话中的键盘快捷键</h2>
+
+  <p>进入交互模式后，这些快捷键会大幅提升效率：</p>
+
+  <table class="shortcut-table">
+    <thead>
+      <tr>
+        <th>快捷键</th>
+        <th>作用</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>Esc</code></td>
+        <td>中断 Claude 当前正在执行的任务（上节课学过）</td>
+      </tr>
+      <tr>
+        <td><code>Esc Esc</code>（双击）</td>
+        <td>清空你正在输入的内容</td>
+      </tr>
+      <tr>
+        <td><code>↑ / ↓</code></td>
+        <td>浏览历史输入记录</td>
+      </tr>
+      <tr>
+        <td><code>Shift + Enter</code></td>
+        <td>换行（不发送），写多行消息时用</td>
+      </tr>
+      <tr>
+        <td><code>Ctrl + C</code></td>
+        <td>强制退出 Claude Code</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>两个实用技巧</h2>
+
+  <h3>技巧 1：用 ! 直接运行 Shell 命令</h3>
+  <p>
+    在对话框里输入 <code>!</code> 开头，后面跟任何终端命令，就可以直接执行，结果会出现在对话里。
+  </p>
+  <pre><code>! ls -la          ← 列出当前目录文件
+! git status      ← 查看 git 状态
+! npm run build   ← 构建项目</code></pre>
+  <p>你不需要切出去开另一个终端窗口。</p>
+
+  <h3>技巧 2：用 @ 引用文件内容</h3>
+  <p>
+    输入 <code>@</code> 后跟文件路径，可以把文件内容直接引入对话：
+  </p>
+  <pre><code>帮我解释 @src/main.py 里的 login 函数</code></pre>
+  <p>Claude 会自动读取该文件并在回答中引用它，不需要你手动粘贴代码。</p>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">你写了一个脚本，想把 output.txt 的内容传给 Claude 做摘要，但不需要交互，直接打印结果。应该用哪条命令？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">claude output.txt</button></li>
+      <li><button class="quiz-option" data-correct="true">cat output.txt | claude -p "请做摘要"</button></li>
+      <li><button class="quiz-option" data-correct="false">claude -c "请做摘要 output.txt"</button></li>
+      <li><button class="quiz-option" data-correct="false">claude --file output.txt</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！管道 + -p 参数是脚本自动化的标准做法。"
+      data-wrong="提示：需要「把文件内容传入」用管道（|），需要「非交互打印」用 -p 参数。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">关掉终端再重新打开后，如何接续上一次的对话？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">claude --resume</button></li>
+      <li><button class="quiz-option" data-correct="false">claude --last</button></li>
+      <li><button class="quiz-option" data-correct="true">claude -c</button></li>
+      <li><button class="quiz-option" data-correct="false">claude --continue last</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！-c 是 continue 的缩写，接续上一次对话的最常用参数。"
+      data-wrong="-c 是 continue（继续）的缩写，这是最常用的参数之一。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">在对话框里输入多行消息时，如何换行而不发送？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">Ctrl + Enter</button></li>
+      <li><button class="quiz-option" data-correct="true">Shift + Enter</button></li>
+      <li><button class="quiz-option" data-correct="false">Alt + Enter</button></li>
+      <li><button class="quiz-option" data-correct="false">直接按 Enter（默认就是换行）</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！Shift + Enter 换行，Enter 发送。"
+      data-wrong="在 Claude Code 里，Enter 是发送，换行需要 Shift + Enter。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    下一课：<strong>Skills（技能）</strong>——比斜杠命令更强大的可复用能力单元。
+    你现在学习用的 <code>/teach</code> 就是一个 Skill，我们会拆解它是怎么构建的。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 4 — CLI Basics</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含完整的 CLI 参数速查表，可打印随手备查。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"! 命令和直接在终端里运行有什么区别"、"怎么看历史会话列表"——直接问就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0003-checkpoints.html">← 上一课：Checkpoints</a>
+  <a href="0005-skills.html">下一课：Skills →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

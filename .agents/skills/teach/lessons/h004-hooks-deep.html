@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>H4 课：Hooks 深度实践 — Harness Engineering</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .phase-banner {
+      background: #1a1a2e;
+      color: #e8e0ff;
+      border-radius: 8px;
+      padding: 1rem 1.4rem;
+      margin-bottom: 2rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .phase-banner strong { color: white; }
+
+    .hook-anatomy {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+    }
+    .ha-line {
+      display: grid;
+      grid-template-columns: 2fr 2fr 3fr;
+      border-bottom: 1px solid var(--border);
+    }
+    .ha-line:last-child { border-bottom: none; }
+    .ha-cell {
+      padding: 0.6rem 1rem;
+      border-right: 1px solid var(--border);
+    }
+    .ha-cell:last-child { border-right: none; font-family: sans-serif; font-size: 0.8rem; color: var(--muted); }
+    .ha-header { background: #f4f4f0; font-family: sans-serif; font-size: 0.8rem; font-weight: bold; color: var(--text); }
+
+    .env-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-family: sans-serif;
+      font-size: 0.86rem;
+    }
+    .env-table th {
+      background: #f4f4f0;
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      text-align: left;
+    }
+    .env-table td {
+      padding: 0.55rem 1rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .env-table tr:nth-child(even) td { background: #fafaf6; }
+    .env-table code { font-size: 0.85em; }
+
+    .failure-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .failure-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem;
+      font-family: sans-serif;
+      font-size: 0.83rem;
+      text-align: center;
+    }
+    .failure-card .fc-value { font-family: var(--font-mono); font-size: 0.9rem; font-weight: bold; color: var(--accent); margin-bottom: 0.4rem; }
+    .failure-card .fc-desc { color: var(--muted); line-height: 1.4; }
+
+    .hook-recipe {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin: 1.5rem 0;
+      overflow: hidden;
+    }
+    .recipe-header {
+      background: #f4f4f0;
+      padding: 0.75rem 1.2rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+      font-weight: bold;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .recipe-header .recipe-tag {
+      font-size: 0.7rem;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 0.1em 0.5em;
+      border-radius: 3px;
+      font-weight: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .recipe-body { padding: 0; }
+    .recipe-body pre { margin: 0; border: none; border-radius: 0; border-bottom: 1px solid var(--border); }
+    .recipe-body pre:last-child { border-bottom: none; }
+    .recipe-note {
+      padding: 0.75rem 1.2rem;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: #fafaf6;
+    }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 57%"></div>
+</div>
+
+<div class="phase-banner">
+  <div>🏗️</div>
+  <div><strong>Harness Engineering · 第 4 课</strong> — 共 7 课</div>
+</div>
+
+<header>
+  <div class="course-label">Harness Engineering · 支柱 3</div>
+  <h1>Hooks 深度实践：写真实能跑的自动化脚本</h1>
+  <div class="lesson-meta">第 4 课，共 7 课 · 预计 18 分钟</div>
+</header>
+
+<section>
+  <h2>从"知道有 Hooks"到"真正会用"</h2>
+
+  <p>
+    claude-howto 课程里你学了 Hooks 的概念。现在进一步：
+    写出能在你的 Harness 里真实运转的脚本。
+  </p>
+
+  <p>Harness Engineering Guide 说得很直接：</p>
+
+  <div class="callout">
+    <div class="callout-label">来源：Harness Engineering Guide</div>
+    Hooks 是 Harness 里<strong>最强大的部分</strong>——它们把 Claude 的每一个动作都变成了自动化流程的触发器。
+  </div>
+</section>
+
+<section>
+  <h2>完整的 Hook 配置结构</h2>
+
+  <p>一个 Hook 配置里的每个字段都有作用：</p>
+
+  <div class="hook-anatomy">
+    <div class="ha-line">
+      <div class="ha-cell ha-header">字段</div>
+      <div class="ha-cell ha-header">示例值</div>
+      <div class="ha-cell ha-header">含义</div>
+    </div>
+    <div class="ha-line">
+      <div class="ha-cell">"matcher"</div>
+      <div class="ha-cell">"Edit|Write"</div>
+      <div class="ha-cell">匹配哪些工具，| 分隔多个，留空=全部</div>
+    </div>
+    <div class="ha-line">
+      <div class="ha-cell">"type"</div>
+      <div class="ha-cell">"command"</div>
+      <div class="ha-cell">目前只有 command 类型</div>
+    </div>
+    <div class="ha-line">
+      <div class="ha-cell">"command"</div>
+      <div class="ha-cell">"npm run test"</div>
+      <div class="ha-cell">要执行的 Shell 命令</div>
+    </div>
+    <div class="ha-line">
+      <div class="ha-cell">"timeout"</div>
+      <div class="ha-cell">10000</div>
+      <div class="ha-cell">超时毫秒数，防止脚本挂死</div>
+    </div>
+    <div class="ha-line">
+      <div class="ha-cell">"onFailure"</div>
+      <div class="ha-cell">"warn"</div>
+      <div class="ha-cell">脚本失败时的行为（见下方）</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Hook 脚本能读到什么</h2>
+
+  <p>
+    Claude 执行工具时，会把上下文通过<strong>环境变量</strong>传给你的 Hook 脚本：
+  </p>
+
+  <table class="env-table">
+    <thead>
+      <tr><th>环境变量</th><th>内容</th><th>用途</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>CLAUDE_FILE_PATH</code></td>
+        <td>被操作的文件路径</td>
+        <td>判断哪个文件被改了，针对性处理</td>
+      </tr>
+      <tr>
+        <td><code>CLAUDE_TOOL</code></td>
+        <td>工具名称（Edit / Write / Bash…）</td>
+        <td>在一个 Hook 里处理多种工具时区分</td>
+      </tr>
+      <tr>
+        <td><code>CLAUDE_TOOL_INPUT</code></td>
+        <td>Claude 传给工具的完整参数（JSON）</td>
+        <td>检查 Claude 具体要做什么，用于 PreToolUse 拦截</td>
+      </tr>
+      <tr>
+        <td><code>CLAUDE_SESSION_ID</code></td>
+        <td>当前会话 ID</td>
+        <td>日志记录、跨 Hook 关联</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>onFailure：失败了怎么办</h2>
+
+  <div class="failure-grid">
+    <div class="failure-card">
+      <div class="fc-value">"fail"</div>
+      <div class="fc-desc">阻止工具执行<br>（仅 PreToolUse 有效）</div>
+    </div>
+    <div class="failure-card">
+      <div class="fc-value">"warn"</div>
+      <div class="fc-desc">显示警告，继续执行<br>（推荐默认值）</div>
+    </div>
+    <div class="failure-card">
+      <div class="fc-value">"ignore"</div>
+      <div class="fc-desc">静默忽略错误<br>适合非关键 Hook</div>
+    </div>
+  </div>
+
+  <p>
+    注意：退出码 <code>2</code>（上一门课学的）只在 <code>onFailure: "fail"</code> 时才有意义。
+    <code>onFailure: "warn"</code> 时，即使退出码是 2，工具也会继续执行。
+  </p>
+</section>
+
+<section>
+  <h2>三个真实可用的 Hook 配方</h2>
+
+  <!-- Recipe 1 -->
+  <div class="hook-recipe">
+    <div class="recipe-header">
+      🎨 配方 1：写完代码自动格式化
+      <span class="recipe-tag">PostToolUse</span>
+    </div>
+    <div class="recipe-body">
+      <pre><code>{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "npx prettier --write \"$CLAUDE_FILE_PATH\"",
+        "timeout": 10000,
+        "onFailure": "warn"
+      }]
+    }]
+  }
+}</code></pre>
+    </div>
+    <div class="recipe-note">每次 Claude 写完文件，自动跑 Prettier 格式化。超时 10 秒，失败只警告不中断。</div>
+  </div>
+
+  <!-- Recipe 2 -->
+  <div class="hook-recipe">
+    <div class="recipe-header">
+      🧪 配方 2：修改源码后自动跑测试
+      <span class="recipe-tag">PostToolUse</span>
+    </div>
+    <div class="recipe-body">
+      <pre><code>{
+  "hooks": {
+    "PostToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "bash -c 'if [[ \"$CLAUDE_FILE_PATH\" == src/*.ts && \"$CLAUDE_FILE_PATH\" != *.test.ts ]]; then npm run test; fi'",
+        "timeout": 60000,
+        "onFailure": "warn"
+      }]
+    }]
+  }
+}</code></pre>
+    </div>
+    <div class="recipe-note">只在修改 src/ 下的 .ts 文件（非测试文件）时跑测试。避免改测试文件时递归触发。</div>
+  </div>
+
+  <!-- Recipe 3 -->
+  <div class="hook-recipe">
+    <div class="recipe-header">
+      🛡️ 配方 3：PreToolUse 保护重要文件
+      <span class="recipe-tag">PreToolUse</span>
+    </div>
+    <div class="recipe-body">
+      <pre><code>{
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{
+        "type": "command",
+        "command": "bash -c 'case \"$CLAUDE_FILE_PATH\" in *.env|*config.prod.*|*secrets.*) echo \"禁止修改敏感文件：$CLAUDE_FILE_PATH\"; exit 2;; esac'",
+        "timeout": 5000,
+        "onFailure": "fail"
+      }]
+    }]
+  }
+}</code></pre>
+    </div>
+    <div class="recipe-note">在 Claude 写文件之前检查路径。匹配到 .env、config.prod、secrets 等文件时，输出原因并退出码 2 阻断操作。onFailure 必须是 "fail" 才能阻断。</div>
+  </div>
+</section>
+
+<section>
+  <h2>把多个 Hook 组合进一个 settings.json</h2>
+
+  <p>实际使用时，多个 Hook 可以写在同一个文件里：</p>
+
+  <pre><code>{
+  "permissions": {
+    "deny": ["Bash(rm -rf:*)", "Bash(git push --force:*)"]
+  },
+  "hooks": {
+    "PreToolUse": [{
+      "matcher": "Edit|Write",
+      "hooks": [{ "type": "command",
+        "command": "bash -c 'if [[ \"$CLAUDE_FILE_PATH\" == *.env ]]; then echo \"禁止修改 .env\"; exit 2; fi'",
+        "onFailure": "fail", "timeout": 5000 }]
+    }],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command",
+          "command": "npx prettier --write \"$CLAUDE_FILE_PATH\"",
+          "onFailure": "warn", "timeout": 10000 }]
+      },
+      {
+        "matcher": "Edit|Write",
+        "hooks": [{ "type": "command",
+          "command": "npm run test --passWithNoTests",
+          "onFailure": "warn", "timeout": 60000 }]
+      }
+    ]
+  }
+}</code></pre>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">你写了一个 PreToolUse Hook，脚本退出码为 2，但 onFailure 设的是 "warn"。Claude 会怎么做？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">被阻断，Claude 停止执行这个工具</button></li>
+      <li><button class="quiz-option" data-correct="true">显示警告，继续执行工具（onFailure 覆盖了退出码）</button></li>
+      <li><button class="quiz-option" data-correct="false">崩溃，整个 Claude Code 退出</button></li>
+      <li><button class="quiz-option" data-correct="false">静默忽略，正常继续</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！onFailure 的设置优先。想真正阻断，PreToolUse 里必须同时：退出码 2 + onFailure: 'fail'。"
+      data-wrong="记住：真正阻断操作需要两个条件同时满足——退出码 2 AND onFailure: 'fail'。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">在 Hook 脚本里，如何知道 Claude 刚刚修改的是哪个文件？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">读取 CLAUDE_TOOL 环境变量</button></li>
+      <li><button class="quiz-option" data-correct="true">读取 CLAUDE_FILE_PATH 环境变量</button></li>
+      <li><button class="quiz-option" data-correct="false">读取标准输入（stdin）</button></li>
+      <li><button class="quiz-option" data-correct="false">查询 ~/.claude/memory/ 目录</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！CLAUDE_FILE_PATH 包含被操作的文件路径，是 Hook 脚本里最常用的环境变量。"
+      data-wrong="Claude 通过环境变量传递上下文，文件路径在 CLAUDE_FILE_PATH 里。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">你想在 Claude 修改 .env 文件之前阻止它，应该用哪个 Hook 事件 + 什么 onFailure 设置？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">PostToolUse + onFailure: "fail"</button></li>
+      <li><button class="quiz-option" data-correct="false">PreToolUse + onFailure: "warn"</button></li>
+      <li><button class="quiz-option" data-correct="true">PreToolUse + onFailure: "fail"</button></li>
+      <li><button class="quiz-option" data-correct="false">PostToolUse + onFailure: "warn"</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="完全正确！「之前阻止」= PreToolUse，「真正阻断」= onFailure: fail。两个缺一不可。"
+      data-wrong="拆解一下：「之前」→ Pre，「阻止」→ onFailure: fail。PostToolUse 是事后，warn 不会阻断。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>下一课</h2>
+  <p>
+    <strong>Skills 体系设计</strong>——从单个 Skill 到一套有组织的技能库，
+    让你的 Harness 拥有专属的"工具箱"。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://restato.github.io/blog/harness-engineering-guide-claude-code/" target="_blank">📖 Harness Engineering Guide — Hooks 章节</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含多语言项目的自动格式化 Hook 配方（Python/Go/Rust）。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"Windows 上 bash -c 能用吗"、"帮我写一个自动提交 git 的 Hook"——直接说就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="h003-settings.html">← 上一课：Settings & Permissions</a>
+  <a href="h005-skills-system.html">下一课：Skills 体系设计 →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

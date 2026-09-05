@@ -6,7 +6,7 @@ This repository is a local-first, evidence-bound video-production Harness.
   is authority or inspiration when the user has not stated it.
 - Never treat a plan, a prompt, a successful command, or a downloaded file as
   creative acceptance. Preserve SHA-bound evidence and use the designated Gate.
-- The canonical `seedance2-prompt` Skill is the only author of Seedance/LibTV
+- The canonical `seedance2-prompt-fusion` Skill is the only author of Seedance/LibTV
   prompt prose. Other Skills may contribute facts, checks, and routing only.
 - Do not submit paid generation automatically. The operator must inspect the
   current node's prompt, media bindings, model, duration, ratio and resolution,

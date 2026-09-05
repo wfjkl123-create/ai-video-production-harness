@@ -1,0 +1,4 @@
+# Upstream Skill documentation intentionally retains Markdown hard-breaks and
+# historical blank-line formatting. Do not treat those two presentation choices
+# as release defects in the repository-wide whitespace check.
+.agents/skills/** whitespace=-blank-at-eol,-blank-at-eof

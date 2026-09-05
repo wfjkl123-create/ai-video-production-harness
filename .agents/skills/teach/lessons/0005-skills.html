@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 5 课：Skills（技能）— Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .dir-tree {
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      line-height: 2;
+      margin: 1.2rem 0;
+    }
+    .dir-tree .dir  { color: #2255aa; font-weight: bold; }
+    .dir-tree .file { color: #333; }
+    .dir-tree .note { color: var(--muted); font-style: italic; }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.2rem 0;
+    }
+    .compare-card {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+    .compare-card h3 {
+      font-size: 0.95rem;
+      margin: 0 0 0.6rem;
+      padding: 0;
+      border: none;
+      color: var(--text);
+    }
+    .compare-card ul {
+      margin: 0;
+      padding-left: 1.2rem;
+      line-height: 2;
+      color: var(--muted);
+    }
+    .compare-card.highlight { border-color: var(--accent); background: var(--accent-light); }
+    .compare-card.highlight ul { color: #555; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 50%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 5</div>
+  <h1>Skills：你已经在用的强大系统</h1>
+  <div class="lesson-meta">第 5 课，共 10 模块 · 预计 15 分钟</div>
+</header>
+
+<section>
+  <h2>你已经在用一个 Skill 了</h2>
+
+  <p>
+    每次你输入 <code>/teach</code>，你触发的不是一个简单的斜杠命令——它是一个 <strong>Skill（技能）</strong>。
+    这节课我们就从它入手，彻底搞清楚 Skill 是什么。
+  </p>
+
+  <p>看看 <code>/teach</code> 的存放位置：</p>
+
+  <div class="dir-tree">
+<span class="dir">~/.claude/skills/teach/</span><br>
+├── <span class="file">SKILL.md</span>         <span class="note">← 技能的"大脑"，定义行为</span><br>
+├── <span class="file">MISSION-FORMAT.md</span>  <span class="note">← 参考文档</span><br>
+├── <span class="file">MISSION.md</span>         <span class="note">← 你的学习目标（本课程生成）</span><br>
+├── <span class="file">RESOURCES.md</span>       <span class="note">← 资料库</span><br>
+├── <span class="dir">lessons/</span>            <span class="note">← 课程文件（你正在看的这个）</span><br>
+├── <span class="dir">assets/</span>             <span class="note">← 共享样式表和 JS 组件</span><br>
+└── <span class="dir">learning-records/</span>   <span class="note">← 你的学习进度记录</span>
+  </div>
+
+  <p>
+    <code>SKILL.md</code> 是整个技能的核心——它告诉 Claude：<em>当这个 Skill 被触发时，应该做什么</em>。
+    其余的文件是它运作时依赖的资源。
+  </p>
+</section>
+
+<section>
+  <h2>Skill vs Slash Command：有什么区别？</h2>
+
+  <div class="compare-grid">
+    <div class="compare-card">
+      <h3>📌 斜杠命令（Slash Command）</h3>
+      <ul>
+        <li>单个 <code>.md</code> 文件</li>
+        <li>只能由用户输入 <code>/name</code> 触发</li>
+        <li>适合简单、一次性的任务</li>
+        <li>没有附属资源</li>
+      </ul>
+    </div>
+    <div class="compare-card highlight">
+      <h3>⚡ Skill（技能）</h3>
+      <ul>
+        <li>一个完整的<strong>目录</strong></li>
+        <li>可以由 <code>/name</code> 触发，也可以<strong>自动触发</strong></li>
+        <li>适合复杂、有状态的任务</li>
+        <li>可以包含参考文档、脚本、资产</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">关键区别：自动触发</div>
+    Skill 的 <code>SKILL.md</code> 里可以定义<strong>触发条件</strong>——当对话内容匹配某些模式时，Claude 会自动调用这个 Skill，不需要用户手动输入命令。
+    比如某个 Skill 可以设置为"当用户说想学某样东西时自动激活"。
+  </div>
+</section>
+
+<section>
+  <h2>SKILL.md 的结构</h2>
+
+  <p>一个 Skill 的 <code>SKILL.md</code> 通常包含以下几个部分：</p>
+
+  <pre><code># Skill 名称
+
+## 描述
+这个 Skill 做什么，什么时候应该被触发。
+
+## 触发条件（Triggers）
+- 用户说了什么词、做了什么事时自动激活
+- 或者通过 /skill-name 手动触发
+
+## 行为（Behavior）
+当 Skill 被触发后，Claude 应该做什么，
+遵循什么格式，注意什么规则。
+
+## 参考资料
+- [参考文档1](./references/doc1.md)
+- [参考文档2](./references/doc2.md)</code></pre>
+
+  <p>
+    你现在用的 <code>/teach</code> 的 SKILL.md 有几百行——
+    定义了整套教学哲学、课程结构、文件格式规范。
+    这就是为什么它能做出这么完整的课程体验。
+  </p>
+</section>
+
+<section>
+  <h2>Skills 存放在哪里</h2>
+
+  <p>和斜杠命令类似，Skills 也有两个层级：</p>
+
+  <pre><code>~/.claude/skills/skill-name/    ← 全局 Skill（所有项目可用）
+.claude/skills/skill-name/      ← 项目 Skill（只在该项目可用）</code></pre>
+
+  <p>
+    目前你的 <code>~/.claude/skills/</code> 里有：
+    <code>teach</code>、<code>aihot</code>、<code>hv-analysis</code>、
+    <code>khazix-writer</code>、<code>neat-freak</code>、<code>storage-analyzer</code>。
+    每一个都是一个完整的技能目录。
+  </p>
+</section>
+
+<section>
+  <h2>如何创建自己的 Skill</h2>
+
+  <p>创建一个 Skill 只需要三步：</p>
+
+  <ol style="margin: 0.5rem 0 1rem 1.5rem; line-height: 2.5;">
+    <li>在 <code>~/.claude/skills/</code> 下创建一个文件夹，名字就是 Skill 名</li>
+    <li>在文件夹里创建 <code>SKILL.md</code>，写清楚触发条件和行为</li>
+    <li>重启 Claude Code，新 Skill 自动生效</li>
+  </ol>
+
+  <p>举个例子，创建一个"代码审查"Skill：</p>
+
+  <pre><code>~/.claude/skills/code-review/
+└── SKILL.md</code></pre>
+
+  <p><code>SKILL.md</code> 内容：</p>
+
+  <pre><code># Code Review Skill
+
+## 触发
+当用户说"帮我审查代码"或"/code-review"时触发。
+
+## 行为
+1. 阅读用户指定的文件
+2. 检查：命名规范、潜在 bug、性能问题、安全漏洞
+3. 用中文输出结构化报告，分优先级标注问题
+4. 给出具体的修改建议，不只是指出问题</code></pre>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">Skill 和 Slash Command 最本质的区别是什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">Skill 只能用来写代码，Command 可以做任何事</button></li>
+      <li><button class="quiz-option" data-correct="false">Skill 需要付费，Command 免费</button></li>
+      <li><button class="quiz-option" data-correct="true">Skill 是完整目录，支持自动触发；Command 是单个文件，需手动调用</button></li>
+      <li><button class="quiz-option" data-correct="false">Skill 由 Anthropic 官方提供，Command 由用户自定义</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！Skill 是功能更强、结构更丰富的单元，最大特点是可以自动触发。"
+      data-wrong="核心区别在于：结构（目录 vs 文件）和触发方式（自动 vs 手动）。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">一个 Skill 的核心定义文件叫什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">CLAUDE.md</button></li>
+      <li><button class="quiz-option" data-correct="false">index.md</button></li>
+      <li><button class="quiz-option" data-correct="true">SKILL.md</button></li>
+      <li><button class="quiz-option" data-correct="false">config.json</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！SKILL.md 是每个 Skill 目录里必须有的核心文件。"
+      data-wrong="提示：文件名和 Skill 本身的名字很相关——就叫 SKILL.md。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">你想创建一个 Skill，让 Claude 在对话里检测到"帮我翻译"就自动启动翻译流程。Skill 目录应该放在哪？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">~/.claude/commands/translate/</button></li>
+      <li><button class="quiz-option" data-correct="true">~/.claude/skills/translate/</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/plugins/translate/</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/memory/translate/</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！Skills 放在 ~/.claude/skills/ 目录下，每个 Skill 一个子目录。"
+      data-wrong="记住路径规律：commands/ 放命令，skills/ 放技能，memory/ 放记忆。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    下一课：<strong>Hooks（钩子）</strong>——当 Claude 执行某个动作时，自动触发你预设的脚本。
+    比如每次 Claude 写完代码，自动跑测试；每次保存文件，自动格式化。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 5 — Skills</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含多个现成 Skill 模板，可直接复制使用。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"SKILL.md 触发条件怎么写"、"能不能看看 /teach 的 SKILL.md 源码"——直接问就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0004-cli-basics.html">← 上一课：CLI 基础</a>
+  <a href="0006-hooks.html">下一课：Hooks →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

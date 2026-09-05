@@ -33,6 +33,9 @@
 !.agents/skills/**
 !AGENTS.md
 !THIRD_PARTY_NOTICES.md
+!LICENSE
+!NOTICE
+!.gitattributes
 
 # Never publish local configuration, project state, evidence, media, or editor/runtime state.
 .env.local
@@ -77,3 +80,13 @@ node_modules/
 *.zip
 *.tar
 *.gz
+
+# Bundled public Skills may legitimately include documentation assets. They are
+# source assets, not project media or generated deliverables.
+!.agents/skills/**/assets/
+!.agents/skills/**/assets/**
+!.agents/skills/**/*.png
+!.agents/skills/**/*.jpg
+!.agents/skills/**/*.jpeg
+!.agents/skills/**/*.webp
+!.agents/skills/**/*.gif

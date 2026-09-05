@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>第 8 课：Subagents（子代理）— Claude How-To 课程</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    .org-chart {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+      font-family: sans-serif;
+      font-size: 0.85rem;
+    }
+    .org-main {
+      background: var(--accent-light);
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      padding: 0.6rem 1.5rem;
+      color: var(--accent);
+      font-weight: bold;
+    }
+    .org-line {
+      width: 2px;
+      height: 24px;
+      background: var(--border);
+    }
+    .org-row {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .org-sub {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .org-sub-box {
+      background: #e8f0ff;
+      border: 1px solid #99b;
+      border-radius: 8px;
+      padding: 0.5rem 0.9rem;
+      color: #336;
+      text-align: center;
+      min-width: 110px;
+    }
+    .org-sub-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+    }
+    .org-connector {
+      display: flex;
+      gap: 1rem;
+      position: relative;
+    }
+    .org-connector::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 55px;
+      right: 55px;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .vs-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.2rem 0;
+      font-family: sans-serif;
+      font-size: 0.88rem;
+    }
+    .vs-table th {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      text-align: center;
+      background: #f4f4f0;
+    }
+    .vs-table td {
+      padding: 0.6rem 1rem;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .vs-table tr:nth-child(even) td { background: #fafaf6; }
+
+    .parallel-diagram {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.75rem;
+      margin: 1rem 0;
+    }
+    .parallel-task {
+      border: 1px solid #99b;
+      border-radius: 8px;
+      background: #e8f0ff;
+      padding: 0.8rem;
+      text-align: center;
+      font-family: sans-serif;
+      font-size: 0.82rem;
+      color: #336;
+    }
+    .parallel-task .task-name { font-weight: bold; margin-bottom: 0.3rem; }
+    .parallel-task .task-desc { color: #668; font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+
+<div class="progress-bar">
+  <div class="progress-fill" style="width: 80%"></div>
+</div>
+
+<header>
+  <div class="course-label">Claude How-To 课程 · 模块 8</div>
+  <h1>Subagents：让 Claude 分身工作</h1>
+  <div class="lesson-meta">第 8 课，共 10 模块 · 预计 15 分钟</div>
+</header>
+
+<section>
+  <h2>一个人做不完，就派人去做</h2>
+
+  <p>
+    你让 Claude 做一个复杂任务："帮我审查整个代码库，找出安全漏洞、性能问题和代码规范问题。"
+  </p>
+  <p>
+    如果 Claude 一个人从头到尾做，又慢又容易混乱。更好的方式是：
+    <strong>主 Claude 当"项目经理"，派出多个专职"小 Claude"并行处理</strong>。
+  </p>
+
+  <div class="org-chart">
+    <div class="org-main">🧠 主 Claude（编排者）</div>
+    <div class="org-line"></div>
+    <div style="display:flex; gap: 1rem; position:relative;">
+      <div style="position:absolute; top:0; left:55px; right:55px; height:2px; background:var(--border);"></div>
+      <div class="org-sub">
+        <div class="org-line"></div>
+        <div class="org-sub-box">🔒 安全检查<br>Subagent</div>
+      </div>
+      <div class="org-sub">
+        <div class="org-line"></div>
+        <div class="org-sub-box">⚡ 性能分析<br>Subagent</div>
+      </div>
+      <div class="org-sub">
+        <div class="org-line"></div>
+        <div class="org-sub-box">📐 规范检查<br>Subagent</div>
+      </div>
+    </div>
+  </div>
+
+  <p>三个 Subagent 同时工作，最后把结果汇总给你——比串行执行快得多。</p>
+</section>
+
+<section>
+  <h2>为什么要用 Subagents</h2>
+
+  <table class="vs-table">
+    <thead>
+      <tr>
+        <th>场景</th>
+        <th>不用 Subagent</th>
+        <th>用 Subagent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>审查 100 个文件</td>
+        <td>一个个排队，耗时长</td>
+        <td>10 个 Subagent 各管 10 个，并行处理</td>
+      </tr>
+      <tr>
+        <td>专业任务</td>
+        <td>主 Claude 什么都管，容易分心</td>
+        <td>每个 Subagent 只专注自己的领域</td>
+      </tr>
+      <tr>
+        <td>超长任务</td>
+        <td>对话太长，Claude 开始"忘事"</td>
+        <td>每个 Subagent 有独立的干净上下文</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-label">关键优势：独立上下文</div>
+    每个 Subagent 都有自己<strong>全新的、干净的</strong>对话上下文，不受主对话的干扰。
+    这避免了"对话越来越长，Claude 越来越混乱"的问题。
+  </div>
+</section>
+
+<section>
+  <h2>Subagent 怎么定义</h2>
+
+  <p>
+    Subagent 定义在 <code>agents/</code> 目录下，每个文件是一个专职代理：
+  </p>
+
+  <pre><code>~/.claude/agents/                ← 全局 Subagent
+.claude/agents/                  ← 项目级 Subagent
+  ├── security-reviewer.md
+  ├── performance-analyzer.md
+  └── test-writer.md</code></pre>
+
+  <p>一个 Subagent 定义文件长这样：</p>
+
+  <pre><code>---
+name: security-reviewer
+description: 专门负责审查代码安全漏洞的代理
+tools: Read, Grep
+---
+
+# 安全审查专家
+
+你是一个专注于代码安全的审查员。
+你的任务是找出以下问题：
+- SQL 注入漏洞
+- XSS 跨站脚本攻击
+- 不安全的密钥硬编码
+- 权限控制缺失
+
+审查时只关注安全问题，不评论代码风格或性能。
+输出结构化的漏洞报告，标注严重级别。</code></pre>
+
+  <p>
+    注意 <code>tools</code> 字段——你可以<strong>限制 Subagent 能用哪些工具</strong>，
+    让它保持专注，也更安全。
+  </p>
+</section>
+
+<section>
+  <h2>主 Claude 如何派遣 Subagent</h2>
+
+  <p>
+    你不需要手动触发 Subagent——当你给主 Claude 一个复杂任务，它会自动判断是否需要派遣 Subagent，
+    以及派遣哪些。你也可以在提示词里明确要求：
+  </p>
+
+  <pre><code>请用多个代理并行审查 src/ 目录：
+- 一个负责安全漏洞
+- 一个负责性能问题
+- 一个负责测试覆盖率
+最后汇总报告给我。</code></pre>
+
+  <p>Claude 会自动协调，你等着收汇总结果就好。</p>
+</section>
+
+<section>
+  <h2>一个完整的并行任务例子</h2>
+
+  <p>你说："帮我准备明天的技术分享，需要 PPT 大纲、演示代码和 README。"</p>
+
+  <div class="parallel-diagram">
+    <div class="parallel-task">
+      <div class="task-name">📑 大纲 Agent</div>
+      <div class="task-desc">生成 PPT 结构和每页要点</div>
+    </div>
+    <div class="parallel-task">
+      <div class="task-name">💻 代码 Agent</div>
+      <div class="task-desc">写可运行的演示代码</div>
+    </div>
+    <div class="parallel-task">
+      <div class="task-name">📄 文档 Agent</div>
+      <div class="task-desc">写 README 和使用说明</div>
+    </div>
+  </div>
+
+  <p>三个 Agent 同时工作，几分钟内交付全套材料，而不是一个接一个排队等。</p>
+</section>
+
+<!-- Quiz -->
+<section>
+  <h2>小测验</h2>
+
+  <div class="quiz" id="q1">
+    <div class="quiz-title">测验 1 / 3</div>
+    <div class="quiz-question">使用 Subagents 最核心的优势是什么？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">Subagent 比主 Claude 更聪明</button></li>
+      <li><button class="quiz-option" data-correct="false">Subagent 不消耗 token，完全免费</button></li>
+      <li><button class="quiz-option" data-correct="true">并行处理 + 独立干净的上下文，更快更专注</button></li>
+      <li><button class="quiz-option" data-correct="false">Subagent 可以访问互联网，主 Claude 不能</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！并行（速度）和独立上下文（专注度）是 Subagents 的两大核心价值。"
+      data-wrong="核心优势是：多个 Subagent 同时工作（并行），且每个都有干净的上下文（专注）。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q2">
+    <div class="quiz-title">测验 2 / 3</div>
+    <div class="quiz-question">Subagent 的定义文件放在哪个目录？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">~/.claude/skills/</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/commands/</button></li>
+      <li><button class="quiz-option" data-correct="true">~/.claude/agents/ 或项目的 .claude/agents/</button></li>
+      <li><button class="quiz-option" data-correct="false">~/.claude/memory/</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="正确！agents/ 目录专门用来放 Subagent 定义文件。"
+      data-wrong="各类功能都有专属目录：skills/、commands/、agents/、memory/——Subagent 在 agents/。">
+    </div>
+  </div>
+
+  <div class="quiz" id="q3">
+    <div class="quiz-title">测验 3 / 3</div>
+    <div class="quiz-question">Subagent 定义文件里的 <code>tools</code> 字段有什么用？</div>
+    <ul class="quiz-options">
+      <li><button class="quiz-option" data-correct="false">指定这个 Subagent 安装哪些 MCP Server</button></li>
+      <li><button class="quiz-option" data-correct="true">限制这个 Subagent 只能使用指定的工具</button></li>
+      <li><button class="quiz-option" data-correct="false">列出 Subagent 会生成哪些文件</button></li>
+      <li><button class="quiz-option" data-correct="false">定义 Subagent 触发时运行的命令</button></li>
+    </ul>
+    <div class="quiz-feedback"
+      data-correct="对！通过 tools 限制 Subagent 的权限，让它保持专注，也更安全。"
+      data-wrong="tools 是权限边界——你可以只给安全检查 Agent 读取权限，不给它写入或执行权限。">
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>接下来</h2>
+  <p>
+    倒数第二课：<strong>高级特性</strong>——规划模式（Plan Mode）、扩展思考（Extended Thinking）、后台任务。
+    这些是让 Claude 在复杂任务上表现更好的"增强剂"。
+  </p>
+</section>
+
+<div class="primary-source">
+  <div class="primary-source-label">推荐延伸阅读</div>
+  <a href="https://github.com/luongnv89/claude-howto" target="_blank">📖 claude-howto 项目：模块 8 — Subagents</a>
+  <p style="margin: 0.4rem 0 0; color: var(--muted); font-size: 0.85rem;">含多个现成的专职 Subagent 模板，可直接复制使用。</p>
+</div>
+
+<div class="ask-me">
+  <strong>🤔 有任何疑问，直接问我</strong>
+  比如"主 Claude 怎么知道什么时候该用 Subagent"、"Subagent 能不能再派 Sub-Subagent"——直接问就好。
+</div>
+
+<nav class="lesson-nav">
+  <a href="0007-mcp.html">← 上一课：MCP 协议</a>
+  <a href="0009-advanced.html">下一课：高级特性 →</a>
+</nav>
+
+<script src="../assets/quiz.js"></script>
+</body>
+</html>

@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>cmux 实战：让通知替你盯屏</title>
+  <link rel="stylesheet" href="../assets/style.css">
+  <style>
+    body { max-width: 900px; overflow-wrap: anywhere; }
+    pre { overflow-x: auto; max-width: 100%; }
+    code { overflow-wrap: anywhere; }
+    .idcard { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .8rem; margin: 1.4rem 0 2rem; }
+    .idcard div { border: 1px solid var(--border); border-radius: 8px; background: #fff; padding: .9rem; min-width: 0; }
+    .idcard strong { display: block; font-family: system-ui, sans-serif; font-size: 1.15rem; color: var(--accent); }
+    .idcard span { font: .8rem/1.5 system-ui, sans-serif; color: var(--muted); }
+    .loop { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .6rem; margin: 1.6rem 0; }
+    .loop .step { border: 2px solid #6673bb; border-radius: 10px; background: #f0f4ff; padding: .9rem .8rem; min-width: 0; position: relative; }
+    .loop .step em { display: block; font-style: normal; font-family: system-ui, sans-serif; font-weight: 700; margin-bottom: .3rem; }
+    .loop .step small { font: .78rem/1.5 system-ui, sans-serif; color: #444; display: block; }
+    .loop .step .num { position: absolute; top: -.7rem; left: .7rem; background: #6673bb; color: #fff; border-radius: 99px; font: 700 .72rem/1.5 system-ui; padding: 0 .55rem; }
+    .keys { width: 100%; border-collapse: collapse; margin: 1.2rem 0 2rem; font: .92rem/1.5 system-ui, sans-serif; display: block; overflow-x: auto; }
+    .keys th, .keys td { text-align: left; padding: .55rem .6rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    .keys th { color: var(--muted); font-size: .78rem; letter-spacing: .04em; }
+    .keys kbd { font-family: var(--font-mono); background: var(--code-bg); border: 1px solid var(--border); border-bottom-width: 2px; border-radius: 5px; padding: .05rem .45rem; white-space: nowrap; }
+    .keys tbody tr:hover { background: #faf6ee; }
+    .tipcard { border-left: 4px solid #5f8c5f; background: #edf6ed; padding: .9rem 1.1rem; margin: .8rem 0; }
+    .tipcard strong { font-family: system-ui, sans-serif; }
+    .warn { border-left: 4px solid var(--accent); background: var(--accent-light); padding: .9rem 1.1rem; margin: 1rem 0; }
+    .task { border: 1px solid var(--border); border-radius: 8px; background: #fff; padding: 1.1rem 1.3rem; margin: 1.2rem 0; }
+    .task ol { margin-left: 0; padding-left: 1.4rem; list-style-position: outside; }
+    .task li { margin: .5rem 0; }
+    .quiz { border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem 1.4rem; margin: 1.5rem 0; background: #fff; }
+    .quiz p { margin-bottom: .8rem; font-weight: 700; }
+    .quiz-option { display: block; width: 100%; text-align: left; margin: .4rem 0; padding: .6rem .9rem; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); font: inherit; cursor: pointer; }
+    .quiz-option:hover:not(:disabled) { border-color: var(--accent); }
+    .quiz-option.correct { background: var(--success-bg); border-color: var(--success); }
+    .quiz-option.wrong { background: var(--error-bg); border-color: var(--error); }
+    .quiz-feedback { display: none; margin-top: .8rem; font: .9rem/1.5 system-ui, sans-serif; }
+    .quiz-feedback.show { display: block; }
+    .quiz-feedback.correct { color: var(--success); }
+    .quiz-feedback.wrong { color: var(--error); }
+    .micro { color: var(--muted); font: .82rem/1.5 system-ui, sans-serif; }
+    @media (max-width: 680px) {
+      body { padding: 2rem 1rem 4rem; }
+      .idcard, .loop { grid-template-columns: 1fr; }
+      .loop .step .num { position: static; display: inline-block; margin-bottom: .3rem; }
+    }
+    @media (max-width: 420px) {
+      body { padding: 1.5rem .7rem 3rem; line-break: anywhere; }
+      .task { padding: .8rem .7rem; }
+      .task ol { padding-left: 1.1rem; }
+      .quiz { padding: .9rem .8rem; }
+      kbd, .keys kbd { white-space: normal; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="course-label">Harness Engineering · 第 12 课</div>
+    <h1>cmux 实战：让通知替你盯屏</h1>
+    <div class="lesson-meta">上一课你学会了"分栏 ≠ 协同"的心智模型；这一课学会真正的操作循环：派活 → 切走 → 等通知 → 跳回来。约 12 分钟。</div>
+  </header>
+
+  <p class="hero-answer">
+    多智能体高效的秘密不是"同时盯着 6 个屏幕"，而是<strong>一次只看一个屏幕，其余的交给通知系统</strong>。
+    人眼盯屏是最贵的资源；cmux（一款专为 AI 编程智能体设计的 macOS 原生终端）的全部设计，都是为了把你从"轮流查岗"里解放出来。
+  </p>
+
+  <h2>cmux 的 GitHub 身份证</h2>
+  <p>先确认我们学的是"哪一个 cmux"——GitHub（全球最大代码托管平台）上叫 cmux 的项目有 700 多个，星数（stars，相当于收藏/点赞数）最高、也是我们要学的这个是：</p>
+  <div class="idcard">
+    <div><strong>24,624 ★</strong><span>GitHub 星数（截至 2026-07-17），同名项目中断层第一</span></div>
+    <div><strong>manaflow-ai/cmux</strong><span>仓库地址，基于 Ghostty（高性能终端内核）的 macOS 原生应用，Swift 语言编写，非网页套壳，启动快、省内存</span></div>
+    <div><strong>开源免费</strong><span>GPL 协议（开源许可证），官网 cmux.com，自带简体中文说明文档</span></div>
+  </div>
+  <p class="micro">作者自述造它的原因：同时跑很多个 Claude Code 会话时，系统通知只会说"Claude 正在等待你的输入"，根本不知道是哪一个在等——于是他做了侧边栏 + 通知系统。这正是你现在遇到的问题。</p>
+
+  <h2>核心工作循环：四步</h2>
+  <p>这是本课唯一需要练成肌肉记忆的东西。你和多个智能体协作的每一轮，都是这四步：</p>
+  <div class="loop">
+    <div class="step"><span class="num">1</span><em>派活</em><small>给某个 pane（分栏窗格）里的智能体下达一条带成功标准的指令</small></div>
+    <div class="step"><span class="num">2</span><em>切走</em><small>立刻切到别的工作区干别的事，<strong>不要守着它跑</strong></small></div>
+    <div class="step"><span class="num">3</span><em>等通知</em><small>智能体需要你时，它的 pane 出现<strong>蓝色圆环</strong>，侧边栏标签点亮</small></div>
+    <div class="step"><span class="num">4</span><em>跳回来</em><small>按 <kbd>⌘⇧U</kbd> 直接跳到最新未读，处理完回到第 1 步</small></div>
+  </div>
+  <p>对照你的实际工作：工作区 1 让智能体爬竞品视频数据，工作区 2 让另一个写脚本初稿，你自己在工作区 3 看蝉妈妈——谁需要你，谁亮灯，你才过去。</p>
+
+  <h2>通知系统三件套</h2>
+  <table class="keys">
+    <thead><tr><th>看到什么 / 按什么</th><th>意思</th></tr></thead>
+    <tbody>
+      <tr><td>pane 边缘出现<strong>蓝色圆环</strong>、侧边栏标签点亮</td><td>这个智能体在等你（要你确认权限、回答问题或验收结果）</td></tr>
+      <tr><td><kbd>⌘I</kbd> 打开通知面板</td><td>一处看到所有待办通知，不怕漏掉谁</td></tr>
+      <tr><td><kbd>⌘⇧U</kbd> 跳到最新未读</td><td>不用找，一键传送到最需要你的那个 pane</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">
+    <strong>前提：先接好"传感器"。</strong>通知不是魔法，靠的是钩子（hooks，智能体状态变化时自动触发的小程序）。
+    Claude Code 的集成在 cmux 的 <code>Settings</code>（设置）里开启开关即可；其他智能体（如 Codex、OpenCode）在终端里运行一次
+    <code>cmux hooks setup</code>（自动检测并安装所有支持的智能体钩子）。装好后，会话还能在重启 cmux 后自动恢复（session restore，恢复布局和智能体对话进度）。
+  </div>
+
+  <h2>肌肉记忆最小集：7 个快捷键</h2>
+  <p>cmux 有几十个快捷键，但小白只需要这 7 个就能高效运转（⌘ 是 Command 键，⇧ 是 Shift 键，⌥ 是 Option 键，⌃ 是 Control 键）：</p>
+  <table class="keys">
+    <thead><tr><th>快捷键</th><th>作用</th><th>什么时候用</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>⌘N</kbd></td><td>新建工作区（workspace）</td><td>开一个新项目 / 新任务线</td></tr>
+      <tr><td><kbd>⌘1–8</kbd></td><td>跳到第 1–8 个工作区</td><td>在项目之间瞬移，代替鼠标点侧边栏</td></tr>
+      <tr><td><kbd>⌘D</kbd> / <kbd>⌘⇧D</kbd></td><td>向右 / 向下分栏</td><td>在同一工作区里给编队加一个成员</td></tr>
+      <tr><td><kbd>⌥⌘←→↑↓</kbd></td><td>按方向移动焦点</td><td>在分栏之间移动光标，给不同智能体输入</td></tr>
+      <tr><td><kbd>⌘⇧U</kbd></td><td>跳到最新未读通知</td><td>灯亮了就按它，核心循环第 4 步</td></tr>
+      <tr><td><kbd>⌘I</kbd></td><td>通知面板</td><td>感觉可能漏了谁时，总览一遍</td></tr>
+      <tr><td><kbd>⌘B</kbd></td><td>收起 / 展开侧边栏</td><td>需要大屏专注时收起，要看全局时展开</td></tr>
+    </tbody>
+  </table>
+
+  <h2>一条命令组队：claude-teams</h2>
+  <p>上一课我们说过，手动开三个 pane 时，派工、同步、整合都得你自己做。cmux 提供了一条捷径：</p>
+  <pre><code>cmux claude-teams</code></pre>
+  <p>这条命令启动 Claude Code 的<strong>队友模式</strong>（teammate mode，一个主智能体自动招募多个队友协作）。在普通终端里用这个模式需要先配置 tmux（老式终端复用工具，配置繁琐）；在 cmux 里则是：<strong>每个队友自动变成一个原生分栏</strong>，自带侧边栏信息和通知。也就是说——上一课的 Lead（队长）/ Builder（执行者）/ Verifier（验收员）编队，从"你手动开三个栏、来回复制粘贴"变成"一条命令，队长自己招人，你只管看通知"。</p>
+  <div class="tipcard">
+    <strong>怎么选：</strong>任务能一句话说清成功标准、步骤可以并行 → 用 <code>claude-teams</code> 让队长去拆；
+    任务需要你边看边调方向（比如脚本文案的口味把控）→ 手动分栏，你自己当队长。
+  </div>
+
+  <h2>进阶效率技巧（用到再学，先混个眼熟）</h2>
+  <ul>
+    <li><strong>侧边栏是仪表盘：</strong>每个工作区标签自动显示 Git 分支（代码版本线）、PR 状态（Pull Request，代码合并请求）、监听端口和最新一条通知文字——扫一眼侧边栏 = 巡视全部工地。</li>
+    <li><strong>浏览器分栏</strong>（<kbd>⌘⇧L</kbd>）：在终端旁边开一个内置浏览器，智能体可以自己操作它——点击、填表、截图。比如让智能体自查它爬取的页面长什么样。</li>
+    <li><strong>会话恢复</strong>（<kbd>⌘⇧O</kbd>）：cmux 退出时保存全部布局和智能体会话，重开后各智能体从上次的对话继续，不用重新交代任务。</li>
+    <li><strong>智能体休眠</strong>（agent hibernation，自动挂起闲置的后台智能体省内存）：同时跑超过 12 个智能体才需要开，现在不用管。</li>
+  </ul>
+
+  <h2>今日实操任务（15 分钟）</h2>
+  <div class="task">
+    <ol>
+      <li>安装：官网 cmux.com 下载 DMG（macOS 安装包），或用 Homebrew（macOS 软件包管理器）：<code>brew install --cask cmux</code>。已装的跳过。</li>
+      <li>接传感器：打开 cmux 的 Settings 开启 Claude Code 集成；再运行 <code>cmux hooks setup</code>。</li>
+      <li>建编队：<kbd>⌘N</kbd> 新建工作区，<kbd>⌘D</kbd> 分出第二栏，在两个栏里各启动一个 <code>claude</code>。</li>
+      <li>派活：给左边的下达一个 3 分钟量级的小任务（比如"把桌面上的截图按日期整理进文件夹，完成后报告清单"）。</li>
+      <li>切走：<kbd>⌘N</kbd> 再开一个工作区，随便干点别的。<strong>忍住，不要切回去看。</strong></li>
+      <li>等灯亮：侧边栏点亮后按 <kbd>⌘⇧U</kbd> 跳回去处理。恭喜，你完成了第一个完整的通知驱动循环。</li>
+    </ol>
+  </div>
+
+  <h2>自测</h2>
+  <div class="quiz">
+    <p>1. 某个智能体在等你输入时，cmux 用什么标记它的 pane？</p>
+    <button class="quiz-option" data-correct="false">弹窗警报</button>
+    <button class="quiz-option" data-correct="true">蓝色圆环</button>
+    <button class="quiz-option" data-correct="false">声音提示</button>
+    <button class="quiz-option" data-correct="false">红色边框</button>
+    <div class="quiz-feedback" data-correct="对！pane 出现蓝色圆环，同时侧边栏标签点亮。" data-wrong="是蓝色圆环——pane 边缘发蓝光，侧边栏标签同步点亮。"></div>
+  </div>
+  <div class="quiz">
+    <p>2. 想直接跳到最新一条未读通知，按哪个快捷键？</p>
+    <button class="quiz-option" data-correct="false">⌘ ⇧ O</button>
+    <button class="quiz-option" data-correct="false">⌘ ⇧ D</button>
+    <button class="quiz-option" data-correct="true">⌘ ⇧ U</button>
+    <button class="quiz-option" data-correct="false">⌘ ⇧ N</button>
+    <div class="quiz-feedback" data-correct="对！U 可以记成 Unread（未读）。" data-wrong="是 ⌘⇧U，U = Unread（未读）。⌘⇧O 是恢复上次会话。"></div>
+  </div>
+  <div class="quiz">
+    <p>3. <code>cmux claude-teams</code> 这条命令做的是什么？</p>
+    <button class="quiz-option" data-correct="false">把所有工作区合并成一个大窗口</button>
+    <button class="quiz-option" data-correct="false">自动帮你写好全部广告文案脚本</button>
+    <button class="quiz-option" data-correct="false">一键更新升级全部智能体客户端</button>
+    <button class="quiz-option" data-correct="true">启动队友模式并映射为原生分栏</button>
+    <div class="quiz-feedback" data-correct="对！队长招募的每个队友都自动出现在一个原生分栏里，带通知。" data-wrong="它启动 Claude Code 的队友模式，每个队友自动变成一个带通知的原生分栏。"></div>
+  </div>
+
+  <h2>首选资料</h2>
+  <ul>
+    <li><a href="https://github.com/manaflow-ai/cmux/blob/main/README.zh-CN.md">cmux 官方 README 简体中文版</a>——本课所有事实的第一来源，含完整快捷键表。</li>
+    <li><a href="https://cmux.com/blog/zen-of-cmux">The Zen of cmux（cmux 之禅）</a>——作者的设计哲学：cmux 是积木不是套餐，工作流由你自己搭。</li>
+    <li><a href="https://www.youtube.com/watch?v=i-WxO5YUTOs">官方演示视频</a>——3 分钟看一遍真实操作，比文字直观。</li>
+    <li>社区：<a href="https://discord.gg/xsgFEVrWCZ">官方 Discord（聊天社区）</a>和 <a href="https://github.com/manaflow-ai/cmux/discussions">GitHub Discussions（讨论区）</a>——工作流问题在这里能看到一线开发者怎么用。</li>
+  </ul>
+
+  <p class="micro">
+    配套速查：<a href="../reference/cmux-quick-keys.html">cmux 快捷键与命令速查</a> ·
+    <a href="../reference/cmux-multi-agent-cheatsheet.html">多智能体编队速查</a> ·
+    上一课：<a href="h011-cmux-multi-agent-mental-model.html">cmux 多智能体心智模型</a><br>
+    有任何看不懂的地方，直接在对话里问你的 AI 老师——包括"这个快捷键按了没反应"这种小事。
+  </p>
+
+  <script src="../assets/quiz.js" defer></script>
+</body>
+</html>
