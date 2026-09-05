@@ -37,9 +37,9 @@ needs.
 2. Install and authenticate `ocx` if the director or independent-audit routes
    will be used. Choose a model route and per-task budget outside this repo.
 3. Keep `HARNESS_CANONICAL_PROMPT_SKILL_ROOT` pointing to the bundled,
-   SHA-locked MIT Seedance 2.0 v6.7 baseline unless you intentionally install a
-   separately reviewed canonical replacement. Private fusion material is not a
-   public-release dependency.
+   SHA-locked `seedance2-prompt-fusion` directory. It is the public Harness's
+   canonical prompt author; its MIT-licensed Seedance 2.0 v6.7 reference layer
+   is retained internally only where the fusion workflow reads it.
 4. If using RunningHub, set `RUNNINGHUB_API_KEY` in `.env.local` and verify the
    account's own entitlement. The default LibTV route does not require it.
 
